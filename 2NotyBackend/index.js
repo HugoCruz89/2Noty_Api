@@ -1,8 +1,14 @@
 const express= require('express');
 require('dotenv').config();
+const  config = require('./configs/config');
 
 const app = express();
 
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
+//ket to jwt
+
+app.set('llave', config.llave);
 // Directorio Público
 app.use(express.static('public'))
 
@@ -11,7 +17,11 @@ app.use(express.json())
 
 //RUTAS
 app.use('/api/auth', require('./routes/auth'))
-
+app.use(
+    '/api-docs',
+    swaggerUi.serve, 
+    swaggerUi.setup(swaggerDocument)
+  );
 // escuchar peticiones
 app.listen(process.env.PORT,()=>{
     console.log(`servidor corriendo ${process.env.PORT} `)

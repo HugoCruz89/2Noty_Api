@@ -3,42 +3,37 @@ const { response } = require("express");
 const { pool } = require("./../dbCongif");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
-// const pool=  new Pool({
-//     host:'notydb.c2rkujiggjuq.us-east-2.rds.amazonaws.com',
-//     user:'postgres',
-//     password:'Br4sil24.',
-//     database:'notydb',
-//     port:'5432'
-// })
+const jwt = require("jsonwebtoken");
+const config = require("./../configs/config");
 
 const getUsers = async (req, res = response) => {
-  let error = "";
-
-  const response = await pool.query(
-    "INSERT INTO estatus(id_estatus, estatus)VALUES(2, 'inactivo')",
-    (err, res) => {
-      console.log("errors", err.detail);
-      console.log("respuesta", res);
-      error = err.detail;
-
-      pool.end();
-    }
-  );
-  // const response= await pool.query("DELETE FROM estatus",(err, res) => {
-  //   console.log('errors',err);
-  //   console.log('respuesta',res)
-  //   pool.end();
-  // });
-  // console.log(response.rows)
-  if (error === "") {
-    res.status(400).json({
-      ok: false,
-      msg: error,
+  const token = req.headers["access-token"];
+ 
+  if (token) {
+    jwt.verify(token, config.llave, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({
+          ok: false,
+          msg: "Token inválida",
+        });
+      } else {
+        //  req.decoded = decoded;
+        //  console.log("req.decoded", req.decoded);
+        pool.query(`SELECT * FROM usuarios`, (err, results) => {
+          if (err) {
+            throw err;
+          }
+          res.status(200).json({
+            ok: true,
+            users: results.rows,
+          });
+        });
+      }
     });
   } else {
-    res.status(201).json({
-      ok: true,
-      msg: "registroAceptado",
+    res.status(400).json({
+      ok: false,
+      msg: "Token no proveída.",
     });
   }
 };
@@ -91,37 +86,49 @@ const register = async (req, res = response) => {
   }
 };
 
-const loginUsuario = (req, res = response) => {
+
+const login = (req, res = response) => {
   const { email, password } = req.body;
 
   pool.query(
-    `SELECT * FROM usuarios where correo= $1`,[email],(err, results)=>{
+    `SELECT * FROM usuarios where correo= $1`,
+    [email],
+    (err, results) => {
       if (err) {
-        throw err
+        throw err;
       }
-      console.log(results.rows)
-      if (results.rows.length>0) {
 
-        const user = results.rows[0]
-        bcrypt.compare(password,user.password,(err, isMatch)=>{
+      if (results.rows.length > 0) {
+        const user = results.rows[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) {
-            throw err
+            throw err;
           }
           if (isMatch) {
+            const token = jwt.sign(user, config.llave, {
+              expiresIn: 1440,
+            });
             res.status(200).json({
               ok: true,
-              user: user,
+              _token: token,
+              msg: "Autenticación correcta",
+            });
+          } else {
+            res.status(400).json({
+              ok: false,
+              msg: "Autenticación Incorrecta",
+              _token: null,
             });
           }
-        })
-      }else{
+        });
+      } else {
         res.status(401).json({
           ok: false,
           msg: "Correo no entoncontrado",
         });
       }
     }
-  )
+  );
 };
 
 const revalidarToken = (req, res = response) => {
@@ -131,4 +138,4 @@ const revalidarToken = (req, res = response) => {
   });
 };
 
-module.exports = { getUsers, register, loginUsuario, revalidarToken };
+module.exports = { getUsers, register, login, revalidarToken };

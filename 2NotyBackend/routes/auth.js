@@ -3,14 +3,17 @@ Rutas de usuarios Auth
 host + /api/auth
  */
 
-const { Router } = require("express");
-const router = Router();
+const router = require('express').Router();
+
+
+
 
 const{validarCampos}=require('../middlewares/validar-campos')
+const {security} = require('./../middlewares/ProtectedRoutes')
 const {
   getUsers,
   register,
-  loginUsuario,
+  login,
   revalidarToken,
 } = require("../controllers/auth");
 const { check } = require("express-validator");
@@ -35,10 +38,13 @@ router.post(
     check("password", "El passwrod es de 6 caracteres").isLength(6),
     validarCampos
   ],
-  loginUsuario
+  login
 );
 
 router.get("/renew", revalidarToken);
+
 router.get("/getUsers", getUsers);
+
+
 
 module.exports = router;

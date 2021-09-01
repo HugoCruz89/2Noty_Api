@@ -1,0 +1,190 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "2Noty services",
+        "description": "Here!, you'll can explorer all services like to model, response and more!, good Look!",
+        "contact": {
+            "name": "Hugo Ivan Cruz Hernández",
+            "email": "ing.hugo.isc@gmail.com.com"
+        },
+        "license": {
+            "name": "2Noty",
+            "url": ""
+        }
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "tags": [
+        {
+          "name": "Auth",
+          "description": "API for athenticate users in the system"
+        },
+        {
+            "name": "Catalogs",
+            "description": "Get All catalogs"
+          }
+      ],
+    "paths": {
+        "/api/auth": {
+            "post": {
+                "operationId": "login",
+                "tags": [ "Auth" ],
+                "summary": "Log In",
+                "description": "Log in at The System",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "log in",
+                    "schema": {
+                        "$ref": "#/definitions/Login"
+                      }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Log in succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "_token": {
+                                    "type": "string",
+                                    "example": "cadena"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "Autenticación correcta"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {   
+                "operationId": "register",
+                "tags": [ "Auth" ],
+                "summary": "Create a new user",
+                "description": "Create a new user in system",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/Register"
+                      }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "User Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Login":{
+            "type": "object",
+            "$ref": "#/definitions/Login",
+            "required": [ "email", "password" ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Register":{
+            "type": "object",
+            "$ref": "#/definitions/Register",
+            "required": [ "name", "email", "password", "password2", "idPais", "idEstado" ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true
+                },
+                "password2": {
+                    "type": "string",
+                    "required": true
+                },
+                "idPais": {
+                    "type": "integer",
+                    "required": true
+                },
+                "idEstado": {
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        },
+        "User": {
+          "required": ["name", "_id", "companies"],
+          "properties": {
+            "_id": {
+              "type": "integer",
+              "uniqueItems": true
+            },
+            "isPublic": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "books": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "companies": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        } 
+      },
+    "schemes": [ "http", "https" ],
+    "consumes": [ "application/json" ],
+    "produces": [ "application/json" ]
+}
