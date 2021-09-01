@@ -1,12 +1,13 @@
 const express= require('express');
 require('dotenv').config();
 const  config = require('./configs/config');
-
+const cors = require('cors')
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 swaggerDocument = require('./swagger.json');
-//ket to jwt
+
+app.use(cors());
 
 app.set('llave', config.llave);
 // Directorio Público
