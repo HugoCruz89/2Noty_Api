@@ -5,11 +5,7 @@ host + /api/auth
 
 const router = require('express').Router();
 
-
-
-
 const{validarCampos}=require('../middlewares/validar-campos')
-const {security} = require('./../middlewares/ProtectedRoutes')
 const {
   getUsers,
   register,

@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "http://3.136.19.219:4000",
+    "host": "3.136.19.219:4000",
     "basePath": "/",
     "tags": [
         {
@@ -99,9 +99,44 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/getStatus": {
+            "get": {   
+                "operationId": "getStatus",
+                "tags": [ "Catalogs" ],
+                "summary": "Get All Status",
+                "description": "Get All Status",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "Status":{
+            "type": "object",
+            "enum": ["asc", "desc"],
+            "$ref": "#/definitions/Status",
+            "properties": {
+                "ok": {
+                    "type": "string",
+                    "example":"ok"
+                   
+                },
+                "data": [{
+                    "ok": {
+                        "type": "string",
+                        "example":"ok"
+                    }
+                }]
+            }
+        },
         "Login":{
             "type": "object",
             "$ref": "#/definitions/Login",
