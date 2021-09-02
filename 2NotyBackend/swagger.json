@@ -15,16 +15,15 @@
     },
     "host": "3.136.19.219:4000",
     "basePath": "/",
-    "tags": [
-        {
-          "name": "Auth",
-          "description": "API for athenticate users in the system"
+    "tags": [ {
+            "name": "Auth",
+            "description": "API for athenticate users in the system"
         },
         {
             "name": "Catalogs",
             "description": "Get All catalogs"
-          }
-      ],
+        }
+    ],
     "paths": {
         "/api/auth": {
             "post": {
@@ -39,7 +38,7 @@
                     "description": "log in",
                     "schema": {
                         "$ref": "#/definitions/Login"
-                      }
+                    }
                 } ],
                 "responses": {
                     "200": {
@@ -66,7 +65,7 @@
             }
         },
         "/api/auth/register": {
-            "post": {   
+            "post": {
                 "operationId": "register",
                 "tags": [ "Auth" ],
                 "summary": "Create a new user",
@@ -78,7 +77,7 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/Register"
-                      }
+                    }
                 } ],
                 "responses": {
                     "201": {
@@ -101,7 +100,7 @@
             }
         },
         "/api/catalogs/getStatus": {
-            "get": {   
+            "get": {
                 "operationId": "getStatus",
                 "tags": [ "Catalogs" ],
                 "summary": "Get All Status",
@@ -111,7 +110,68 @@
                     "200": {
                         "description": "Data",
                         "schema": {
-                            "$ref": "#/definitions/Status"
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Status"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCountries": {
+            "get": {
+                "operationId": "getCountries",
+                "tags": [ "Catalogs" ],
+                "summary": "Get All Countries",
+                "description": "Get All Countries",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Countries"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getStates": {
+            "get": {
+                "operationId": "getStates",
+                "tags": [ "Catalogs" ],
+                "summary": "Get All States",
+                "description": "Get All States",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/States"
+                                }
+                            }
                         }
                     }
                 }
@@ -119,27 +179,49 @@
         }
     },
     "definitions": {
-        "Status":{
-            "type": "object",
-            "enum": ["asc", "desc"],
-            "$ref": "#/definitions/Status",
-            "properties": {
-                "ok": {
-                    "type": "string",
-                    "example":"ok"
-                   
-                },
-                "data": [{
-                    "ok": {
+        "Countries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pais": {
                         "type": "string",
-                        "example":"ok"
+                        "example": "México"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
                     }
-                }]
+                }
+            }
+
+        },
+        "States": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_estado": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estado_provincia": {
+                        "type": "string",
+                        "example": "AGUASCALIENTES"
+                    }    
+                }
             }
         },
-        "Login":{
+        "Login": {
             "type": "object",
-            "$ref": "#/definitions/Login",
             "required": [ "email", "password" ],
             "properties": {
                 "email": {
@@ -152,9 +234,25 @@
                 }
             }
         },
-        "Register":{
+        "Status": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+
+        },
+        "Register": {
             "type": "object",
-            "$ref": "#/definitions/Register",
             "required": [ "name", "email", "password", "password2", "idPais", "idEstado" ],
             "properties": {
                 "name": {
@@ -184,41 +282,41 @@
             }
         },
         "User": {
-          "required": ["name", "_id", "companies"],
-          "properties": {
-            "_id": {
-              "type": "integer",
-              "uniqueItems": true
-            },
-            "isPublic": {
-              "type": "boolean"
-            },
-            "name": {
-              "type": "string"
-            },
-            "books": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
+            "required": [ "name", "_id", "companies" ],
+            "properties": {
+                "_id": {
+                    "type": "integer",
+                    "uniqueItems": true
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "name": {
                     "type": "string"
-                  },
-                  "amount": {
-                    "type": "number"
-                  }
+                },
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "companies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
-              }
-            },
-            "companies": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
             }
-          }
-        } 
-      },
+        }
+    },
     "schemes": [ "http", "https" ],
     "consumes": [ "application/json" ],
     "produces": [ "application/json" ]
