@@ -122,7 +122,7 @@ const login = (req, res = response) => {
           }
         });
       } else {
-        res.status(401).json({
+        res.status(400).json({
           ok: false,
           msg: "Correo no entoncontrado",
         });
