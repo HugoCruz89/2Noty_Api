@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "3.136.19.219:4000",
+    "host": "3.136.19.21:4000",
     "basePath": "/",
     "tags": [ {
             "name": "Auth",
@@ -176,9 +176,207 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/updateState": {
+            "put": {
+                "operationId": "updateStates",
+                "tags": [ "Catalogs" ],
+                "summary": "update a state",
+                "description": "Update a state",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateStates"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateContry": {
+            "put": {
+                "operationId": "updateContry",
+                "tags": [ "Catalogs" ],
+                "summary": "update a country",
+                "description": "Update a country",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateCountry"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/country": {
+            "post": {
+                "operationId": "register a country",
+                "tags": [ "Catalogs" ],
+                "summary": "Register a country",
+                "description": "Create a new country in system",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "country": {
+                                "type": "string",
+                                "example": "Mexico"
+                            }
+                        }
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Country Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/state": {
+            "post": {
+                "operationId": "register a state",
+                "tags": [ "Catalogs" ],
+                "summary": "Register a state",
+                "description": "Create a new state in system",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "example": "Hidalgo"
+                            },
+                            "id_country": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_status": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "State Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "updateCountry": {
+            "type": "object",
+            "properties": {
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pais": {
+                    "type": "string",
+                    "example": "Mexico"
+                },    
+                "id_estatus": {
+                    "type": "integer",
+                    "example": "1"
+                }    
+            }  
+    },
+        "updateStates": {
+                "type": "object",
+                "properties": {
+                    "id_estado": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estado_provincia": {
+                        "type": "string",
+                        "example": "AGUASCALIENTES"
+                    },    
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": "1"
+                    }    
+                }  
+        },
         "Countries": {
             "type": "array",
             "items": {
@@ -216,6 +414,10 @@
                     "estado_provincia": {
                         "type": "string",
                         "example": "AGUASCALIENTES"
+                    },    
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": "1"
                     }    
                 }
             }
