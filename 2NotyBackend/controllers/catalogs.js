@@ -207,10 +207,10 @@ const postStates = async (req, res = response) => {
 };
 const postContry = async (req, res = response) => {
   const { country } = req.body;
-  const countryLowCase = country.toUpperCase();
+  const countryUpperCase = country.toUpperCase();
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM PAISES WHERE pais=$1`, [countryLowCase])
+      .query(`SELECT * FROM PAISES WHERE pais=$1`, [countryUpperCase])
       .then((response) => {
         if (response.rows.length > 0) {
           res.status(200).json({
@@ -220,7 +220,7 @@ const postContry = async (req, res = response) => {
         } else {
           return client
             .query(`INSERT INTO paises(pais,id_estatus) VALUES($1,$2)`, [
-              countryLowCase,
+              countryUpperCase,
               1,
             ])
             .then((response) => {
