@@ -212,7 +212,7 @@
                 }
             }
         },
-        "/api/catalogs/updateContry": {
+        "/api/catalogs/updateCountry": {
             "put": {
                 "operationId": "updateContry",
                 "tags": [ "Catalogs" ],
