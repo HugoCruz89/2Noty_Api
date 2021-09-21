@@ -101,7 +101,7 @@ const updateCountry = async (req, res = response) => {
       ])
       .then((response) => {
         client.release();
-        res.status(200).json({
+        res.status(201).json({
           ok: true,
           data: response.command,
         });
