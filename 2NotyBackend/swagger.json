@@ -342,7 +342,7 @@
         "updateCountry": {
             "type": "object",
             "properties": {
-                "id_pais": {
+                "idPais": {
                     "type": "integer",
                     "example": 1
                 },
@@ -350,7 +350,7 @@
                     "type": "string",
                     "example": "Mexico"
                 },    
-                "id_estatus": {
+                "idEstatus": {
                     "type": "integer",
                     "example": "1"
                 }    
