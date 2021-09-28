@@ -290,7 +290,7 @@ const postStatus = async (req, res = response) => {
         } else {
           return client
             .query(`INSERT INTO estatus(estatus) VALUES($1)`, [
-              estatusUpperCase
+              statusUpperCase
             ])
             .then((response) => {
               client.release();
