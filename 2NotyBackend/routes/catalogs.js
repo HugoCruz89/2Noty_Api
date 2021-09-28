@@ -13,8 +13,9 @@ const {
   postStatus,
   updateCountry,
   updateState,
+  updateStatus,
   activateCountry,
-  activateState,
+  activateState
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -39,6 +40,7 @@ router.post(
 )
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
+router.put("/updateStatus", updateStatus);
 /* router.put("/activateCountry/:id", activateCountry);
 router.put("/activateState/:id", activateState); */
 

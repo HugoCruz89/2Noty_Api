@@ -115,6 +115,31 @@ const updateCountry = async (req, res = response) => {
       });
   });
 };
+const updateStatus = async (req, res = response) => {
+  const { id_estatus,estatus } = req.body;
+  const countryUpper = estatus.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE estatus SET estatus=$2 where id_estatus=$1`, [
+        id_estatus,
+        estatus
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const activateCountry = async (req, res = response) => {
   const idCountry = req.params.id;
   pool.connect().then((client) => {
@@ -304,5 +329,6 @@ module.exports = {
   updateCountry,
   activateCountry,
   activateState,
-  postStatus
+  postStatus,
+  updateStatus
 };

@@ -15,7 +15,7 @@
     },
     "host": "3.136.19.219:4000",
     "basePath": "/",
-    "tags": [ {
+    "tags": [{
             "name": "Auth",
             "description": "API for athenticate users in the system"
         },
@@ -28,18 +28,18 @@
         "/api/auth": {
             "post": {
                 "operationId": "login",
-                "tags": [ "Auth" ],
+                "tags": ["Auth"],
                 "summary": "Log In",
                 "description": "Log in at The System",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "log in",
                     "schema": {
                         "$ref": "#/definitions/Login"
                     }
-                } ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Log in succesfuly",
@@ -67,18 +67,18 @@
         "/api/auth/register": {
             "post": {
                 "operationId": "register",
-                "tags": [ "Auth" ],
+                "tags": ["Auth"],
                 "summary": "Create a new user",
                 "description": "Create a new user in system",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/Register"
                     }
-                } ],
+                }],
                 "responses": {
                     "201": {
                         "description": "User Inserted succesfuly",
@@ -102,7 +102,7 @@
         "/api/catalogs/getStatus": {
             "get": {
                 "operationId": "getStatus",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Get All Status",
                 "description": "Get All Status",
                 "consumes": "application/json",
@@ -128,7 +128,7 @@
         "/api/catalogs/getCountries": {
             "get": {
                 "operationId": "getCountries",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Get All Countries",
                 "description": "Get All Countries",
                 "consumes": "application/json",
@@ -154,7 +154,7 @@
         "/api/catalogs/getStates": {
             "get": {
                 "operationId": "getStates",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Get All States",
                 "description": "Get All States",
                 "consumes": "application/json",
@@ -180,18 +180,18 @@
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "update a state",
                 "description": "Update a state",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateStates"
                     }
-                } ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -215,18 +215,18 @@
         "/api/catalogs/updateCountry": {
             "put": {
                 "operationId": "updateContry",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "update a country",
                 "description": "Update a country",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateCountry"
                     }
-                } ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -250,11 +250,11 @@
         "/api/catalogs/country": {
             "post": {
                 "operationId": "register a country",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Register a country",
                 "description": "Create a new country in system",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
@@ -267,7 +267,7 @@
                             }
                         }
                     }
-                } ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Country Inserted succesfuly",
@@ -291,11 +291,11 @@
         "/api/catalogs/status": {
             "post": {
                 "operationId": "register a status",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Register a status",
                 "description": "Create a new status in system",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
@@ -308,7 +308,7 @@
                             }
                         }
                     }
-                } ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Status Inserted succesfuly",
@@ -329,14 +329,49 @@
                 }
             }
         },
+        "/api/catalogs/updateStatus": {
+            "put": {
+                "operationId": "updateStatus",
+                "tags": ["Catalogs"],
+                "summary": "update a status",
+                "description": "Update a status",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateStatus"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/state": {
             "post": {
                 "operationId": "register a state",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Register a state",
                 "description": "Create a new state in system",
                 "consumes": "application/json",
-                "parameters": [ {
+                "parameters": [{
                     "in": "body",
                     "name": "2Noty",
                     "description": "object to send from client",
@@ -357,7 +392,7 @@
                             }
                         }
                     }
-                } ],
+                }],
                 "responses": {
                     "201": {
                         "description": "State Inserted succesfuly",
@@ -390,33 +425,46 @@
                 "pais": {
                     "type": "string",
                     "example": "Mexico"
-                },    
+                },
                 "idEstatus": {
                     "type": "integer",
                     "example": "1"
-                }    
-            }  
-    },
+                }
+            }
+        },
+        "updateStatus": {
+            "type": "object",
+            "properties": {
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "estatus": {
+                    "type": "string",
+                    "example": "ACTIVO"
+                }
+            }
+        },
         "updateStates": {
-                "type": "object",
-                "properties": {
-                    "id_estado": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "id_pais": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "estado_provincia": {
-                        "type": "string",
-                        "example": "AGUASCALIENTES"
-                    },    
-                    "id_estatus": {
-                        "type": "integer",
-                        "example": "1"
-                    }    
-                }  
+            "type": "object",
+            "properties": {
+                "id_estado": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "estado_provincia": {
+                    "type": "string",
+                    "example": "AGUASCALIENTES"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": "1"
+                }
+            }
         },
         "Countries": {
             "type": "array",
@@ -455,17 +503,17 @@
                     "estado_provincia": {
                         "type": "string",
                         "example": "AGUASCALIENTES"
-                    },    
+                    },
                     "id_estatus": {
                         "type": "integer",
                         "example": "1"
-                    }    
+                    }
                 }
             }
         },
         "Login": {
             "type": "object",
-            "required": [ "email", "password" ],
+            "required": ["email", "password"],
             "properties": {
                 "email": {
                     "type": "string",
@@ -496,7 +544,7 @@
         },
         "Register": {
             "type": "object",
-            "required": [ "name", "email", "password", "password2", "idPais", "idEstado" ],
+            "required": ["name", "email", "password", "password2", "idPais", "idEstado"],
             "properties": {
                 "name": {
                     "type": "string",
@@ -525,7 +573,7 @@
             }
         },
         "User": {
-            "required": [ "name", "_id", "companies" ],
+            "required": ["name", "_id", "companies"],
             "properties": {
                 "_id": {
                     "type": "integer",
@@ -560,7 +608,7 @@
             }
         }
     },
-    "schemes": [ "http", "https" ],
-    "consumes": [ "application/json" ],
-    "produces": [ "application/json" ]
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"]
 }
