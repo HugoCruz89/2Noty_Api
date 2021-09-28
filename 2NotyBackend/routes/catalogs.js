@@ -10,6 +10,7 @@ const {
   getStates,
   postStates,
   postContry,
+  postStatus,
   updateCountry,
   updateState,
   activateCountry,
@@ -31,6 +32,11 @@ router.post(
   [check("country", "El pais es obligatorio").not().isEmpty()],
   postContry
 );
+router.post(
+  "/status",
+  [check("status","El estatus es obligatorio").not().isEmpty()],
+  postStatus
+)
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
 /* router.put("/activateCountry/:id", activateCountry);
