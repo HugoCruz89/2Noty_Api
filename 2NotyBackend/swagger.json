@@ -288,6 +288,47 @@
                 }
             }
         },
+        "/api/catalogs/status": {
+            "post": {
+                "operationId": "register a status",
+                "tags": [ "Catalogs" ],
+                "summary": "Register a status",
+                "description": "Create a new status in system",
+                "consumes": "application/json",
+                "parameters": [ {
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                                "type": "string",
+                                "example": "Activo"
+                            }
+                        }
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/state": {
             "post": {
                 "operationId": "register a state",

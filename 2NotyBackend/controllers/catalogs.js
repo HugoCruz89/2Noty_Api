@@ -250,6 +250,50 @@ const postContry = async (req, res = response) => {
   });
 };
 
+const postStatus = async (req, res = response) => {
+  const { status } = req.body;
+  const statusUpperCase = status.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM ESTATUS WHERE estatus=$1`, [statusUpperCase])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra el estatus dentro de base de datos",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO estatus(estatus) VALUES($1)`, [
+              estatusUpperCase
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              console.log("error");
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
 module.exports = {
   getStatus,
   getCountries,
@@ -260,4 +304,5 @@ module.exports = {
   updateCountry,
   activateCountry,
   activateState,
+  postStatus
 };
