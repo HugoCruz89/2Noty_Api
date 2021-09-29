@@ -1,3 +1,5 @@
+
+const bcrypt = require("bcrypt");
 const getDateNow=()=> {
     let date_ob = new Date();
 
@@ -25,4 +27,9 @@ const getDateNow=()=> {
    const dateNow= year + "-" + month + "-" + date;
     return dateNow;
 }
-module.exports={getDateNow}
+
+const hashedPassword= async (password)=>{
+    let hashedPassword = await bcrypt.hash(password, 10);
+    return hashedPassword;
+}
+module.exports={getDateNow,hashedPassword}

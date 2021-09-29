@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "3.136.19.219:4000",
+    "host": "localhost:4000",
     "basePath": "/",
     "tags": [ {
             "name": "Auth",
@@ -151,13 +151,22 @@
                 }
             }
         },
-        "/api/catalogs/getStates": {
+        "/api/catalogs/getStates/{id}": {
             "get": {
                 "operationId": "getStates",
                 "tags": [ "Catalogs" ],
-                "summary": "Get All States",
+                "summary": "Get All States filter to Country",
                 "description": "Get All States",
                 "consumes": "application/json",
+                "parameters":[{
+                    "in":"path",
+                    "name":"id",
+                    "schema":{
+                        "type":"integer"
+                    },
+                    "required": true,
+                    "description":"Id de pais"
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -349,33 +358,33 @@
                 "pais": {
                     "type": "string",
                     "example": "Mexico"
-                },    
+                },
                 "idEstatus": {
                     "type": "integer",
                     "example": "1"
-                }    
-            }  
-    },
+                }
+            }
+        },
         "updateStates": {
-                "type": "object",
-                "properties": {
-                    "id_estado": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "id_pais": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "estado_provincia": {
-                        "type": "string",
-                        "example": "AGUASCALIENTES"
-                    },    
-                    "id_estatus": {
-                        "type": "integer",
-                        "example": "1"
-                    }    
-                }  
+            "type": "object",
+            "properties": {
+                "id_estado": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "estado_provincia": {
+                    "type": "string",
+                    "example": "AGUASCALIENTES"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": "1"
+                }
+            }
         },
         "Countries": {
             "type": "array",
@@ -414,11 +423,11 @@
                     "estado_provincia": {
                         "type": "string",
                         "example": "AGUASCALIENTES"
-                    },    
+                    },
                     "id_estatus": {
                         "type": "integer",
                         "example": "1"
-                    }    
+                    }
                 }
             }
         },

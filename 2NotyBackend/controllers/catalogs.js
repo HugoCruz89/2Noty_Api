@@ -43,9 +43,10 @@ const getCountries = async (req, res = response) => {
   });
 };
 const getStates = async (req, res = response) => {
+  const idCountry = req.params.id;
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM estados_provincias`)
+      .query(`SELECT * FROM estados_provincias WHERE id_pais= $1`,[idCountry])
       .then((response) => {
         client.release();
         res.status(200).json({

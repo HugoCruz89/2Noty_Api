@@ -17,7 +17,7 @@ const {
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
-router.get("/getStates", getStates);
+router.get("/getStates/:id", getStates);
 router.post(
   "/state",
   [
