@@ -177,6 +177,58 @@
                 }
             }
         },
+        "/api/catalogs/getProfiles": {
+            "get": {
+                "operationId": "getProfiles",
+                "tags": ["Catalogs"],
+                "summary": "Get All Profiles",
+                "description": "Get All Profiles",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Profiles"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getUsers": {
+            "get": {
+                "operationId": "getUsers",
+                "tags": ["Catalogs"],
+                "summary": "Get All Users",
+                "description": "Get All Users",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -247,6 +299,76 @@
                 }
             }
         },
+        "/api/catalogs/updateStatus": {
+            "put": {
+                "operationId": "updateStatus",
+                "tags": ["Catalogs"],
+                "summary": "update a status",
+                "description": "Update a status",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateStatus"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateProfile": {
+            "put": {
+                "operationId": "updateProfile",
+                "tags": ["Catalogs"],
+                "summary": "update a profile",
+                "description": "Update a profile",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateProfile"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/country": {
             "post": {
                 "operationId": "register a country",
@@ -271,6 +393,55 @@
                 "responses": {
                     "201": {
                         "description": "Country Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/state": {
+            "post": {
+                "operationId": "register a state",
+                "tags": ["Catalogs"],
+                "summary": "Register a state",
+                "description": "Create a new state in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "example": "Hidalgo"
+                            },
+                            "id_country": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_status": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "State Inserted succesfuly",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -329,47 +500,12 @@
                 }
             }
         },
-        "/api/catalogs/updateStatus": {
-            "put": {
-                "operationId": "updateStatus",
-                "tags": ["Catalogs"],
-                "summary": "update a status",
-                "description": "Update a status",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateStatus"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "type": "string",
-                                    "example": "update"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/state": {
+        "/api/catalogs/profile": {
             "post": {
-                "operationId": "register a state",
+                "operationId": "register a profile",
                 "tags": ["Catalogs"],
-                "summary": "Register a state",
-                "description": "Create a new state in system",
+                "summary": "Register a profile",
+                "description": "Create a new profile in system",
                 "consumes": "application/json",
                 "parameters": [{
                     "in": "body",
@@ -378,15 +514,11 @@
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "state": {
+                            "perfil": {
                                 "type": "string",
-                                "example": "Hidalgo"
+                                "example": "Administrador"
                             },
-                            "id_country": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_status": {
+                            "id_estatus": {
                                 "type": "integer",
                                 "example": 1
                             }
@@ -395,7 +527,7 @@
                 }],
                 "responses": {
                     "201": {
-                        "description": "State Inserted succesfuly",
+                        "description": "Status Inserted succesfuly",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -463,6 +595,23 @@
                 "id_estatus": {
                     "type": "integer",
                     "example": "1"
+                }
+            }
+        },
+        "updateProfile": {
+            "type": "object",
+            "properties": {
+                "id_perfil": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "perfil": {
+                    "type": "string",
+                    "example": "Administrador"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -541,6 +690,82 @@
                 }
             }
 
+        },
+        "Profiles": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_perfil": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "perfil": {
+                        "type": "string",
+                        "example": "Administrador"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                }
+            }
+        },
+        "Users": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_usuario": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "correo": {
+                        "type": "string",
+                        "example": "irineo.lozada@tresw.mx"
+                    },
+                    "fecha_registro": {
+                        "type": "string",
+                        "example": "2021-09-28"
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pais": {
+                        "type": "string",
+                        "example": "México"
+                    },
+                    "id_estado": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estado_provincia": {
+                        "type": "string",
+                        "example": "Hidalgo"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    },
+                    "id_perfil": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "perfil": {
+                        "type": "string",
+                        "example": "Administrador"
+                    }
+                }
+            }
         },
         "Register": {
             "type": "object",
