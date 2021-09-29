@@ -22,7 +22,50 @@ const getStatus = async (req, res = response) => {
       });
   });
 };
+const getProfiles = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM perfiles ORDER BY perfil`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
+const getUsuarios = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`select u.id_usuario, u.nombre,u.correo,u.fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
+      from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
+      where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil
+      order by 1;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const getCountries = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
