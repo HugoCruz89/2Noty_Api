@@ -77,7 +77,7 @@ const register = async (req, res = response) => {
         })
         .catch((err) => {
           client.release();
-          res.status(400).json({
+          res.status(200).json({
             ok: false,
             msg: err,
           });
