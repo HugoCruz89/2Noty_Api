@@ -3,6 +3,7 @@ const { response } = require("express");
 const { pool } = require("./../dbCongif");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
+const {SendEmail}= require("./../helpers/utils")
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
 
@@ -40,8 +41,15 @@ const getUsers = async (req, res = response) => {
 
 const register = async (req, res = response) => {
   const { name, email, password, password2, idEstado, idPais } = req.body;
+  let data={
+    name:name,
+    email:email
+  }
   let errors = [];
-
+  const token = jwt.sign(data, config.llave, {
+    expiresIn: 144,
+  });
+  SendEmail(name,email,token)
   if (password !== password2) {
     errors.push({
       msg: {
@@ -60,7 +68,6 @@ const register = async (req, res = response) => {
     });
   } else {
     let hashedPassword = await bcrypt.hash(password, 10);
-
     pool.connect().then((client) => {
       return client
         .query(
@@ -70,6 +77,7 @@ const register = async (req, res = response) => {
         )
         .then((response) => {
           client.release();
+          
           res.status(201).json({
             ok: true,
             msg: response.command,
