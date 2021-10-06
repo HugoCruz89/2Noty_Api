@@ -39,7 +39,7 @@ router.post(
   login
 );
 
-route.post("/userValidate/:jwt",userValidate);
+router.post("/userValidate/:jwt",userValidate);
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
