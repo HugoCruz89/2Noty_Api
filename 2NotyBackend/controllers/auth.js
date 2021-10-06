@@ -162,7 +162,7 @@ const userValidate = (req, res = response) => {
           if (err) {
             throw err;
           }
-          const idUser=results.rows[0]?.id_usuario
+          const idUser=results.rows[0].id_usuario;
           pool.query(`UPDATE usuarios SET id_estatus=1 WHERE id_usuario=${idUser}`, (err, results) => {
             if (err) {
               throw err;
