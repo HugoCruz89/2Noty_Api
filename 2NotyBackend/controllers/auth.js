@@ -156,16 +156,23 @@ const userValidate = (req, res = response) => {
           msg: "Token inválida",
         });
       } else {
-        //  req.decoded = decoded;
-         console.log("decoded", decoded);
-        pool.query(`SELECT * FROM usuarios`, (err, results) => {
+        const { correo } = decoded;
+        const upperCorreo = correo.toUpperCase()
+        pool.query(`SELECT * FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
           if (err) {
             throw err;
           }
-          res.status(200).json({
-            ok: true,
-            // users: results.rows,
+          const idUser=results.rows[0]?.id_usuario
+          pool.query(`UPDATE usuarios SET id_estatus=1 WHERE id_usuario=${idUser}`, (err, results) => {
+            if (err) {
+              throw err;
+            }
+            res.status(200).json({
+              ok: true,
+              msg:"Usuario validado!"
+            });
           });
+
         });
       }
     });

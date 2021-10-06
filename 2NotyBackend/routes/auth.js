@@ -5,7 +5,7 @@ host + /api/auth
 
 const router = require('express').Router();
 
-const{validarCampos}=require('../middlewares/validar-campos')
+const { validarCampos } = require('../middlewares/validar-campos')
 const {
   getUsers,
   register,
@@ -39,7 +39,14 @@ router.post(
   login
 );
 
-route.post("/userValidate/:jwt",userValidate);
+router.post(
+  "/userValidate/:jwt",
+  [
+    check("jwt", "Token no asignado"),
+  ],
+  userValidate
+);
+
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
