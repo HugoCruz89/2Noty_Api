@@ -49,7 +49,10 @@ const register = async (req, res = response) => {
   const token = jwt.sign(data, config.llave, {
     expiresIn: 144,
   });
-  SendEmail(name, email, token)
+  const subject = 'Activación de 2NotyActivación de Cuenta';
+  const title = 'Activación de Cuenta';
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/${token}">Url de activacion</a></p>`
+  SendEmail(body, email, title, subject)
   if (password !== password2) {
     errors.push({
       msg: {
@@ -148,6 +151,7 @@ const revalidarToken = (req, res = response) => {
 
 const userValidate = (req, res = response) => {
   const token = req.params.jwt;
+  console.log('entro ')
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
@@ -162,14 +166,14 @@ const userValidate = (req, res = response) => {
           if (err) {
             throw err;
           }
-          const idUser=results.rows[0].id_usuario;
+          const idUser = results.rows[0].id_usuario;
           pool.query(`UPDATE usuarios SET id_estatus=1 WHERE id_usuario=${idUser}`, (err, results) => {
             if (err) {
               throw err;
             }
             res.status(200).json({
               ok: true,
-              msg:"Usuario validado!"
+              msg: "Usuario validado!"
             });
           });
 
@@ -182,6 +186,15 @@ const userValidate = (req, res = response) => {
       msg: "Token no proveída.",
     });
   }
+};
+
+const emailResetPassword = (req, res = response) => {
+  const { body, email } = req.body;
+  SendEmail(body, email, 'Cambia tu contraseña', 'Cambia tu contraseña')
+   res.status(200).json({
+     ok:true,
+     msg:"Se envio correo"
+   });
 }
 
-module.exports = { getUsers, register, login, revalidarToken, userValidate };
+module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword };

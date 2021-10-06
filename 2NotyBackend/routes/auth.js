@@ -11,7 +11,9 @@ const {
   register,
   login,
   revalidarToken,
-  userValidate
+  userValidate,
+  EmailResetPassword,
+  emailResetPassword
 } = require("../controllers/auth");
 const { check } = require("express-validator");
 const { route } = require('./catalogs');
@@ -40,6 +42,9 @@ router.post(
 );
 
 router.post("/userValidate/:jwt",userValidate);
+router.post("/emailResetPassword",[
+  check("email", "El email es oligatorio").isEmail(),validarCampos
+],emailResetPassword);
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);

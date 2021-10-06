@@ -3,7 +3,7 @@ var nodemailer = require("nodemailer");
 require("dotenv").config();
 
 
-const SendEmail = async (name,email,token) => {
+const SendEmail = async (body, email, title, subject) => {
   //Creamos el objeto de transporte
   let transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -18,24 +18,25 @@ const SendEmail = async (name,email,token) => {
   <html>
   <head>
       <meta charset="utf-8" />
-      <title>Activación de Cuenta</title>
+      <title>${title}</title>
   </head>
   <body>
-      <p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/${token}">Url de activacion</a></p>
-  
+      
+  ${body}
+
   </body>
   </html>`;
-try {
+  try {
     let info = await transporter.sendMail({
-        from: "soluciones@tresw.mx",
-        to: email,
-        subject: "Activación de 2Noty",
-        html: mensaje,
-      });
-      console.log('Email enviado: ' + info.response);
-} catch (error) {
+      from: "soluciones@tresw.mx",
+      to: email,
+      subject,
+      html: mensaje,
+    });
+    console.log('Email enviado: ' + info.response);
+  } catch (error) {
     console.log('error: ' + error);
-}
+  }
 
 
 };

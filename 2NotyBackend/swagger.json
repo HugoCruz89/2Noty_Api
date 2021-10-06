@@ -134,6 +134,41 @@
                 }
             }
         },
+        "/api/auth/emailResetPassword": {
+            "post": {
+                "operationId": "send email",
+                "tags": ["Auth"],
+                "summary": "send email",
+                "description": "Send email reset password",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "send email",
+                    "schema": {
+                        "$ref": "#/definitions/Email"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Send email succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "Se envio correo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/getStatus": {
             "get": {
                 "operationId": "getStatus",
@@ -683,6 +718,20 @@
                     "required": true
                 },
                 "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Email": {
+            "type": "object",
+            "required": ["body", "email"],
+            "properties": {
+                "body": {
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
                     "type": "string",
                     "required": true
                 }
