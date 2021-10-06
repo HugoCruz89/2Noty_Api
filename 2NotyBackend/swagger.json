@@ -99,22 +99,13 @@
                 }
             }
         },
-        "/api/auth/userValidate/{jwt}":{
+        "api/auth/userValidate/{jwt}":{
             "post":{
                 "operationId": "validate user",
-                "tags": ["Auth"],
+                "tags": ["auth"],
                 "summary": "Validate User",
                 "description": "Validate User",
                 "consumes": "application/json",
-                "parameters":[{
-                    "in":"path",
-                    "name":"jwt",
-                    "schema":{
-                        "type":"string"
-                    },
-                    "required": true,
-                    "description":"Token"
-                }],
                 "responses": {
                     "200": {
                         "description": "Data",
