@@ -99,6 +99,32 @@
                 }
             }
         },
+        "api/auth/userValidate/{jwt}":{
+            "post":{
+                "operationId": "validate user",
+                "tags": ["auth"],
+                "summary": "Validate User",
+                "description": "Validate User",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "boolean",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/getStatus": {
             "get": {
                 "operationId": "getStatus",

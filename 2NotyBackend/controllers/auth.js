@@ -3,13 +3,13 @@ const { response } = require("express");
 const { pool } = require("./../dbCongif");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
-const {SendEmail}= require("./../helpers/utils")
+const { SendEmail } = require("./../helpers/utils")
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
 
 const getUsers = async (req, res = response) => {
   const token = req.headers["access-token"];
- 
+
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
@@ -41,15 +41,15 @@ const getUsers = async (req, res = response) => {
 
 const register = async (req, res = response) => {
   const { name, email, password, password2, idEstado, idPais } = req.body;
-  let data={
-    name:name,
-    email:email
+  let data = {
+    name: name,
+    email: email
   }
   let errors = [];
   const token = jwt.sign(data, config.llave, {
     expiresIn: 144,
   });
-  SendEmail(name,email,token)
+  SendEmail(name, email, token)
   if (password !== password2) {
     errors.push({
       msg: {
@@ -77,7 +77,7 @@ const register = async (req, res = response) => {
         )
         .then((response) => {
           client.release();
-          
+
           res.status(201).json({
             ok: true,
             msg: response.command,
@@ -146,4 +146,35 @@ const revalidarToken = (req, res = response) => {
   });
 };
 
-module.exports = { getUsers, register, login, revalidarToken };
+const userValidate = (req, res = response) => {
+  const token = req.params.jwt;
+  if (token) {
+    jwt.verify(token, config.llave, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({
+          ok: false,
+          msg: "Token inválida",
+        });
+      } else {
+        //  req.decoded = decoded;
+         console.log("decoded", decoded);
+        pool.query(`SELECT * FROM usuarios`, (err, results) => {
+          if (err) {
+            throw err;
+          }
+          res.status(200).json({
+            ok: true,
+            // users: results.rows,
+          });
+        });
+      }
+    });
+  } else {
+    res.status(400).json({
+      ok: false,
+      msg: "Token no proveída.",
+    });
+  }
+}
+
+module.exports = { getUsers, register, login, revalidarToken, userValidate };

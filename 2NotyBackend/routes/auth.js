@@ -11,8 +11,10 @@ const {
   register,
   login,
   revalidarToken,
+  userValidate
 } = require("../controllers/auth");
 const { check } = require("express-validator");
+const { route } = require('./catalogs');
 
 router.post(
   "/register",
@@ -37,6 +39,7 @@ router.post(
   login
 );
 
+route.post("/userValidate/:jwt",userValidate);
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
