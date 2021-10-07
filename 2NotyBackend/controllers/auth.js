@@ -46,10 +46,7 @@ const register = async (req, res = response) => {
     email:email
   }
   let errors = [];
-  const token = jwt.sign(data, config.llave, {
-    expiresIn: 144,
-  });
-  SendEmail(name,email,token)
+ 
   if (password !== password2) {
     errors.push({
       msg: {
@@ -73,11 +70,14 @@ const register = async (req, res = response) => {
         .query(
           `INSERT INTO usuarios(id_Pais, id_Estado,nombre,correo,password,fecha_registro,id_estatus)
                      VALUES($1,$2,$3,$4,$5,$6,$7)`,
-          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 1]
+          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 3]
         )
         .then((response) => {
           client.release();
-          
+          const token = jwt.sign(data, config.llave, {
+            expiresIn: 144,
+          });
+          SendEmail(name,email,token)
           res.status(201).json({
             ok: true,
             msg: response.command,
