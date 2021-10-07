@@ -47,7 +47,7 @@ const register = async (req, res = response) => {
   }
   let errors = [];
   const token = jwt.sign(data, config.llave, {
-    expiresIn: '24h',
+    expiresIn: 60,
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
@@ -156,9 +156,12 @@ const userValidate = (req, res = response) => {
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
+        const { email,name } = decoded;
         return res.status(401).json({
           ok: false,
           msg: "Token inválida",
+          email:email,
+          name:name
         });
       } else {
         const { email } = decoded;
@@ -189,6 +192,35 @@ const userValidate = (req, res = response) => {
   }
 };
 
+
+const revalidateUser=(req, res = response)=>{
+  const { email, name } = req.body;
+  let data = {
+    name: name,
+    email: email
+  }
+  const token = jwt.sign(data, config.llave, {
+    expiresIn: '24h',
+  });
+  const subject = 'Activación de 2NotyActivación de Cuenta';
+  const title = 'Activación de Cuenta';
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
+  try {
+    SendEmail(body, email, title, subject)
+    res.status(200).json({
+      ok:true,
+      msg:"Se envio correo"
+    });
+  } catch (error) {
+    res.status(200).json({
+      ok:false,
+      msg:error
+    });
+  }
+ 
+}
+
+
 const emailResetPassword = (req, res = response) => {
   const { body, email } = req.body;
   SendEmail(body, email, 'Cambia tu contraseña', 'Cambia tu contraseña')
@@ -198,4 +230,4 @@ const emailResetPassword = (req, res = response) => {
    });
 }
 
-module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword };
+module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword,revalidateUser};

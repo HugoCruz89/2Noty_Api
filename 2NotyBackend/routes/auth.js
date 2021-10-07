@@ -13,7 +13,8 @@ const {
   revalidarToken,
   userValidate,
   EmailResetPassword,
-  emailResetPassword
+  emailResetPassword,
+  revalidateUser
 } = require("../controllers/auth");
 const { check } = require("express-validator");
 const { route } = require('./catalogs');
@@ -48,6 +49,8 @@ router.post("/emailResetPassword",[
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
+
+route.post("/revalidateUser",revalidateUser)
 
 
 
