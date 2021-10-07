@@ -47,11 +47,11 @@ const register = async (req, res = response) => {
   }
   let errors = [];
   const token = jwt.sign(data, config.llave, {
-    expiresIn: 144,
+    expiresIn: '24h',
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
-  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/${token}">Url de activacion</a></p>`
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
   
   
 
