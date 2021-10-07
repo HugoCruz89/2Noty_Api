@@ -3,13 +3,13 @@ const { response } = require("express");
 const { pool } = require("./../dbCongif");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
-const {SendEmail}= require("./../helpers/utils")
+const { SendEmail } = require("./../helpers/utils")
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
 
 const getUsers = async (req, res = response) => {
   const token = req.headers["access-token"];
- 
+
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
@@ -41,12 +41,20 @@ const getUsers = async (req, res = response) => {
 
 const register = async (req, res = response) => {
   const { name, email, password, password2, idEstado, idPais } = req.body;
-  let data={
-    name:name,
-    email:email
+  let data = {
+    name: name,
+    email: email
   }
   let errors = [];
- 
+  const token = jwt.sign(data, config.llave, {
+    expiresIn: 144,
+  });
+  const subject = 'Activación de 2NotyActivación de Cuenta';
+  const title = 'Activación de Cuenta';
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/${token}">Url de activacion</a></p>`
+  
+  
+
   if (password !== password2) {
     errors.push({
       msg: {
@@ -74,10 +82,7 @@ const register = async (req, res = response) => {
         )
         .then((response) => {
           client.release();
-          const token = jwt.sign(data, config.llave, {
-            expiresIn: 144,
-          });
-          SendEmail(name,email,token)
+          SendEmail(body, email, title, subject)
           res.status(201).json({
             ok: true,
             msg: response.command,
@@ -146,4 +151,52 @@ const revalidarToken = (req, res = response) => {
   });
 };
 
-module.exports = { getUsers, register, login, revalidarToken };
+const userValidate = (req, res = response) => {
+  const token = req.params.jwt;
+  console.log('entro ')
+  if (token) {
+    jwt.verify(token, config.llave, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({
+          ok: false,
+          msg: "Token inválida",
+        });
+      } else {
+        const { correo } = decoded;
+        const upperCorreo = correo.toUpperCase()
+        pool.query(`SELECT * FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
+          if (err) {
+            throw err;
+          }
+          const idUser = results.rows[0].id_usuario;
+          pool.query(`UPDATE usuarios SET id_estatus=1 WHERE id_usuario=${idUser}`, (err, results) => {
+            if (err) {
+              throw err;
+            }
+            res.status(200).json({
+              ok: true,
+              msg: "Usuario validado!"
+            });
+          });
+
+        });
+      }
+    });
+  } else {
+    res.status(400).json({
+      ok: false,
+      msg: "Token no proveída.",
+    });
+  }
+};
+
+const emailResetPassword = (req, res = response) => {
+  const { body, email } = req.body;
+  SendEmail(body, email, 'Cambia tu contraseña', 'Cambia tu contraseña')
+   res.status(200).json({
+     ok:true,
+     msg:"Se envio correo"
+   });
+}
+
+module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword };

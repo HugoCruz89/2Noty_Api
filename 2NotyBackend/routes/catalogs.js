@@ -25,6 +25,8 @@ const {
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
 router.get("/getStates/:id", getStates);
+router.get("/getUsers", getUsuarios);
+router.get("/getProfiles", getProfiles);
 router.post(
   "/state",
   [
