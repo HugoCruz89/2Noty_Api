@@ -153,7 +153,6 @@ const revalidarToken = (req, res = response) => {
 
 const userValidate = (req, res = response) => {
   const token = req.params.jwt;
-  console.log('entro ')
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
@@ -162,8 +161,8 @@ const userValidate = (req, res = response) => {
           msg: "Token inválida",
         });
       } else {
-        const { correo } = decoded;
-        const upperCorreo = correo.toUpperCase()
+        const { email } = decoded;
+        const upperCorreo = email.toUpperCase()
         pool.query(`SELECT * FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
           if (err) {
             throw err;
