@@ -156,12 +156,9 @@ const userValidate = (req, res = response) => {
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
-        const { email,name } = decoded;
         return res.status(401).json({
           ok: false,
-          msg: "Token inválida",
-          email:email,
-          name:name
+          msg: "El link ya expiro favor de generar uno nuevo",
         });
       } else {
         const { email } = decoded;
