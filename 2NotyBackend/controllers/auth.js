@@ -51,7 +51,7 @@ const register = async (req, res = response) => {
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
-  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate?obCode=${token}">Url de activacion</a></p>`
   
   
 
@@ -204,7 +204,7 @@ const revalidateUser=(req, res = response)=>{
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
-  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate?obCode=${token}">Url de activacion</a></p>`
   try {
     SendEmail(body, email, title, subject)
     res.status(200).json({

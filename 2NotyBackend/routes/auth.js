@@ -50,7 +50,7 @@ router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
 
-route.post("/revalidateUser",revalidateUser)
+router.post("/revalidateUser",revalidateUser)
 
 
 
