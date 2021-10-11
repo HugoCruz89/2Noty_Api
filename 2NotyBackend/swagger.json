@@ -169,6 +169,41 @@
                 }
             }
         },
+        "/api/auth/resetPassword": {
+            "post": {
+                "operationId": "Reset passsword",
+                "tags": ["Auth"],
+                "summary": "Reset Password",
+                "description": "Reset password in at The System",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "Reset PAssword",
+                    "schema": {
+                        "$ref": "#/definitions/Reset"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Log in succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "UPDATE"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/getStatus": {
             "get": {
                 "operationId": "getStatus",
@@ -994,6 +1029,20 @@
                     "required": true
                 },
                 "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Reset": {
+            "type": "object",
+            "required": ["email", "newPassword"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "newPassword": {
                     "type": "string",
                     "required": true
                 }

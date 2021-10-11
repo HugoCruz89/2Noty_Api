@@ -232,7 +232,6 @@ const updateProfiles = async (req, res = response) => {
 };
 const updateUser = async (req, res = response) => {
   const { id_usuario, id_pais, id_estado, nombre, correo, id_estatus, id_perfil } = req.body;
-  console.log(id_usuario, id_pais, id_estado, nombre, correo, id_estatus, id_perfil)
   const nombreUpper = nombre.toUpperCase();
   pool.connect().then((client) => {
     return client

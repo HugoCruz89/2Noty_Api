@@ -227,4 +227,48 @@ const emailResetPassword = (req, res = response) => {
    });
 }
 
-module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword,revalidateUser};
+const resetPassword =async (req,res=response)=>{
+const {email, newPassword}=req.body;
+const emailUpperCase = email.toUpperCase();
+const hashedPassword = await bcrypt.hash(newPassword, 10);
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM usuarios WHERE UPPER(correo)=$1`, [emailUpperCase])
+      .then((response) => {
+        if (response.rows.length === 0) {
+          res.status(200).json({
+            ok: false,
+            msg: "Usuario no valido!",
+          });
+        } else {
+          return client
+            .query(`UPDATE usuarios SET password=$1 WHERE correo=$2`, [
+              hashedPassword,email
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword,revalidateUser, resetPassword};
