@@ -99,6 +99,41 @@
                 }
             }
         },
+        "/api/auth/revalidateUser": {
+            "post": {
+                "operationId": "register",
+                "tags": ["Auth"],
+                "summary": "Revalidate JWT from email",
+                "description": "Revalidate JWT from email",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "Revalidate JWT from email",
+                    "schema": {
+                        "$ref": "#/definitions/updateJWT"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "JTW updated",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "Se envio correo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/userValidate/{jwt}":{
             "post":{
                 "operationId": "validate user",
@@ -626,6 +661,19 @@
         }
     },
     "definitions": {
+        "updateJWT": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "name"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "email"
+                }
+            }
+        },
         "updateCountry": {
             "type": "object",
             "properties": {
