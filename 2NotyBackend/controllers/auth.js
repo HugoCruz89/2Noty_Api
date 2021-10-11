@@ -51,7 +51,7 @@ const register = async (req, res = response) => {
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
-  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate?obCode=${token}">Url de activacion</a></p>`
   
   
 
@@ -156,12 +156,9 @@ const userValidate = (req, res = response) => {
   if (token) {
     jwt.verify(token, config.llave, (err, decoded) => {
       if (err) {
-        const { email,name } = decoded;
         return res.status(401).json({
           ok: false,
-          msg: "Token inválida",
-          email:email,
-          name:name
+          msg: "El link ya expiro favor de generar uno nuevo",
         });
       } else {
         const { email } = decoded;
@@ -204,7 +201,7 @@ const revalidateUser=(req, res = response)=>{
   });
   const subject = 'Activación de 2NotyActivación de Cuenta';
   const title = 'Activación de Cuenta';
-  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate.html?obCode=${token}">Url de activacion</a></p>`
+  const body = `<p>Estimado ${name} favor de ingresar a esta liga para poder finalizar su registro <a href="http://3.136.19.219/uservalidate?obCode=${token}">Url de activacion</a></p>`
   try {
     SendEmail(body, email, title, subject)
     res.status(200).json({
@@ -230,4 +227,48 @@ const emailResetPassword = (req, res = response) => {
    });
 }
 
-module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword,revalidateUser};
+const resetPassword =async (req,res=response)=>{
+const {email, newPassword}=req.body;
+const emailUpperCase = email.toUpperCase();
+const hashedPassword = await bcrypt.hash(newPassword, 10);
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM usuarios WHERE UPPER(correo)=$1`, [emailUpperCase])
+      .then((response) => {
+        if (response.rows.length === 0) {
+          res.status(200).json({
+            ok: false,
+            msg: "Usuario no valido!",
+          });
+        } else {
+          return client
+            .query(`UPDATE usuarios SET password=$1 WHERE correo=$2`, [
+              hashedPassword,email
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+module.exports = { getUsers, register, login, revalidarToken, userValidate, emailResetPassword,revalidateUser, resetPassword};

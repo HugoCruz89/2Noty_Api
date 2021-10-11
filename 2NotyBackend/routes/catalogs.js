@@ -20,13 +20,18 @@ const {
   activateState,
   updateProfiles,
   getUsuarios,
-  postUsers
+  postUsers,
+  getCompanies,
+  updateCompany,
+  postCompany,
+  updateUser
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
 router.get("/getStates/:id", getStates);
 router.get("/getUsers", getUsuarios);
 router.get("/getProfiles", getProfiles);
+router.get("/getCompanies", getCompanies);
 router.post(
   "/state",
   [
@@ -56,10 +61,20 @@ router.post(
   check("nombre","El nombre es obligatorio").not().isEmpty()],
   postUsers
 )
+router.post(
+  "/company",
+  [check("empresa","La empresa es obligatoria").not().isEmpty(),
+  check("razon_social","La razón social obligatoria").not().isEmpty(),
+  check("no_contrato","El numero de contrato es obligatorio").not().isEmpty(),
+  check("id_pais","El pais es obligatorio").not().isEmpty()],
+  postCompany
+)
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
 router.put("/updateStatus", updateStatus);
 router.put("/updateProfile", updateProfiles);
+router.put("/updateUser", updateUser);
+router.put("/updateCompany", updateCompany);
 /* router.put("/activateCountry/:id", activateCountry);
 router.put("/activateState/:id", activateState); */
 

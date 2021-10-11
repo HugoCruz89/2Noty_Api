@@ -47,7 +47,7 @@ const getStates = async (req, res = response) => {
   const idCountry = req.params.id;
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM estados_provincias WHERE id_pais= $1`,[idCountry])
+      .query(`SELECT * FROM estados_provincias WHERE id_pais= $1`, [idCountry])
       .then((response) => {
         client.release();
         res.status(200).json({
@@ -91,6 +91,27 @@ const getUsuarios = async (req, res = response) => {
       from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
       where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil
       order by 1;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const getCompanies = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`select e.id_empresa,e.id_pais,p.pais,e.empresa,e.razon_social,e.no_contrato 
+      from empresas e, paises p where e.id_pais=p.id_pais;`)
       .then((response) => {
         client.release();
         res.status(200).json({
@@ -183,7 +204,6 @@ const updateStatus = async (req, res = response) => {
       });
   });
 };
-
 const updateProfiles = async (req, res = response) => {
   const { id_perfil, perfil, id_estatus } = req.body;
   const perfilUpper = perfil.toUpperCase();
@@ -193,6 +213,59 @@ const updateProfiles = async (req, res = response) => {
         id_perfil,
         perfilUpper,
         id_estatus
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateUser = async (req, res = response) => {
+  const { id_usuario, id_pais, id_estado, nombre, correo, id_estatus, id_perfil } = req.body;
+  const nombreUpper = nombre.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE usuarios SET nombre=$2, correo=$3, id_estatus=$4, id_estado=$5, id_pais=$6, id_perfil=$7 where id_usuario=$1`, [
+        id_usuario, nombreUpper, correo, id_estatus, id_estado, id_pais, id_perfil
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateCompany = async (req, res = response) => {
+  const { id_empresa, id_pais, empresa, razon_social, no_contrato } = req.body;
+  const empresaUpper = empresa.toUpperCase();
+  const razonSocialUpper = razon_social.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE empresas SET id_pais=$2, empresa=$3, razon_social=$4, no_contrato=$5 where id_empresa=$1`, [
+        id_empresa,
+        id_pais,
+        empresaUpper,
+        razonSocialUpper,
+        no_contrato
       ])
       .then((response) => {
         client.release();
@@ -449,7 +522,51 @@ const postUsers = async (req, res = response) => {
           return client
             .query(`INSERT INTO usuarios( id_pais, id_estado, nombre, correo, password, fecha_registro, id_estatus, id_perfil)
               VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, [
-              id_pais,id_estado,nombre,correo,hashedPassword,getDateNow(),id_estatus,id_perfil
+              id_pais, id_estado, nombre, correo, hashedPassword, getDateNow(), id_estatus, id_perfil
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const postCompany = async (req, res = response) => {
+  const { id_pais, empresa, razon_social, no_contrato } = req.body;
+  const empresaUpperCase = empresa.toUpperCase();
+  const razonSocialUpperCase = razon_social.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM empresas WHERE upper(empresa)=$1`, [empresaUpperCase])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrado la empresa",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO empresas( id_pais, empresa, razon_social, no_contrato)
+              VALUES($1,$2,$3,$4)`, [
+                id_pais, empresaUpperCase, razonSocialUpperCase, no_contrato
             ])
             .then((response) => {
               client.release();
@@ -482,15 +599,19 @@ module.exports = {
   getStates,
   getProfiles,
   getUsuarios,
+  getCompanies,
   postStates,
   postContry,
   postStatus,
   postProfiles,
   postUsers,
+  postCompany,
   updateState,
   updateCountry,
   updateStatus,
   updateProfiles,
+  updateUser,
+  updateCompany,
   activateCountry,
   activateState,
 };

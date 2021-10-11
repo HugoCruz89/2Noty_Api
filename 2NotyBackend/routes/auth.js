@@ -14,7 +14,8 @@ const {
   userValidate,
   EmailResetPassword,
   emailResetPassword,
-  revalidateUser
+  revalidateUser,
+  resetPassword
 } = require("../controllers/auth");
 const { check } = require("express-validator");
 const { route } = require('./catalogs');
@@ -46,11 +47,21 @@ router.post("/userValidate/:jwt",userValidate);
 router.post("/emailResetPassword",[
   check("email", "El email es oligatorio").isEmail(),validarCampos
 ],emailResetPassword);
+
+router.post(
+  "/resetPassword",
+  [
+    check("email", "El email es oligatorio").isEmail(),
+    check("newPassword", "El passwrod es de 6 caracteres").isLength(6),
+    validarCampos
+  ],
+  resetPassword
+);
 router.get("/renew", revalidarToken);
 
 router.get("/getUsers", getUsers);
 
-route.post("/revalidateUser",revalidateUser)
+router.post("/revalidateUser",revalidateUser)
 
 
 

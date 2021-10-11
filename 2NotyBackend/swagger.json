@@ -141,14 +141,14 @@
                 "summary": "Validate User",
                 "description": "Validate User",
                 "consumes": "application/json",
-                "parameters":[{
-                    "in":"path",
-                    "name":"jwt",
-                    "schema":{
-                        "type":"string"
+                "parameters": [{
+                    "in": "path",
+                    "name": "jwt",
+                    "schema": {
+                        "type": "string"
                     },
                     "required": true,
-                    "description":"Token"
+                    "description": "Token"
                 }],
                 "responses": {
                     "200": {
@@ -161,7 +161,7 @@
                                     "example": true
                                 },
                                 "data": {
-                                    "type":"boolean"
+                                    "type": "boolean"
                                 }
                             }
                         }
@@ -197,6 +197,41 @@
                                 "msg": {
                                     "type": "string",
                                     "example": "Se envio correo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/resetPassword": {
+            "post": {
+                "operationId": "Reset passsword",
+                "tags": ["Auth"],
+                "summary": "Reset Password",
+                "description": "Reset password in at The System",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "Reset PAssword",
+                    "schema": {
+                        "$ref": "#/definitions/Reset"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Log in succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "UPDATE"
                                 }
                             }
                         }
@@ -259,18 +294,18 @@
         "/api/catalogs/getStates/{id}": {
             "get": {
                 "operationId": "getStates",
-                "tags": [ "Catalogs" ],
+                "tags": ["Catalogs"],
                 "summary": "Get All States filter to Country",
                 "description": "Get All States",
                 "consumes": "application/json",
-                "parameters":[{
-                    "in":"path",
-                    "name":"id",
-                    "schema":{
-                        "type":"integer"
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
                     },
                     "required": true,
-                    "description":"Id de pais"
+                    "description": "Id de pais"
                 }],
                 "responses": {
                     "200": {
@@ -336,6 +371,32 @@
                                 },
                                 "data": {
                                     "$ref": "#/definitions/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCompanies": {
+            "get": {
+                "operationId": "getCompanies",
+                "tags": ["Catalogs"],
+                "summary": "Get All Companies",
+                "description": "Get All Companies",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Company"
                                 }
                             }
                         }
@@ -461,6 +522,76 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateProfile"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateUser": {
+            "put": {
+                "operationId": "updateUser",
+                "tags": ["Catalogs"],
+                "summary": "update a user",
+                "description": "Update a user",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateUser"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateCompany": {
+            "put": {
+                "operationId": "updateCompany",
+                "tags": ["Catalogs"],
+                "summary": "update a company",
+                "description": "Update a company",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateCompany"
                     }
                 }],
                 "responses": {
@@ -658,6 +789,128 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/user": {
+            "post": {
+                "operationId": "register a user",
+                "tags": ["Catalogs"],
+                "summary": "Register a user",
+                "description": "Create a new user in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "nombre": {
+                                "type": "string",
+                                "example": "Irineo"
+                            },
+                            "correo": {
+                                "type": "string",
+                                "example": "irineo.lozada@tresw.mx"
+                            },
+                            "password": {
+                                "type": "string",
+                                "example": "example"
+                            },
+                            "fecha_registro": {
+                                "type": "string",
+                                "example": "2021-09-28"
+                            },
+                            "id_pais": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_estado": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_perfil": {
+                                "type": "intger",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/company": {
+            "post": {
+                "operationId": "register a company",
+                "tags": ["Catalogs"],
+                "summary": "Register a company",
+                "description": "Create a new company in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_pais": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "empresa": {
+                                "type": "string",
+                                "example": "Example"
+                            },
+                            "razon_social": {
+                                "type": "string",
+                                "example": "example SA de CV"
+                            },
+                            "no_contrato": {
+                                "type": "integer",
+                                "example": 123456
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -709,6 +962,64 @@
                 "id_estatus": {
                     "type": "integer",
                     "example": "1"
+                }
+            }
+        },
+        "updateCompany": {
+            "type": "object",
+            "properties": {
+                "id_empresa": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "empresa": {
+                    "type": "string",
+                    "example": "Example"
+                },
+                "razon_social": {
+                    "type": "string",
+                    "example": "example SA de CV"
+                },
+                "no_contrato": {
+                    "type": "integer",
+                    "example": 123456
+                }
+            }
+        },
+        "updateUser": {
+            "type": "object",
+            "properties": {
+                "id_usuario":{
+                    "type":"intger",
+                    "example":1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_estado": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "nombre": {
+                    "type": "string",
+                    "example": "Irineo"
+                },
+                "correo": {
+                    "type": "string",
+                    "example": "irineo.lozada@tresw.mx"
+                },                
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_perfil": {
+                    "type": "intger",
+                    "example": 1
                 }
             }
         },
@@ -766,6 +1077,20 @@
                     "required": true
                 },
                 "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Reset": {
+            "type": "object",
+            "required": ["email", "newPassword"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "newPassword": {
                     "type": "string",
                     "required": true
                 }
@@ -874,6 +1199,38 @@
                     "perfil": {
                         "type": "string",
                         "example": "Administrador"
+                    }
+                }
+            }
+        },
+        "Company": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pais": {
+                        "type": "string",
+                        "example": "Mexico"
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "razon_social": {
+                        "type": "string",
+                        "example": "example SA de CV"
+                    },
+                    "no_contrato": {
+                        "type": "integer",
+                        "example": 123456
                     }
                 }
             }
