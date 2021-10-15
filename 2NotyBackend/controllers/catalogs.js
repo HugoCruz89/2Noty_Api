@@ -172,6 +172,26 @@ const getCategories = async (req, res = response) => {
       });
   });
 };
+const getMarks = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT m.id_marca,m.id_empresa,e.empresa,m.marca FROM marcas m, empresas e WHERE m.id_empresa=e.id_empresa;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -353,6 +373,32 @@ const updateCategory = async (req, res = response) => {
       });
   });
 };
+const updateMark= async (req, res = response) => {
+  const { id_marca, id_empresa, marca } = req.body;
+  const marcaUpper = marca.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE marcas SET id_empresa=$2, marca=$3 WHERE id_marca=$1`, [
+        id_marca,
+        id_empresa,
+        marcaUpper
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
 const activateCountry = async (req, res = response) => {
   const idCountry = req.params.id;
@@ -486,7 +532,6 @@ const postContry = async (req, res = response) => {
       });
   });
 };
-
 const postStatus = async (req, res = response) => {
   const { status } = req.body;
   const statusUpperCase = status.toUpperCase();
@@ -529,7 +574,6 @@ const postStatus = async (req, res = response) => {
       });
   });
 };
-
 const postProfiles = async (req, res = response) => {
   const { perfil, id_estatus } = req.body;
   const perfilUpperCase = perfil.toUpperCase();
@@ -572,7 +616,6 @@ const postProfiles = async (req, res = response) => {
       });
   });
 };
-
 const postUsers = async (req, res = response) => {
   const { nombre, correo, password, id_estatus, id_estado, id_pais, id_perfil } = req.body;
 
@@ -706,6 +749,49 @@ const postCategory = async (req, res = response) => {
       });
   });
 };
+const postMark = async (req, res = response) => {
+  const { id_empresa, marca } = req.body;
+  const marcaUpperCase = marca.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM marcas WHERE upper(marca)=$1 AND id_empresa=$2`, [marcaUpperCase,id_empresa])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrada la marca",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO marcas( id_empresa, marca)
+              VALUES($1,$2)`, [
+              id_empresa,marcaUpperCase
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 module.exports = {
   getStatus,
   getCountries,
@@ -715,6 +801,7 @@ module.exports = {
   getCompanies,
   getBills,
   getCategories,
+  getMarks,
   postStates,
   postContry,
   postStatus,
@@ -722,6 +809,7 @@ module.exports = {
   postUsers,
   postCompany,
   postCategory,
+  postMark,
   updateState,
   updateCountry,
   updateStatus,
@@ -729,6 +817,7 @@ module.exports = {
   updateUser,
   updateCompany,
   updateCategory,
+  updateMark,
   activateCountry,
   activateState,
 };

@@ -456,6 +456,32 @@
                 }
             }
         },
+        "/api/catalogs/getMarks": {
+            "get": {
+                "operationId": "getMarks",
+                "tags": ["Catalogs"],
+                "summary": "Get All Marks",
+                "description": "Get All Marks",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Marks"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -644,6 +670,76 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateCompany"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateCategory": {
+            "put": {
+                "operationId": "updateCategory",
+                "tags": ["Catalogs"],
+                "summary": "update a category",
+                "description": "Update a category",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateCategory"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateMark": {
+            "put": {
+                "operationId": "updateMark",
+                "tags": ["Catalogs"],
+                "summary": "update a mark",
+                "description": "Update a mark",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateMark"
                     }
                 }],
                 "responses": {
@@ -963,6 +1059,96 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/category": {
+            "post": {
+                "operationId": "register a category",
+                "tags": ["Catalogs"],
+                "summary": "Register a category",
+                "description": "Create a new category in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "categoria": {
+                                "type": "string",
+                                "example": "Platino"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/mark": {
+            "post": {
+                "operationId": "register a mark",
+                "tags": ["Catalogs"],
+                "summary": "Register a mark",
+                "description": "Create a new mark in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "marca": {
+                                "type": "string",
+                                "example": "Marca"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1072,6 +1258,40 @@
                 "id_perfil": {
                     "type": "intger",
                     "example": 1
+                }
+            }
+        },
+        "updateCategory": {
+            "type": "object",
+            "properties": {
+                "id_categoria_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "categoria": {
+                    "type": "string",
+                    "example": "Platino"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "updateMark": {
+            "type": "object",
+            "properties": {
+                "id_marca": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_empresa": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "marca": {
+                    "type": "string",
+                    "example": "Patito"
                 }
             }
         },
@@ -1416,6 +1636,30 @@
                     "type": "array",
                     "items": {
                         "type": "string"
+                    }
+                }
+            }
+        },
+        "Marks":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "properties":{
+                    "id_marca":{
+                        "type":"integer",
+                        "example":1
+                    },
+                    "id_empresa":{
+                        "type":"integer",
+                        "example":1
+                    },
+                    "empresa":{
+                        "type":"string",
+                        "example":"Patito"
+                    },
+                    "marca":{
+                        "type":"string",
+                        "example":"Patito"
                     }
                 }
             }
