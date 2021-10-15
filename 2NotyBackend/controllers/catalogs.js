@@ -128,6 +128,50 @@ const getCompanies = async (req, res = response) => {
       });
   });
 };
+const getBills = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`select f.id_factura,f.id_empresa, e.empresa, f.id_marca,m.marca,f.monto,to_char((f.fecha_emision), 'DD/MM/YYYY') as fecha_emision,f.periodo,f.id_estatus, es.estatus
+      from facturas f, empresas e, marcas m, estatus es
+      where f.id_empresa=e.id_empresa AND f.id_empresa=m.id_empresa AND f.id_estatus=es.id_estatus;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const getCategories = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`select cs.id_categoria_suscripcion,cs.categoria,cs.id_estatus,e.estatus
+      from categoria_suscripcion cs, estatus e 
+      where cs.id_estatus=e.id_estatus;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -266,6 +310,32 @@ const updateCompany = async (req, res = response) => {
         empresaUpper,
         razonSocialUpper,
         no_contrato
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateCategory = async (req, res = response) => {
+  const { id_categoria_suscripcion, categoria, id_estatus } = req.body;
+  const categoriaUpper = categoria.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE categoria_suscripcion SET categoria=$2, id_estatus=$3 WHERE id_categoria_suscripcion=$1`, [
+        id_categoria_suscripcion,
+        categoriaUpper,
+        id_estatus
       ])
       .then((response) => {
         client.release();
@@ -566,7 +636,50 @@ const postCompany = async (req, res = response) => {
           return client
             .query(`INSERT INTO empresas( id_pais, empresa, razon_social, no_contrato)
               VALUES($1,$2,$3,$4)`, [
-                id_pais, empresaUpperCase, razonSocialUpperCase, no_contrato
+              id_pais, empresaUpperCase, razonSocialUpperCase, no_contrato
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const postCategory = async (req, res = response) => {
+  const { categoria, id_estatus } = req.body;
+  const categoriaUpperCase = categoria.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM categoria_suscripcion WHERE upper(categoria)=$1`, [categoriaUpperCase])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrada la categoria",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO categoria_suscripcion( categoria, id_estatus)
+              VALUES($1,$2)`, [
+              categoriaUpperCase,id_estatus
             ])
             .then((response) => {
               client.release();
@@ -600,18 +713,22 @@ module.exports = {
   getProfiles,
   getUsuarios,
   getCompanies,
+  getBills,
+  getCategories,
   postStates,
   postContry,
   postStatus,
   postProfiles,
   postUsers,
   postCompany,
+  postCategory,
   updateState,
   updateCountry,
   updateStatus,
   updateProfiles,
   updateUser,
   updateCompany,
+  updateCategory,
   activateCountry,
   activateState,
 };

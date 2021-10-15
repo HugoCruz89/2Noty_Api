@@ -101,7 +101,7 @@
         },
         "/api/auth/revalidateUser": {
             "post": {
-                "operationId": "register",
+                "operationId": "revalidateUser",
                 "tags": ["Auth"],
                 "summary": "Revalidate JWT from email",
                 "description": "Revalidate JWT from email",
@@ -134,8 +134,8 @@
                 }
             }
         },
-        "/api/auth/userValidate/{jwt}":{
-            "post":{
+        "/api/auth/userValidate/{jwt}": {
+            "post": {
                 "operationId": "validate user",
                 "tags": ["Auth"],
                 "summary": "Validate User",
@@ -397,6 +397,58 @@
                                 },
                                 "data": {
                                     "$ref": "#/definitions/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getBills": {
+            "get": {
+                "operationId": "getBills",
+                "tags": ["Catalogs"],
+                "summary": "Get All Bills",
+                "description": "Get All Bills",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Bill"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCategories": {
+            "get": {
+                "operationId": "getCategories",
+                "tags": ["Catalogs"],
+                "summary": "Get All Categories",
+                "description": "Get All Categories",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Categories"
                                 }
                             }
                         }
@@ -993,9 +1045,9 @@
         "updateUser": {
             "type": "object",
             "properties": {
-                "id_usuario":{
-                    "type":"intger",
-                    "example":1
+                "id_usuario": {
+                    "type": "intger",
+                    "example": 1
                 },
                 "id_pais": {
                     "type": "integer",
@@ -1012,7 +1064,7 @@
                 "correo": {
                     "type": "string",
                     "example": "irineo.lozada@tresw.mx"
-                },                
+                },
                 "id_estatus": {
                     "type": "integer",
                     "example": 1
@@ -1231,6 +1283,74 @@
                     "no_contrato": {
                         "type": "integer",
                         "example": 123456
+                    }
+                }
+            }
+        },
+        "Bill": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_factura ": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "empresa"
+                    },
+                    "id_marca ": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "marca"
+                    },
+                    "monto": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "fecha_emision": {
+                        "type": "string",
+                        "example": "06/06/2021"
+                    },
+                    "periodo": {
+                        "type": "string",
+                        "example": "2021"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Categories": {
+            "types": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_categoria_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "categoria": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
                     }
                 }
             }

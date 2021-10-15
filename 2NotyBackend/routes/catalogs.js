@@ -24,7 +24,11 @@ const {
   getCompanies,
   updateCompany,
   postCompany,
-  updateUser
+  updateUser,
+  getBills,
+  getCategories,
+  updateCategory,
+  postCategory
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -32,6 +36,8 @@ router.get("/getStates/:id", getStates);
 router.get("/getUsers", getUsuarios);
 router.get("/getProfiles", getProfiles);
 router.get("/getCompanies", getCompanies);
+router.get("/getBills", getBills);
+router.get("/getCategories", getCategories);
 router.post(
   "/state",
   [
@@ -69,12 +75,14 @@ router.post(
   check("id_pais","El pais es obligatorio").not().isEmpty()],
   postCompany
 )
+router.post("/category",postCategory)
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
 router.put("/updateStatus", updateStatus);
 router.put("/updateProfile", updateProfiles);
 router.put("/updateUser", updateUser);
 router.put("/updateCompany", updateCompany);
+router.put("/updateCategory", updateCategory);
 /* router.put("/activateCountry/:id", activateCountry);
 router.put("/activateState/:id", activateState); */
 
