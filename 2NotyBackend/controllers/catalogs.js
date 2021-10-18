@@ -192,6 +192,28 @@ const getMarks = async (req, res = response) => {
       });
   });
 };
+const getSubscriptions = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus
+      FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es
+      WHERE sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -373,7 +395,7 @@ const updateCategory = async (req, res = response) => {
       });
   });
 };
-const updateMark= async (req, res = response) => {
+const updateMark = async (req, res = response) => {
   const { id_marca, id_empresa, marca } = req.body;
   const marcaUpper = marca.toUpperCase();
   pool.connect().then((client) => {
@@ -382,6 +404,33 @@ const updateMark= async (req, res = response) => {
         id_marca,
         id_empresa,
         marcaUpper
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateSubscription = async (req, res = response) => {
+  const { id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus } = req.body;
+  const suscripcionUpper = suscripcion.toUpperCase();
+  const descripcionUpper = descripcion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE public.suscripciones
+      SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8
+      WHERE id_suscripcion=$1;`, [
+        id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpper, descripcionUpper, id_estatus 
       ])
       .then((response) => {
         client.release();
@@ -722,7 +771,7 @@ const postCategory = async (req, res = response) => {
           return client
             .query(`INSERT INTO categoria_suscripcion( categoria, id_estatus)
               VALUES($1,$2)`, [
-              categoriaUpperCase,id_estatus
+              categoriaUpperCase, id_estatus
             ])
             .then((response) => {
               client.release();
@@ -754,7 +803,7 @@ const postMark = async (req, res = response) => {
   const marcaUpperCase = marca.toUpperCase();
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM marcas WHERE upper(marca)=$1 AND id_empresa=$2`, [marcaUpperCase,id_empresa])
+      .query(`SELECT * FROM marcas WHERE upper(marca)=$1 AND id_empresa=$2`, [marcaUpperCase, id_empresa])
       .then((response) => {
         if (response.rows.length > 0) {
           res.status(200).json({
@@ -765,7 +814,53 @@ const postMark = async (req, res = response) => {
           return client
             .query(`INSERT INTO marcas( id_empresa, marca)
               VALUES($1,$2)`, [
-              id_empresa,marcaUpperCase
+              id_empresa, marcaUpperCase
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const postSubscription = async (req, res = response) => {
+  const { id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus } = req.body;
+  const suscripcionUpperCase = suscripcion.toUpperCase();
+  const descripcionUpperCase = descripcion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`, 
+      [id_pais, id_empresa,id_marca,id_categoria_suscripcion,suscripcionUpperCase])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrada suscripción",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO public.suscripciones(
+              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus)
+              VALUES ( $1, $2, $3, $4, $5, $6, $7);`, [
+                id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase, descripcionUpperCase, id_estatus
             ])
             .then((response) => {
               client.release();
@@ -802,6 +897,7 @@ module.exports = {
   getBills,
   getCategories,
   getMarks,
+  getSubscriptions,
   postStates,
   postContry,
   postStatus,
@@ -810,6 +906,7 @@ module.exports = {
   postCompany,
   postCategory,
   postMark,
+  postSubscription,
   updateState,
   updateCountry,
   updateStatus,
@@ -818,6 +915,7 @@ module.exports = {
   updateCompany,
   updateCategory,
   updateMark,
+  updateSubscription,
   activateCountry,
   activateState,
 };

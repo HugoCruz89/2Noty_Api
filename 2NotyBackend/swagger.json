@@ -482,6 +482,32 @@
                 }
             }
         },
+        "/api/catalogs/getSubscriptions": {
+            "get": {
+                "operationId": "getSubscriptions",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscriptions",
+                "description": "Get All Subscriptions",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -740,6 +766,41 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateMark"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateSubscription": {
+            "put": {
+                "operationId": "updateSubscription",
+                "tags": ["Catalogs"],
+                "summary": "update a subscription",
+                "description": "Update a subscription",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscription"
                     }
                 }],
                 "responses": {
@@ -1149,6 +1210,71 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/subscription": {
+            "post": {
+                "operationId": "register a subscription",
+                "tags": ["Catalogs"],
+                "summary": "Register a subscription",
+                "description": "Create a new subscription in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_pais": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_categoria_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "suscripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "descripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1292,6 +1418,43 @@
                 "marca": {
                     "type": "string",
                     "example": "Patito"
+                }
+            }
+        },
+        "updateSubscription": {
+            "type": "object",
+            "properties": {
+                "id_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_empresa": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_marca": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_categoria_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "suscripcion": {
+                    "type": "string",
+                    "example": "Prueba"
+                },
+                "descripcion": {
+                    "type": "string",
+                    "example": "Prueba"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -1640,26 +1803,86 @@
                 }
             }
         },
-        "Marks":{
-            "type":"array",
-            "items":{
-                "type":"object",
-                "properties":{
-                    "id_marca":{
-                        "type":"integer",
-                        "example":1
+        "Marks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
                     },
-                    "id_empresa":{
-                        "type":"integer",
-                        "example":1
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
                     },
-                    "empresa":{
-                        "type":"string",
-                        "example":"Patito"
+                    "empresa": {
+                        "type": "string",
+                        "example": "Patito"
                     },
-                    "marca":{
-                        "type":"string",
-                        "example":"Patito"
+                    "marca": {
+                        "type": "string",
+                        "example": "Patito"
+                    }
+                }
+            }
+        },
+        "Subscriptions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pais": {
+                        "type": "string",
+                        "example": "Mexico"
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Patito"
+                    },
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "LG"
+                    },
+                    "id_categoria_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "categoria": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Prueba"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Prueba"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
                     }
                 }
             }
