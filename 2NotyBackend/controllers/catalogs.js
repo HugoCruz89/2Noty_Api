@@ -214,6 +214,28 @@ const getSubscriptions = async (req, res = response) => {
       });
   });
 };
+const getSubscribers = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT s.id_suscriptor,s.id_usuario,u.nombre,s.id_suscripcion,sc.suscripcion,to_char((s.fecha_suscripcion), 'DD/MM/YYYY')as fecha_suscripcion,s.id_estatus,e.estatus 
+      FROM suscriptores s, usuarios u, suscripciones sc, estatus e
+      WHERE s.id_usuario=u.id_usuario AND s.id_suscripcion=sc.id_suscripcion AND s.id_estatus=e.id_estatus;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -430,7 +452,32 @@ const updateSubscription = async (req, res = response) => {
       .query(`UPDATE public.suscripciones
       SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8
       WHERE id_suscripcion=$1;`, [
-        id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpper, descripcionUpper, id_estatus 
+        id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpper, descripcionUpper, id_estatus
+      ])
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateSubscriptor = async (req, res = response) => {
+  const { id_suscriptor, id_usuario, id_suscripcion, id_estatus } = req.body;
+  pool.connect().then((client) => {
+    return client
+      .query(`UPDATE public.suscriptores
+      SET id_usuario=$2, id_suscripcion=$3, id_estatus=$4
+      WHERE id_suscriptor=$1;`, [
+        id_suscriptor, id_usuario, id_suscripcion, id_estatus
       ])
       .then((response) => {
         client.release();
@@ -847,8 +894,8 @@ const postSubscription = async (req, res = response) => {
   const descripcionUpperCase = descripcion.toUpperCase();
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`, 
-      [id_pais, id_empresa,id_marca,id_categoria_suscripcion,suscripcionUpperCase])
+      .query(`SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`,
+        [id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase])
       .then((response) => {
         if (response.rows.length > 0) {
           res.status(200).json({
@@ -860,7 +907,51 @@ const postSubscription = async (req, res = response) => {
             .query(`INSERT INTO public.suscripciones(
               id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus)
               VALUES ( $1, $2, $3, $4, $5, $6, $7);`, [
-                id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase, descripcionUpperCase, id_estatus
+              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase, descripcionUpperCase, id_estatus
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const postSubscriptor = async (req, res = response) => {
+  const { id_usuario, id_suscripcion, id_estatus } = req.body;
+  pool.connect().then((client) => {
+    return client
+      .query(`select * from suscriptores WHERE id_usuario=$1 AND id_suscripcion=$2`,
+        [id_usuario, id_suscripcion])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya existe una suscripción con el mismo usuario",
+          });
+        } else {
+          return client
+            .query(`INSERT INTO public.suscriptores(
+              id_usuario, id_suscripcion, fecha_suscripcion, id_estatus)
+              VALUES ($1, $2, $3, $4);`, [
+              id_usuario, id_suscripcion, getDateNow(), id_estatus
             ])
             .then((response) => {
               client.release();
@@ -898,6 +989,7 @@ module.exports = {
   getCategories,
   getMarks,
   getSubscriptions,
+  getSubscribers,
   postStates,
   postContry,
   postStatus,
@@ -907,6 +999,7 @@ module.exports = {
   postCategory,
   postMark,
   postSubscription,
+  postSubscriptor,
   updateState,
   updateCountry,
   updateStatus,
@@ -916,6 +1009,7 @@ module.exports = {
   updateCategory,
   updateMark,
   updateSubscription,
+  updateSubscriptor,
   activateCountry,
   activateState,
 };

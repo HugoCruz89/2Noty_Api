@@ -508,6 +508,32 @@
                 }
             }
         },
+        "/api/catalogs/getSubscribers": {
+            "get": {
+                "operationId": "getSubscribers",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscribers",
+                "description": "Get All Subscribers",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscribers"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -801,6 +827,41 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateSubscription"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateSubscriptor": {
+            "put": {
+                "operationId": "updateSubscriptor",
+                "tags": ["Catalogs"],
+                "summary": "update a subscriptor",
+                "description": "Update a subscriptor",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscriptor"
                     }
                 }],
                 "responses": {
@@ -1275,6 +1336,55 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/subscriptor": {
+            "post": {
+                "operationId": "register a subscriptor",
+                "tags": ["Catalogs"],
+                "summary": "Register a subscriptor",
+                "description": "Create a new subscriptor in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_usuario": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1451,6 +1561,27 @@
                 "descripcion": {
                     "type": "string",
                     "example": "Prueba"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "updateSubscriptor": {
+            "type": "object",
+            "properties": {
+                "id_suscriptor": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_usuario": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_suscripcion": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id_estatus": {
                     "type": "integer",
@@ -1875,6 +2006,46 @@
                     "descripcion": {
                         "type": "string",
                         "example": "Prueba"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Subscribers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_suscriptor": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "fecha_suscripcion": {
+                        "type": "string",
+                        "example": "01/01/1990"
                     },
                     "id_estatus": {
                         "type": "integer",

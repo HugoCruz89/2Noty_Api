@@ -34,7 +34,10 @@ const {
   postMark,
   getSubscriptions,
   postSubscription,
-  updateSubscription
+  updateSubscription,
+  getSubscribers,
+  postSubscriptor,
+  updateSubscriptor
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -46,6 +49,7 @@ router.get("/getBills", getBills);
 router.get("/getCategories", getCategories);
 router.get("/getMarks", getMarks);
 router.get("/getSubscriptions", getSubscriptions);
+router.get("/getSubscribers", getSubscribers);
 
 router.post(
   "/state",
@@ -87,6 +91,7 @@ router.post(
 router.post("/category",postCategory)
 router.post("/mark",postMark)
 router.post("/subscription",postSubscription)
+router.post("/subscriptor",postSubscriptor)
 
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
@@ -97,6 +102,7 @@ router.put("/updateCompany", updateCompany);
 router.put("/updateCategory", updateCategory);
 router.put("/updateMark", updateMark);
 router.put("/updateSubscription", updateSubscription);
+router.put("/updateSubscriptor", updateSubscriptor);
 /* router.put("/activateCountry/:id", activateCountry);
 router.put("/activateState/:id", activateState); */
 
