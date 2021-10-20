@@ -131,9 +131,9 @@ const getCompanies = async (req, res = response) => {
 const getBills = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
-      .query(`select f.id_factura,f.id_empresa, e.empresa, f.id_marca,m.marca,f.monto,to_char((f.fecha_emision), 'DD/MM/YYYY') as fecha_emision,f.periodo,f.id_estatus, es.estatus
-      from facturas f, empresas e, marcas m, estatus es
-      where f.id_empresa=e.id_empresa AND f.id_empresa=m.id_empresa AND f.id_estatus=es.id_estatus;`)
+      .query(`SELECT f.id_factura,f.id_empresa, e.empresa, f.id_marca,m.marca,f.monto,to_char((f.fecha_emision), 'DD/MM/YYYY') as fecha_emision,f.periodo,f.id_estatus, es.estatus
+      FROM facturas f, empresas e, marcas m, estatus es
+      WHERE f.id_empresa=e.id_empresa AND f.id_marca=m.id_marca AND f.id_estatus=es.id_estatus;`)
       .then((response) => {
         client.release();
         res.status(200).json({
