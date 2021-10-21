@@ -7,7 +7,7 @@ const sendNotification = async (req, res = response) => {
   const { body } = req.body;
   var topics = "weather";
   var registrationToken =
-    "fl6gmAptTiqlUxJBRNIPtb:APA91bE9QME6xhXv2QRboapP6_vhDsdJxijnbKMKOB-vIBtbzFUv0ifgUvgPgbz54fMzjP4UmclQkx4OY81wABMDYwtf2X6AG0MDMkB6pQZbrWWYa4IuRF8wUL7yM5Z-f_NJTbXkRLOf";
+    "fyMOucp1IEpNoEdF-avTyd:APA91bGr574OqhR0RsprtvwdO86mXn1AQDWqquo0mHqa2dHQkVB31ImsC4hay1sTRji1Y_no-wBYzHRT1k8h5khiU-uOKd1ufK7ipUa2DT6atu8g99NRGnFCzy5h0g3y848jpkgO_qGn";
 
   const topicName = "industry-tech";
 
@@ -29,9 +29,24 @@ const sendNotification = async (req, res = response) => {
 
       priority: "high",
     },
+    apns: {
+      payload: {
+        aps: {
+          contentAvailable: true,
+          "mutable-content": 1,
+        },
+      },
+      headers: {
+        "apns-push-type": "background",
+        "apns-priority": "5",
+        "apns-topic": "com.alerty", // your app bundle identifier
+      },
+    },
     token: registrationToken,
     data: {
-      type: "order",
+      route: "Agenda",
+      item1: "item1",
+      item2: "item2",
     },
   };
 
