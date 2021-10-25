@@ -2137,6 +2137,14 @@
                     "estatus": {
                         "type": "string",
                         "example": "Activo"
+                    },
+                    "uel_imagen": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "url_icono": {
+                        "type": "string",
+                        "example": "http://example"
                     }
                 }
             }
