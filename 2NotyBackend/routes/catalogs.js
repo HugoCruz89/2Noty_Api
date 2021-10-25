@@ -41,7 +41,8 @@ const {
   getTypespay,
   postTypepay,
   updateTypepay,
-  getPaymentsmeans
+  getPaymentsmeans,
+  getSubscriptiondetail
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -56,6 +57,7 @@ router.get("/getSubscriptions", getSubscriptions);
 router.get("/getSubscribers", getSubscribers);
 router.get("/getTypespay", getTypespay);
 router.get("/getPaymentsmeans", getPaymentsmeans);
+router.get("/getSubscriptiondetail", getSubscriptiondetail);
 
 router.post(
   "/state",

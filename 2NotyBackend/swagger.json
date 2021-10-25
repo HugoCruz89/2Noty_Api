@@ -560,6 +560,32 @@
                 }
             }
         },
+        "/api/catalogs/getSubscriptiondetail": {
+            "get": {
+                "operationId": "getSubscriptiondetail",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscriptiondetail",
+                "description": "Get All Subscriptiondetail",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Detail"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -1447,7 +1473,7 @@
                 }
             }
         },
-        "/api/catalogs/typepay":{
+        "/api/catalogs/typepay": {
             "post": {
                 "operationId": "register a typepay",
                 "tags": ["Catalogs"],
@@ -2210,6 +2236,35 @@
                         "type": "string",
                         "example": "Activo"
                     }
+                }
+            }
+        },
+        "Detail": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_detalle": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_suscriptor": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "USUARIO"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "EXAMPLE"
+                    },
+                    "valor": {
+                        "type": "string",
+                        "example": "EXAMPLE"
+                    }
+
                 }
             }
         }
