@@ -560,6 +560,32 @@
                 }
             }
         },
+        "/api/catalogs/getSubscriptiondetail": {
+            "get": {
+                "operationId": "getSubscriptiondetail",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscriptiondetail",
+                "description": "Get All Subscriptiondetail",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Detail"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",

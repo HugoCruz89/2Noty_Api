@@ -280,6 +280,29 @@ const getPaymentsmeans = async (req, res = response) => {
       });
   });
 };
+const getSubscriptiondetail = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT ds.id_detalle,ds.id_suscriptor,u.nombre,ds.descripcion,ds.valor 
+      FROM detalle_suscripcion ds, suscriptores s,usuarios u
+      WHERE ds.id_suscriptor=s.id_suscriptor AND s.id_usuario=u.id_usuario;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -1107,6 +1130,7 @@ module.exports = {
   getSubscribers,
   getTypespay,
   getPaymentsmeans,
+  getSubscriptiondetail,
   postStates,
   postContry,
   postStatus,
