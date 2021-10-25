@@ -1,7 +1,7 @@
 //Requerimos el paquete
 var nodemailer = require("nodemailer");
 require("dotenv").config();
-const multer = require('multer')
+
 
 const SendEmail = async (body, email, title, subject) => {
   //Creamos el objeto de transporte
@@ -40,19 +40,5 @@ const SendEmail = async (body, email, title, subject) => {
 
 
 };
-
-const saveFile = async () => {
-  const diskStorage = multer.diskStorage({
-    destination: path.join(__dirname, '/suscripcion'),
-    filename: (req, files, cb) => {
-      cb(null, `${Date.now()}-${files.originalname}`)
-    }
-  })
-  const fileUpload = multer({
-    storage: diskStorage
-  }).single('image')
-  console.log(fileUpload)
-  
-}
 
 module.exports = { SendEmail };
