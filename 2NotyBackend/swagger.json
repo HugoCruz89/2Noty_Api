@@ -534,6 +534,32 @@
                 }
             }
         },
+        "/api/catalogs/getTypespay": {
+            "get": {
+                "operationId": "getTypespay",
+                "tags": ["Catalogs"],
+                "summary": "Get All Typepay",
+                "description": "Get All Typepay",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Typepay"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -862,6 +888,41 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateSubscriptor"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateTypepay": {
+            "put": {
+                "operationId": "updateTypepay",
+                "tags": ["Catalogs"],
+                "summary": "update a Typepay",
+                "description": "Update a Typepay",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateTypepay"
                     }
                 }],
                 "responses": {
@@ -1385,6 +1446,51 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/typepay":{
+            "post": {
+                "operationId": "register a typepay",
+                "tags": ["Catalogs"],
+                "summary": "Register a typepay",
+                "description": "Create a new typepay in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_pago": {
+                                "type": "string",
+                                "example": "example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1585,6 +1691,23 @@
                 },
                 "id_estatus": {
                     "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "updateTypepay": {
+            "type": "object",
+            "properties": {
+                "id_tipo_pago": {
+                    "type": "intger",
+                    "example": 1
+                },
+                "tipo_pago": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "id_estatus": {
+                    "type": "intger",
                     "example": 1
                 }
             }
@@ -2049,6 +2172,30 @@
                     },
                     "id_estatus": {
                         "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Typepay": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_tipo_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "example"
+                    },
+                    "id_estatus": {
+                        "type": "intger",
                         "example": 1
                     },
                     "estatus": {

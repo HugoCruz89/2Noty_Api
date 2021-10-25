@@ -76,9 +76,9 @@ const register = async (req, res = response) => {
     pool.connect().then((client) => {
       return client
         .query(
-          `INSERT INTO usuarios(id_Pais, id_Estado,nombre,correo,password,fecha_registro,id_estatus)
+          `INSERT INTO usuarios(id_Pais, id_Estado,nombre,correo,password,fecha_registro,id_estatus,id_perfil)
                      VALUES($1,$2,$3,$4,$5,$6,$7)`,
-          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 3]
+          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 3,2]
         )
         .then((response) => {
           client.release();
