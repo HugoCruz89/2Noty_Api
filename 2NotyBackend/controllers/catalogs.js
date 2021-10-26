@@ -513,15 +513,15 @@ const updateMark = async (req, res = response) => {
   });
 };
 const updateSubscription = async (req, res = response) => {
-  const { id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus } = req.body;
+  const { id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus, url_imagen, url_icono } = req.body;
   const suscripcionUpper = suscripcion.toUpperCase();
   const descripcionUpper = descripcion.toUpperCase();
   pool.connect().then((client) => {
     return client
       .query(`UPDATE public.suscripciones
-      SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8
+      SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8, url_imagen=$9, url_icono=$10
       WHERE id_suscripcion=$1;`, [
-        id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpper, descripcionUpper, id_estatus
+        id_suscripcion, id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpper, descripcionUpper, id_estatus, url_imagen, url_icono
       ])
       .then((response) => {
         client.release();

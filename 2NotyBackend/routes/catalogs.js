@@ -118,7 +118,6 @@ router.post("/subscription", postSubscription)
 router.post("/subscriptor", postSubscriptor)
 router.post("/typepay", postTypepay)
 router.post("/saveImage", fileUpload, (req, res) => {
-  console.log(req.file)
   res.status(200).json({
     ok: true,
     msg: "saved",
