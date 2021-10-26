@@ -3,6 +3,8 @@ const { param } = require("express-validator");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
 const { pool } = require("./../dbCongif");
+
+
 const getStatus = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
@@ -982,7 +984,7 @@ const postMark = async (req, res = response) => {
   });
 };
 const postSubscription = async (req, res = response) => {
-  const { id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus } = req.body;
+  const { id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus, url_imagen, url_icono } = req.body;
   const suscripcionUpperCase = suscripcion.toUpperCase();
   const descripcionUpperCase = descripcion.toUpperCase();
   pool.connect().then((client) => {
@@ -998,9 +1000,9 @@ const postSubscription = async (req, res = response) => {
         } else {
           return client
             .query(`INSERT INTO public.suscripciones(
-              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus)
-              VALUES ( $1, $2, $3, $4, $5, $6, $7);`, [
-              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase, descripcionUpperCase, id_estatus
+              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus,url_imagen,url_icono)
+              VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`, [
+              id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcionUpperCase, descripcionUpperCase, id_estatus, url_imagen, url_icono
             ])
             .then((response) => {
               client.release();
@@ -1116,6 +1118,10 @@ const postTypepay = async (req, res = response) => {
       });
   });
 };
+
+
+
+
 module.exports = {
   getStatus,
   getCountries,

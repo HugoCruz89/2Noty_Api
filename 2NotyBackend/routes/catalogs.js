@@ -4,6 +4,21 @@ host + /api/catalogs
  */
 const { check } = require("express-validator");
 const router = require("express").Router();
+const multer = require('multer');
+
+const URI_IMAGE=`/var/www/html/assets/img/subscription`
+const URI_IMEGE_LOCAL=`C:/TFS/2noty_web/2noty/public/assets/img/subscription`
+
+const diskStorage = multer.diskStorage({
+  destination: URI_IMAGE,
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+});
+
+const fileUpload = multer({
+  storage: diskStorage
+}).single('image')
 const {
   getStatus,
   getCountries,
@@ -42,7 +57,8 @@ const {
   postTypepay,
   updateTypepay,
   getPaymentsmeans,
-  getSubscriptiondetail
+  getSubscriptiondetail,
+  postImage
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -74,33 +90,41 @@ router.post(
 );
 router.post(
   "/status",
-  [check("status","El estatus es obligatorio").not().isEmpty()],
+  [check("status", "El estatus es obligatorio").not().isEmpty()],
   postStatus
 )
 router.post(
   "/profile",
-  [check("perfil","El perfil es obligatorio").not().isEmpty()],
+  [check("perfil", "El perfil es obligatorio").not().isEmpty()],
   postProfiles
 )
 router.post(
   "/user",
-  [check("correo","El correo es obligatorio").not().isEmpty(),
-  check("nombre","El nombre es obligatorio").not().isEmpty()],
+  [check("correo", "El correo es obligatorio").not().isEmpty(),
+  check("nombre", "El nombre es obligatorio").not().isEmpty()],
   postUsers
 )
 router.post(
   "/company",
-  [check("empresa","La empresa es obligatoria").not().isEmpty(),
-  check("razon_social","La razón social obligatoria").not().isEmpty(),
-  check("no_contrato","El numero de contrato es obligatorio").not().isEmpty(),
-  check("id_pais","El pais es obligatorio").not().isEmpty()],
+  [check("empresa", "La empresa es obligatoria").not().isEmpty(),
+  check("razon_social", "La razón social obligatoria").not().isEmpty(),
+  check("no_contrato", "El numero de contrato es obligatorio").not().isEmpty(),
+  check("id_pais", "El pais es obligatorio").not().isEmpty()],
   postCompany
 )
-router.post("/category",postCategory)
-router.post("/mark",postMark)
-router.post("/subscription",postSubscription)
-router.post("/subscriptor",postSubscriptor)
-router.post("/typepay",postTypepay)
+router.post("/category", postCategory)
+router.post("/mark", postMark)
+router.post("/subscription", postSubscription)
+router.post("/subscriptor", postSubscriptor)
+router.post("/typepay", postTypepay)
+router.post("/saveImage", fileUpload, (req, res) => {
+  console.log(req.file)
+  res.status(200).json({
+    ok: true,
+    msg: "saved",
+    name:req.file.filename
+  });
+})
 
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
