@@ -101,7 +101,7 @@
         },
         "/api/auth/revalidateUser": {
             "post": {
-                "operationId": "register",
+                "operationId": "revalidateUser",
                 "tags": ["Auth"],
                 "summary": "Revalidate JWT from email",
                 "description": "Revalidate JWT from email",
@@ -134,8 +134,8 @@
                 }
             }
         },
-        "/api/auth/userValidate/{jwt}":{
-            "post":{
+        "/api/auth/userValidate/{jwt}": {
+            "post": {
                 "operationId": "validate user",
                 "tags": ["Auth"],
                 "summary": "Validate User",
@@ -404,6 +404,214 @@
                 }
             }
         },
+        "/api/catalogs/getBills": {
+            "get": {
+                "operationId": "getBills",
+                "tags": ["Catalogs"],
+                "summary": "Get All Bills",
+                "description": "Get All Bills",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Bill"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCategories": {
+            "get": {
+                "operationId": "getCategories",
+                "tags": ["Catalogs"],
+                "summary": "Get All Categories",
+                "description": "Get All Categories",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Categories"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getMarks": {
+            "get": {
+                "operationId": "getMarks",
+                "tags": ["Catalogs"],
+                "summary": "Get All Marks",
+                "description": "Get All Marks",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Marks"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getSubscriptions": {
+            "get": {
+                "operationId": "getSubscriptions",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscriptions",
+                "description": "Get All Subscriptions",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getSubscribers": {
+            "get": {
+                "operationId": "getSubscribers",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscribers",
+                "description": "Get All Subscribers",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscribers"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getTypespay": {
+            "get": {
+                "operationId": "getTypespay",
+                "tags": ["Catalogs"],
+                "summary": "Get All Typepay",
+                "description": "Get All Typepay",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Typepay"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getPaymentsmeans": {
+            "get": {
+                "operationId": "getPaymentsmeans",
+                "tags": ["Catalogs"],
+                "summary": "Get All Paymentsmeans",
+                "description": "Get All Paymentsmeans",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Paymentmeans"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getSubscriptiondetail": {
+            "get": {
+                "operationId": "getSubscriptiondetail",
+                "tags": ["Catalogs"],
+                "summary": "Get All Subscriptiondetail",
+                "description": "Get All Subscriptiondetail",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Detail"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -592,6 +800,181 @@
                     "description": "object to send from client",
                     "schema": {
                         "$ref": "#/definitions/updateCompany"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateCategory": {
+            "put": {
+                "operationId": "updateCategory",
+                "tags": ["Catalogs"],
+                "summary": "update a category",
+                "description": "Update a category",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateCategory"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateMark": {
+            "put": {
+                "operationId": "updateMark",
+                "tags": ["Catalogs"],
+                "summary": "update a mark",
+                "description": "Update a mark",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateMark"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateSubscription": {
+            "put": {
+                "operationId": "updateSubscription",
+                "tags": ["Catalogs"],
+                "summary": "update a subscription",
+                "description": "Update a subscription",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscription"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateSubscriptor": {
+            "put": {
+                "operationId": "updateSubscriptor",
+                "tags": ["Catalogs"],
+                "summary": "update a subscriptor",
+                "description": "Update a subscriptor",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscriptor"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateTypepay": {
+            "put": {
+                "operationId": "updateTypepay",
+                "tags": ["Catalogs"],
+                "summary": "update a Typepay",
+                "description": "Update a Typepay",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateTypepay"
                     }
                 }],
                 "responses": {
@@ -911,6 +1294,263 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/category": {
+            "post": {
+                "operationId": "register a category",
+                "tags": ["Catalogs"],
+                "summary": "Register a category",
+                "description": "Create a new category in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "categoria": {
+                                "type": "string",
+                                "example": "Platino"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/mark": {
+            "post": {
+                "operationId": "register a mark",
+                "tags": ["Catalogs"],
+                "summary": "Register a mark",
+                "description": "Create a new mark in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "marca": {
+                                "type": "string",
+                                "example": "Marca"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/subscription": {
+            "post": {
+                "operationId": "register a subscription",
+                "tags": ["Catalogs"],
+                "summary": "Register a subscription",
+                "description": "Create a new subscription in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_pais": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_categoria_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "suscripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "descripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "uel_imagen": {
+                                "type": "string",
+                                "example": "http://example"
+                            },
+                            "url_icono": {
+                                "type": "string",
+                                "example": "http://example"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/subscriptor": {
+            "post": {
+                "operationId": "register a subscriptor",
+                "tags": ["Catalogs"],
+                "summary": "Register a subscriptor",
+                "description": "Create a new subscriptor in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_usuario": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/typepay": {
+            "post": {
+                "operationId": "register a typepay",
+                "tags": ["Catalogs"],
+                "summary": "Register a typepay",
+                "description": "Create a new typepay in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_pago": {
+                                "type": "string",
+                                "example": "example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -993,9 +1633,9 @@
         "updateUser": {
             "type": "object",
             "properties": {
-                "id_usuario":{
-                    "type":"intger",
-                    "example":1
+                "id_usuario": {
+                    "type": "intger",
+                    "example": 1
                 },
                 "id_pais": {
                     "type": "integer",
@@ -1012,12 +1652,129 @@
                 "correo": {
                     "type": "string",
                     "example": "irineo.lozada@tresw.mx"
-                },                
+                },
                 "id_estatus": {
                     "type": "integer",
                     "example": 1
                 },
                 "id_perfil": {
+                    "type": "intger",
+                    "example": 1
+                }
+            }
+        },
+        "updateCategory": {
+            "type": "object",
+            "properties": {
+                "id_categoria_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "categoria": {
+                    "type": "string",
+                    "example": "Platino"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "updateMark": {
+            "type": "object",
+            "properties": {
+                "id_marca": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_empresa": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "marca": {
+                    "type": "string",
+                    "example": "Patito"
+                }
+            }
+        },
+        "updateSubscription": {
+            "type": "object",
+            "properties": {
+                "id_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pais": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_empresa": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_marca": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_categoria_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "suscripcion": {
+                    "type": "string",
+                    "example": "Prueba"
+                },
+                "descripcion": {
+                    "type": "string",
+                    "example": "Prueba"
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "uel_imagen": {
+                    "type": "string",
+                    "example": "http://example"
+                },
+                "url_icono": {
+                    "type": "string",
+                    "example": "http://example"
+                }
+            }
+        },
+        "updateSubscriptor": {
+            "type": "object",
+            "properties": {
+                "id_suscriptor": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_usuario": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_suscripcion": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_estatus": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "updateTypepay": {
+            "type": "object",
+            "properties": {
+                "id_tipo_pago": {
+                    "type": "intger",
+                    "example": 1
+                },
+                "tipo_pago": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "id_estatus": {
                     "type": "intger",
                     "example": 1
                 }
@@ -1235,6 +1992,74 @@
                 }
             }
         },
+        "Bill": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_factura ": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "empresa"
+                    },
+                    "id_marca ": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "marca"
+                    },
+                    "monto": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "fecha_emision": {
+                        "type": "string",
+                        "example": "06/06/2021"
+                    },
+                    "periodo": {
+                        "type": "string",
+                        "example": "2021"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Categories": {
+            "types": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_categoria_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "categoria": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                }
+            }
+        },
         "Register": {
             "type": "object",
             "required": ["name", "email", "password", "password2", "idPais", "idEstado"],
@@ -1296,6 +2121,202 @@
                     "type": "array",
                     "items": {
                         "type": "string"
+                    }
+                }
+            }
+        },
+        "Marks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Patito"
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "Patito"
+                    }
+                }
+            }
+        },
+        "Subscriptions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_pais": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pais": {
+                        "type": "string",
+                        "example": "Mexico"
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Patito"
+                    },
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "LG"
+                    },
+                    "id_categoria_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "categoria": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Prueba"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Prueba"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    },
+                    "uel_imagen": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "url_icono": {
+                        "type": "string",
+                        "example": "http://example"
+                    }
+                }
+            }
+        },
+        "Subscribers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_suscriptor": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Platino"
+                    },
+                    "fecha_suscripcion": {
+                        "type": "string",
+                        "example": "01/01/1990"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Typepay": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_tipo_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "example"
+                    },
+                    "id_estatus": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Paymentmeans": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_medio_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_tipo_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "Tarjeta Credito"
+                    },
+                    "numero_tarjeta_cuenta": {
+                        "type": "intger",
+                        "example": 1231231231
+                    },
+                    "correo": {
+                        "type": "string",
+                        "example": "example@hotmail.com"
+                    },
+                    "fecha_vigencia": {
+                        "type": "string",
+                        "example": "10/10/2021"
                     }
                 }
             }
