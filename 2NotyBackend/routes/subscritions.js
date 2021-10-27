@@ -11,8 +11,8 @@ const {
 } = require("../controllers/subscriptions");
 
 router.get("/", getSubscriptions);
-router.get("/detail/", getSubscriptionDetail);
-router.post("/insertSubscription/", postSubscription);
-router.put("/updateSubscription/", updateSubscription);
+router.get("/detail", getSubscriptionDetail);
+router.post("/insertSubscription", postSubscription);
+router.put("/updateSubscription", updateSubscription);
 
 module.exports = router;

@@ -34,8 +34,6 @@ const {
   activateCountry,
   activateState,
   updateProfiles,
-  getUsuarios,
-  postUsers,
   getCompanies,
   updateCompany,
   postCompany,
@@ -57,7 +55,6 @@ const {
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
 router.get("/getStates/:id", getStates);
-router.get("/getUsers", getUsuarios);
 router.get("/getProfiles", getProfiles);
 router.get("/getCompanies", getCompanies);
 router.get("/getBills", getBills);
@@ -91,12 +88,7 @@ router.post(
   [check("perfil", "El perfil es obligatorio").not().isEmpty()],
   postProfiles
 )
-router.post(
-  "/user",
-  [check("correo", "El correo es obligatorio").not().isEmpty(),
-  check("nombre", "El nombre es obligatorio").not().isEmpty()],
-  postUsers
-)
+
 router.post(
   "/company",
   [check("empresa", "La empresa es obligatoria").not().isEmpty(),

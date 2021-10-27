@@ -10,6 +10,6 @@ const {
 } = require("../controllers/subscribers");
 
 router.get("/", getSubscribers);
-router.put("/updateSubscribers/", updateSubscribers);
-router.post("/insertSubscribers/", postSubscribers)
+router.put("/updateSubscribers", updateSubscribers);
+router.post("/insertSubscribers", postSubscribers)
 module.exports = router;

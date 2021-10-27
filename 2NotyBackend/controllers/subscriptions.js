@@ -1,3 +1,5 @@
+const { pool } = require("./../dbCongif");
+
 const getSubscriptions = async (req, res = response) => {
   pool.connect().then((client) => {
     return client

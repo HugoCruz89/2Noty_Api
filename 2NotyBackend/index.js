@@ -22,6 +22,7 @@ app.use("/api/catalogs", require("./routes/catalogs"));
 app.use("/api/notifications", require("./routes/notifications"))
 app.use("/api/subscriptions", require("./routes/subscritions"))
 app.use("/api/subscribers", require("./routes/subcribers"))
+app.use("/api/user", require("./routes/user"))
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // escuchar peticiones
 app.listen(process.env.PORT, () => {
