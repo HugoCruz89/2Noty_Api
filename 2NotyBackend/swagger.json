@@ -25,15 +25,15 @@
         },
         {
             "name": "Subscriptions",
-            "description": "Here you will can to get all method wich you want to need about Subscriptions"
+            "description": "Here you will can to get all method wich you want or to need about Subscriptions"
         },
         {
             "name": "Subscribers",
-            "description": "Here you will can to get all method wich you want to need about subscribers"
+            "description": "Here you will can to get all method wich you want or to need about subscribers"
         },
         {
             "name": "User",
-            "description": "Here you will can to get all method wich you want to need about User"
+            "description": "Here you will can to get all method wich you want or to need about User"
         }
     ],
     "paths": {

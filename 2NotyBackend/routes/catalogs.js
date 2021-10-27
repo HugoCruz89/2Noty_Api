@@ -4,21 +4,7 @@ host + /api/catalogs
  */
 const { check } = require("express-validator");
 const router = require("express").Router();
-const multer = require('multer');
 
-const URI_IMAGE=`/var/www/html/assets/img/subscription`
-const URI_IMEGE_LOCAL=`C:/TFS/2noty_web/2noty/public/assets/img/subscription`
-
-const diskStorage = multer.diskStorage({
-  destination: URI_IMAGE,
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-});
-
-const fileUpload = multer({
-  storage: diskStorage
-}).single('image')
 const {
   getStatus,
   getCountries,
@@ -102,13 +88,7 @@ router.post("/mark", postMark)
 
 router.post("/typepay", postTypePay)
 router.post("/paymentsmeans", postPaymentsMeans)
-router.post("/saveImage", fileUpload, (req, res) => {
-  res.status(200).json({
-    ok: true,
-    msg: "saved",
-    name:req.file.filename
-  });
-})
+
 
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
