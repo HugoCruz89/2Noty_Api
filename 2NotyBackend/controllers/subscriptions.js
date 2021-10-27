@@ -134,7 +134,7 @@ const postSubscription = async (req, res = response) => {
   let url_icono;
   let uploadPath;
   let uploadPathIcono;
-  if (!req.files.urlImage || Object.keys(req.files.urlImage).length === 0) {
+  if (!req.files.Image || Object.keys(req.files.Image).length === 0) {
     return res.status(400).send({
       ok: false,
       data: "'No files were uploaded.'",
