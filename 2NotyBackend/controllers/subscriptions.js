@@ -53,83 +53,83 @@ const getSubscriptionDetail = async (req, res = response) => {
   });
 };
 
-const postSubscription = async (req, res = response) => {
-  const {
-    id_pais,
-    id_empresa,
-    id_marca,
-    id_categoria_suscripcion,
-    suscripcion,
-    descripcion,
-    id_estatus,
-    url_imagen,
-    url_icono,
-  } = req.body;
-  const suscripcionUpperCase = suscripcion.toUpperCase();
-  const descripcionUpperCase = descripcion.toUpperCase();
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`,
-        [
-          id_pais,
-          id_empresa,
-          id_marca,
-          id_categoria_suscripcion,
-          suscripcionUpperCase,
-        ]
-      )
-      .then((response) => {
-        if (response.rows.length > 0) {
-          res.status(200).json({
-            ok: true,
-            msg: "Ya se encuentra registrada suscripción",
-          });
-        } else {
-          return client
-            .query(
-              `INSERT INTO public.suscripciones(
-                id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus,url_imagen,url_icono)
-                VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-              [
-                id_pais,
-                id_empresa,
-                id_marca,
-                id_categoria_suscripcion,
-                suscripcionUpperCase,
-                descripcionUpperCase,
-                id_estatus,
-                url_imagen,
-                url_icono,
-              ]
-            )
-            .then((response) => {
-              client.release();
-              res.status(201).json({
-                ok: true,
-                msg: response.command,
-              });
-            })
-            .catch((err) => {
-              client.release();
-              res.status(400).json({
-                ok: false,
-                msg: err,
-              });
-            });
-        }
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
-          ok: false,
-          msg: err,
-        });
-      });
-  });
-};
+// const postSubscription = async (req, res = response) => {
+//   const {
+//     id_pais,
+//     id_empresa,
+//     id_marca,
+//     id_categoria_suscripcion,
+//     suscripcion,
+//     descripcion,
+//     id_estatus,
+//     url_imagen,
+//     url_icono,
+//   } = req.body;
+//   const suscripcionUpperCase = suscripcion.toUpperCase();
+//   const descripcionUpperCase = descripcion.toUpperCase();
+//   pool.connect().then((client) => {
+//     return client
+//       .query(
+//         `SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`,
+//         [
+//           id_pais,
+//           id_empresa,
+//           id_marca,
+//           id_categoria_suscripcion,
+//           suscripcionUpperCase,
+//         ]
+//       )
+//       .then((response) => {
+//         if (response.rows.length > 0) {
+//           res.status(200).json({
+//             ok: true,
+//             msg: "Ya se encuentra registrada suscripción",
+//           });
+//         } else {
+//           return client
+//             .query(
+//               `INSERT INTO public.suscripciones(
+//                 id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus,url_imagen,url_icono)
+//                 VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+//               [
+//                 id_pais,
+//                 id_empresa,
+//                 id_marca,
+//                 id_categoria_suscripcion,
+//                 suscripcionUpperCase,
+//                 descripcionUpperCase,
+//                 id_estatus,
+//                 url_imagen,
+//                 url_icono,
+//               ]
+//             )
+//             .then((response) => {
+//               client.release();
+//               res.status(201).json({
+//                 ok: true,
+//                 msg: response.command,
+//               });
+//             })
+//             .catch((err) => {
+//               client.release();
+//               res.status(400).json({
+//                 ok: false,
+//                 msg: err,
+//               });
+//             });
+//         }
+//       })
+//       .catch((err) => {
+//         client.release();
+//         res.status(400).json({
+//           ok: false,
+//           msg: err,
+//         });
+//       });
+//   });
+// };
 
-const postSubscriptionTest = async (req, res = response) => {
+const postSubscription = async (req, res = response) => {
   let url_imagen;
   let url_icono;
   let uploadPath;
@@ -303,5 +303,5 @@ module.exports = {
   getSubscriptionDetail,
   postSubscription,
   updateSubscription,
-  postSubscriptionTest,
+ 
 };

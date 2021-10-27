@@ -21,13 +21,12 @@ const {
   getSubscriptionDetail,
   postSubscription,
   updateSubscription,
-  postSubscriptionTest,
 } = require("../controllers/subscriptions");
 
 router.get("/", getSubscriptions);
 router.get("/detail", getSubscriptionDetail);
 router.post("/insertSubscription", postSubscription);
-router.post("/insertSubscriptionTest", postSubscriptionTest);
+// router.post("/insertSubscriptionTest", postSubscriptionTest);
 router.put("/updateSubscription", updateSubscription);
 // router.post("/saveImage", fileUpload, (req, res) => {
 //   res.status(200).json({
