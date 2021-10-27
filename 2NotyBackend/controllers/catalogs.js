@@ -1,7 +1,6 @@
 const { response } = require("express");
 const { param } = require("express-validator");
-const bcrypt = require("bcrypt");
-const { getDateNow } = require("./../helpers/helpers");
+
 const { pool } = require("./../dbCongif");
 
 
