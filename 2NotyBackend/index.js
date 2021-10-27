@@ -1,4 +1,5 @@
 const express = require("express");
+const fileUpload = require("express-fileupload");
 require("dotenv").config();
 const config = require("./configs/config");
 const cors = require("cors");
@@ -8,7 +9,13 @@ const swaggerUi = require("swagger-ui-express");
 swaggerDocument = require("./swagger.json");
 
 app.use(cors());
-
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+    },
+  })
+);
 app.set("llave", config.llave);
 // Directorio Público
 app.use(express.static("public"));

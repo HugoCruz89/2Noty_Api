@@ -875,7 +875,6 @@
                 }
             }
         },
-
         "/api/payment/getPaymentTypes": {
             "get": {
                 "operationId": "getTypespay",

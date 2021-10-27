@@ -1,3 +1,6 @@
+const multer = require('multer');
+const { getDateNowCurrent } = require("./../helpers/helpers");
+
 const { pool } = require("./../dbCongif");
 
 const getSubscriptions = async (req, res = response) => {
@@ -126,6 +129,35 @@ const postSubscription = async (req, res = response) => {
   });
 };
 
+const postSubscriptionTest = async (req, res = response) => {
+  let sampleFile;
+  let uploadPath;
+console.log('req',req.body)
+  // if (!req.files.urlImage || Object.keys(req.files.urlImage).length === 0) {
+  //   return res.status(400).send('No files were uploaded.');
+  // }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  sampleFile = req.files.urlImage;
+  console.log('samplefile',sampleFile)
+   uploadPath =`/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${sampleFile.name}`;
+console.log('path',uploadPath)
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send({
+        ok: false,
+        data: err,
+      });
+
+      res.status(201).json({
+        ok: true,
+        data: 'file update',
+      });
+  });
+
+};
+
 const updateSubscription = async (req, res = response) => {
   const {
     id_suscripcion,
@@ -182,4 +214,5 @@ module.exports = {
   getSubscriptionDetail,
   postSubscription,
   updateSubscription,
+  postSubscriptionTest
 };
