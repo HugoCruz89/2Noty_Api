@@ -547,7 +547,7 @@
             }
         },
 
-        "/api/subcribers": {
+        "/api/subscribers": {
             "get": {
                 "operationId": "getSubscribers",
                 "tags": ["Subscribers"],
@@ -573,7 +573,7 @@
                 }
             }
         },
-        "/api/subcribers/updateSubscribers": {
+        "/api/subscribers/updateSubscribers": {
             "put": {
                 "operationId": "updateSubscriptor",
                 "tags": ["Subscribers"],
@@ -608,7 +608,7 @@
                 }
             }
         },
-        "/api/subcribers/insertSubscribers": {
+        "/api/subscribers/insertSubscribers": {
             "post": {
                 "operationId": "register a subscriptor",
                 "tags": ["Subscribers"],
@@ -1149,7 +1149,6 @@
                 }
             }
         },
-      
         "/api/catalogs/updateCompany": {
             "put": {
                 "operationId": "updateCompany",
@@ -1255,7 +1254,6 @@
                 }
             }
         },        
-       
         "/api/catalogs/country": {
             "post": {
                 "operationId": "register a country",
