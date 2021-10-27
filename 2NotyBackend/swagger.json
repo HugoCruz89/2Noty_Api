@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "localhost:4000",
+    "host": "3.136.19.219:4000",
     "basePath": "/",
     "tags": [{
             "name": "Auth",
@@ -22,6 +22,14 @@
         {
             "name": "Catalogs",
             "description": "Get All catalogs"
+        },
+        {
+            "name": "Subscriptions",
+            "description": "Here you can get all method wich you want to need about Subscriptions"
+        },
+        {
+            "name": "Subscribers",
+            "description": "Here you can get all method wich you want to need about subscribers"
         }
     ],
     "paths": {
@@ -482,10 +490,10 @@
                 }
             }
         },
-        "/api/catalogs/getSubscriptions": {
+        "/api/subscriptions": {
             "get": {
                 "operationId": "getSubscriptions",
-                "tags": ["Catalogs"],
+                "tags": ["Subscriptions"],
                 "summary": "Get All Subscriptions",
                 "description": "Get All Subscriptions",
                 "consumes": "application/json",
@@ -508,10 +516,118 @@
                 }
             }
         },
-        "/api/catalogs/getSubscribers": {
+        "/api/subscriptions/updateSubscription": {
+            "put": {
+                "operationId": "updateSubscription",
+                "tags": ["Subscriptions"],
+                "summary": "update a subscription",
+                "description": "Update a subscription",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscription"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subscriptions/insertSubscription": {
+            "post": {
+                "operationId": "register a subscription",
+                "tags": ["Subscriptions"],
+                "summary": "Register a subscription",
+                "description": "Create a new subscription in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_pais": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_categoria_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "suscripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "descripcion": {
+                                "type": "string",
+                                "example": "Prueba"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "uel_imagen": {
+                                "type": "string",
+                                "example": "http://example"
+                            },
+                            "url_icono": {
+                                "type": "string",
+                                "example": "http://example"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subcribers": {
             "get": {
                 "operationId": "getSubscribers",
-                "tags": ["Catalogs"],
+                "tags": ["Subscribers"],
                 "summary": "Get All Subscribers",
                 "description": "Get All Subscribers",
                 "consumes": "application/json",
@@ -527,6 +643,90 @@
                                 },
                                 "data": {
                                     "$ref": "#/definitions/Subscribers"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subcribers/updateSubscribers": {
+            "put": {
+                "operationId": "updateSubscriptor",
+                "tags": ["Subscribers"],
+                "summary": "update a subscriptor",
+                "description": "Update a subscriptor",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateSubscriptor"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subcribers/insertSubscribers": {
+            "post": {
+                "operationId": "register a subscriptor",
+                "tags": ["Subscribers"],
+                "summary": "Register a subscriptor",
+                "description": "Create a new subscriptor in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_usuario": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
                                 }
                             }
                         }
@@ -891,77 +1091,7 @@
                     }
                 }
             }
-        },
-        "/api/catalogs/updateSubscription": {
-            "put": {
-                "operationId": "updateSubscription",
-                "tags": ["Catalogs"],
-                "summary": "update a subscription",
-                "description": "Update a subscription",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateSubscription"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "type": "string",
-                                    "example": "update"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/updateSubscriptor": {
-            "put": {
-                "operationId": "updateSubscriptor",
-                "tags": ["Catalogs"],
-                "summary": "update a subscriptor",
-                "description": "Update a subscriptor",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateSubscriptor"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "type": "string",
-                                    "example": "update"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        },        
         "/api/catalogs/updateTypepay": {
             "put": {
                 "operationId": "updateTypepay",
@@ -1384,129 +1514,7 @@
                     }
                 }
             }
-        },
-        "/api/catalogs/subscription": {
-            "post": {
-                "operationId": "register a subscription",
-                "tags": ["Catalogs"],
-                "summary": "Register a subscription",
-                "description": "Create a new subscription in system",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "id_pais": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_empresa": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_marca": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_categoria_suscripcion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "suscripcion": {
-                                "type": "string",
-                                "example": "Prueba"
-                            },
-                            "descripcion": {
-                                "type": "string",
-                                "example": "Prueba"
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "uel_imagen": {
-                                "type": "string",
-                                "example": "http://example"
-                            },
-                            "url_icono": {
-                                "type": "string",
-                                "example": "http://example"
-                            }
-                        }
-                    }
-                }],
-                "responses": {
-                    "201": {
-                        "description": "Status Inserted succesfuly",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "msg": {
-                                    "type": "string",
-                                    "example": "INSERT"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/subscriptor": {
-            "post": {
-                "operationId": "register a subscriptor",
-                "tags": ["Catalogs"],
-                "summary": "Register a subscriptor",
-                "description": "Create a new subscriptor in system",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "id_usuario": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_suscripcion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            }
-                        }
-                    }
-                }],
-                "responses": {
-                    "201": {
-                        "description": "Status Inserted succesfuly",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "msg": {
-                                    "type": "string",
-                                    "example": "INSERT"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        },  
         "/api/catalogs/typepay": {
             "post": {
                 "operationId": "register a typepay",

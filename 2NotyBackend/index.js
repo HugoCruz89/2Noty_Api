@@ -20,6 +20,8 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/catalogs", require("./routes/catalogs"));
 app.use("/api/notifications", require("./routes/notifications"))
+app.use("/api/subscriptions", require("./routes/subscritions"))
+app.use("/api/subscribers", require("./routes/subcribers"))
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // escuchar peticiones
 app.listen(process.env.PORT, () => {
