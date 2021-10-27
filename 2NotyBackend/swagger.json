@@ -560,6 +560,32 @@
                 }
             }
         },
+        "/api/catalogs/getPaymentsmeans": {
+            "get": {
+                "operationId": "getPaymentsmeans",
+                "tags": ["Catalogs"],
+                "summary": "Get All Paymentsmeans",
+                "description": "Get All Paymentsmeans",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Paymentmeans"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/getSubscriptiondetail": {
             "get": {
                 "operationId": "getSubscriptiondetail",
@@ -1400,6 +1426,14 @@
                             "id_estatus": {
                                 "type": "integer",
                                 "example": 1
+                            },
+                            "uel_imagen": {
+                                "type": "string",
+                                "example": "http://example"
+                            },
+                            "url_icono": {
+                                "type": "string",
+                                "example": "http://example"
                             }
                         }
                     }
@@ -1473,7 +1507,7 @@
                 }
             }
         },
-        "/api/catalogs/typepay":{
+        "/api/catalogs/typepay": {
             "post": {
                 "operationId": "register a typepay",
                 "tags": ["Catalogs"],
@@ -1697,6 +1731,14 @@
                 "id_estatus": {
                     "type": "integer",
                     "example": 1
+                },
+                "uel_imagen": {
+                    "type": "string",
+                    "example": "http://example"
+                },
+                "url_icono": {
+                    "type": "string",
+                    "example": "http://example"
                 }
             }
         },
@@ -2235,6 +2277,46 @@
                     "estatus": {
                         "type": "string",
                         "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Paymentmeans": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_medio_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_tipo_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "Tarjeta Credito"
+                    },
+                    "numero_tarjeta_cuenta": {
+                        "type": "intger",
+                        "example": 1231231231
+                    },
+                    "correo": {
+                        "type": "string",
+                        "example": "example@hotmail.com"
+                    },
+                    "fecha_vigencia": {
+                        "type": "string",
+                        "example": "10/10/2021"
                     }
                 }
             }

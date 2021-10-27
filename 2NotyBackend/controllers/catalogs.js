@@ -263,9 +263,31 @@ const getTypespay = async (req, res = response) => {
 const getPaymentsmeans = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
-      .query(`SELECT mp.id_medio_pago,mp.id_usuario,u.nombre,mp.id_tipo_pago,tp.tipo_pago,mp.numero_tarjeta_cuenta,mp.correo,mp.fecha_vigencia
+      .query(`SELECT mp.id_medio_pago,mp.id_usuario,u.nombre,mp.id_tipo_pago,tp.tipo_pago,mp.numero_tarjeta_cuenta,mp.correo,to_char((mp.fecha_vigencia), 'DD/MM/YYYY')as fecha_vigencia 
       FROM medios_pago mp, usuarios u, tipo_pago tp
       WHERE mp.id_usuario=u.id_usuario AND mp.id_tipo_pago=tp.id_tipo_pago;`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const getPaymentsuser = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT pu.id_pago_usuario,pu.id_usuario,u.nombre,pu.id_medio_pago,pu.monto_pago, to_char((pu.fecha_pago),'DD/MM/YYYY')as fecha_pago,pu.id_estatus,e.estatus
+      FROM pagos_usuarios pu,usuarios u, medios_pago mp, estatus e
+      WHERE pu.id_usuario=u.id_usuario AND pu.id_medio_pago=mp.id_medio_pago AND pu.id_estatus=e.id_estatus;`)
       .then((response) => {
         client.release();
         res.status(200).json({
@@ -1118,6 +1140,51 @@ const postTypepay = async (req, res = response) => {
       });
   });
 };
+const postpaymentsmeans = async (req, res = response) => {
+  const { id_usuario,id_tipo_pago,numero_tarjeta_cuenta,correo,fecha_vigencia } = req.body;
+  pool.connect().then((client) => {
+    // return client
+    //   .query(`SELECT * FROM medios_pago WHERE UPPER(tipo_pago)=$1`,
+    //     [tipopagoUpper])
+    //   .then((response) => {
+    //     if (response.rows.length > 0) {
+    //       res.status(200).json({
+    //         ok: true,
+    //         msg: "Ya existe el tipo de pago",
+    //       });
+    //     } else {
+          return client
+            .query(`INSERT INTO medios_pago (
+              id_usuario,id_tipo_pago,numero_tarjeta_cuenta,correo,fecha_vigencia)
+              VALUES ($1, $2, $3, $4, $5);`, [
+                id_usuario,id_tipo_pago,numero_tarjeta_cuenta,correo,fecha_vigencia
+            ])
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+      //   }
+      // })
+      // .catch((err) => {
+      //   client.release();
+      //   res.status(400).json({
+      //     ok: false,
+      //     msg: err,
+      //   });
+      // });
+  });
+};
+
 
 
 
@@ -1135,6 +1202,7 @@ module.exports = {
   getSubscriptions,
   getSubscribers,
   getTypespay,
+  getPaymentsuser,
   getPaymentsmeans,
   getSubscriptiondetail,
   postStates,
@@ -1148,6 +1216,7 @@ module.exports = {
   postSubscription,
   postSubscriptor,
   postTypepay,
+  postpaymentsmeans,
   updateState,
   updateCountry,
   updateStatus,
