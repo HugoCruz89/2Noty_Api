@@ -3,19 +3,18 @@ Rutas para Suscripciones
 host + /api/subscriptions
  */
 const router = require("express").Router();
-const multer = require('multer');
+const multer = require("multer");
 
-const URI_IMAGE=`/var/www/html/assets/img/subscription`
+const URI_IMAGE = `/var/www/html/assets/img/subscription`;
 const diskStorage = multer.diskStorage({
   destination: URI_IMAGE,
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
 });
 const fileUpload = multer({
-  storage: diskStorage
-}).single('image')
-
+  storage: diskStorage,
+}).single("image");
 
 const {
   getSubscriptions,
@@ -32,7 +31,7 @@ router.post("/saveImage", fileUpload, (req, res) => {
   res.status(200).json({
     ok: true,
     msg: "saved",
-    name:req.file.filename
+    name: req.file.filename,
   });
-})
+});
 module.exports = router;
