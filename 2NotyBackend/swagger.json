@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "localhost:4000",
+    "host": "3.136.19.219:4000",
     "basePath": "/",
     "tags": [{
             "name": "Auth",
@@ -25,15 +25,19 @@
         },
         {
             "name": "Subscriptions",
-            "description": "Here you will can to get all method wich you want or to need about Subscriptions"
+            "description": "Here you will can to get all method wich you want or all you to need about Subscriptions"
         },
         {
             "name": "Subscribers",
-            "description": "Here you will can to get all method wich you want or to need about subscribers"
+            "description": "Here you will can to get all method wich you want or all you to need about subscribers"
         },
         {
             "name": "User",
-            "description": "Here you will can to get all method wich you want or to need about User"
+            "description": "Here you will can to get all method wich you want or all you to need about User"
+        },
+        {
+            "name": "Payment",
+            "description": "Here you will can to get all method wich you want or all you to need about Payment"
         }
     ],
     "paths": {
@@ -251,119 +255,6 @@
                 }
             }
         },
-        "/api/catalogs/getStatus": {
-            "get": {
-                "operationId": "getStatus",
-                "tags": ["Catalogs"],
-                "summary": "Get All Status",
-                "description": "Get All Status",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Status"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/getCountries": {
-            "get": {
-                "operationId": "getCountries",
-                "tags": ["Catalogs"],
-                "summary": "Get All Countries",
-                "description": "Get All Countries",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Countries"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/getStates/{id}": {
-            "get": {
-                "operationId": "getStates",
-                "tags": ["Catalogs"],
-                "summary": "Get All States filter to Country",
-                "description": "Get All States",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "path",
-                    "name": "id",
-                    "schema": {
-                        "type": "integer"
-                    },
-                    "required": true,
-                    "description": "Id de pais"
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/States"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/getProfiles": {
-            "get": {
-                "operationId": "getProfiles",
-                "tags": ["Catalogs"],
-                "summary": "Get All Profiles",
-                "description": "Get All Profiles",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Profiles"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/user": {
             "get": {
                 "operationId": "getUsers",
@@ -389,7 +280,8 @@
                     }
                 }
             }
-        },"/api/User/insertUser": {
+        },
+        "/api/user/insertUser": {
             "post": {
                 "operationId": "register a user",
                 "tags": ["User"],
@@ -458,13 +350,21 @@
                 }
             }
         },
-        "/api/catalogs/getCompanies": {
-            "get": {
-                "operationId": "getCompanies",
-                "tags": ["Catalogs"],
-                "summary": "Get All Companies",
-                "description": "Get All Companies",
+        "/api/user/updateUser": {
+            "put": {
+                "operationId": "updateUser",
+                "tags": ["User"],
+                "summary": "update a user",
+                "description": "Update a user",
                 "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateUser"
+                    }
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -476,7 +376,8 @@
                                     "example": "ok"
                                 },
                                 "data": {
-                                    "$ref": "#/definitions/Company"
+                                    "type": "string",
+                                    "example": "update"
                                 }
                             }
                         }
@@ -484,84 +385,7 @@
                 }
             }
         },
-        "/api/catalogs/getBills": {
-            "get": {
-                "operationId": "getBills",
-                "tags": ["Catalogs"],
-                "summary": "Get All Bills",
-                "description": "Get All Bills",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "boolean",
-                                    "example": true
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Bill"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/getCategories": {
-            "get": {
-                "operationId": "getCategories",
-                "tags": ["Catalogs"],
-                "summary": "Get All Categories",
-                "description": "Get All Categories",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "boolean",
-                                    "example": true
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Categories"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/catalogs/getMarks": {
-            "get": {
-                "operationId": "getMarks",
-                "tags": ["Catalogs"],
-                "summary": "Get All Marks",
-                "description": "Get All Marks",
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "boolean",
-                                    "example": true
-                                },
-                                "data": {
-                                    "$ref": "#/definitions/Marks"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        
         "/api/subscriptions": {
             "get": {
                 "operationId": "getSubscriptions",
@@ -722,6 +546,7 @@
                 }
             }
         },
+
         "/api/subcribers": {
             "get": {
                 "operationId": "getSubscribers",
@@ -832,10 +657,229 @@
                 }
             }
         },
-        "/api/catalogs/getTypespay": {
+
+        "/api/catalogs/getStatus": {
+            "get": {
+                "operationId": "getStatus",
+                "tags": ["Catalogs"],
+                "summary": "Get All Status",
+                "description": "Get All Status",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Status"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCountries": {
+            "get": {
+                "operationId": "getCountries",
+                "tags": ["Catalogs"],
+                "summary": "Get All Countries",
+                "description": "Get All Countries",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Countries"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getStates/{id}": {
+            "get": {
+                "operationId": "getStates",
+                "tags": ["Catalogs"],
+                "summary": "Get All States filter to Country",
+                "description": "Get All States",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "required": true,
+                    "description": "Id de pais"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/States"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getProfiles": {
+            "get": {
+                "operationId": "getProfiles",
+                "tags": ["Catalogs"],
+                "summary": "Get All Profiles",
+                "description": "Get All Profiles",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Profiles"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCompanies": {
+            "get": {
+                "operationId": "getCompanies",
+                "tags": ["Catalogs"],
+                "summary": "Get All Companies",
+                "description": "Get All Companies",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Company"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getBills": {
+            "get": {
+                "operationId": "getBills",
+                "tags": ["Catalogs"],
+                "summary": "Get All Bills",
+                "description": "Get All Bills",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Bill"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getCategories": {
+            "get": {
+                "operationId": "getCategories",
+                "tags": ["Catalogs"],
+                "summary": "Get All Categories",
+                "description": "Get All Categories",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Categories"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/getMarks": {
+            "get": {
+                "operationId": "getMarks",
+                "tags": ["Catalogs"],
+                "summary": "Get All Marks",
+                "description": "Get All Marks",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Marks"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/payment/getPaymentTypes": {
             "get": {
                 "operationId": "getTypespay",
-                "tags": ["Catalogs"],
+                "tags": ["Payment"],
                 "summary": "Get All Typepay",
                 "description": "Get All Typepay",
                 "consumes": "application/json",
@@ -858,10 +902,10 @@
                 }
             }
         },
-        "/api/catalogs/getPaymentsmeans": {
+        "/api/payment/getPaymentMethods": {
             "get": {
                 "operationId": "getPaymentsmeans",
-                "tags": ["Catalogs"],
+                "tags": ["Payment"],
                 "summary": "Get All Paymentsmeans",
                 "description": "Get All Paymentsmeans",
                 "consumes": "application/json",
@@ -877,6 +921,86 @@
                                 },
                                 "data": {
                                     "$ref": "#/definitions/Paymentmeans"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment/updatePaymentType": {
+            "put": {
+                "operationId": "updateTypepay",
+                "tags": ["Payment"],
+                "summary": "update a Typepay",
+                "description": "Update a Typepay",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/updateTypepay"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment/insertPaymentType": {
+            "post": {
+                "operationId": "register a typepay",
+                "tags": ["Payment"],
+                "summary": "Register a typepay",
+                "description": "Create a new typepay in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_pago": {
+                                "type": "string",
+                                "example": "example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
                                 }
                             }
                         }
@@ -1025,41 +1149,7 @@
                 }
             }
         },
-        "/api/catalogs/updateUser": {
-            "put": {
-                "operationId": "updateUser",
-                "tags": ["Catalogs"],
-                "summary": "update a user",
-                "description": "Update a user",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateUser"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "type": "string",
-                                    "example": "update"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+      
         "/api/catalogs/updateCompany": {
             "put": {
                 "operationId": "updateCompany",
@@ -1165,41 +1255,7 @@
                 }
             }
         },        
-        "/api/catalogs/updateTypepay": {
-            "put": {
-                "operationId": "updateTypepay",
-                "tags": ["Catalogs"],
-                "summary": "update a Typepay",
-                "description": "Update a Typepay",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateTypepay"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Data",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "data": {
-                                    "type": "string",
-                                    "example": "update"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+       
         "/api/catalogs/country": {
             "post": {
                 "operationId": "register a country",
@@ -1375,8 +1431,7 @@
                     }
                 }
             }
-        },
-        
+        }, 
         "/api/catalogs/company": {
             "post": {
                 "operationId": "register a company",
@@ -1519,52 +1574,8 @@
                     }
                 }
             }
-        },  
-        "/api/catalogs/typepay": {
-            "post": {
-                "operationId": "register a typepay",
-                "tags": ["Catalogs"],
-                "summary": "Register a typepay",
-                "description": "Create a new typepay in system",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "tipo_pago": {
-                                "type": "string",
-                                "example": "example"
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            }
-                        }
-                    }
-                }],
-                "responses": {
-                    "201": {
-                        "description": "Status Inserted succesfuly",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "msg": {
-                                    "type": "string",
-                                    "example": "INSERT"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
+       
     },
     "definitions": {
         "updateJWT": {

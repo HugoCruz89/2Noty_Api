@@ -18,7 +18,6 @@ const {
   resetPassword
 } = require("../controllers/auth");
 const { check } = require("express-validator");
-const { route } = require('./catalogs');
 
 router.post(
   "/register",

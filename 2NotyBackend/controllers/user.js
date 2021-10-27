@@ -3,75 +3,164 @@ const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
 
 const getUser = async (req, res = response) => {
-    pool.connect().then((client) => {
-      return client
-        .query(`select u.id_usuario, u.nombre,u.correo,u.fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `select u.id_usuario, u.nombre,u.correo,u.fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
         from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
         where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil
-        order by 1;`)
-        .then((response) => {
-          client.release();
+        order by 1;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const postUser = async (req, res = response) => {
+  const {
+    nombre,
+    correo,
+    password,
+    id_estatus,
+    id_estado,
+    id_pais,
+    id_perfil,
+  } = req.body;
+
+  let hashedPassword = await bcrypt.hash(password, 10);
+
+  const emailUpperCase = correo.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM usuarios WHERE upper(correo)=$1`, [emailUpperCase])
+      .then((response) => {
+        if (response.rows.length > 0) {
           res.status(200).json({
             ok: true,
-            data: response.rows,
+            msg: "Ya se encuentra registrado el correo",
           });
-        })
-        .catch((err) => {
-          client.release();
-          res.status(400).json({
-            ok: false,
-            msg: err,
-          });
-        });
-    });
-  };
-
-  const postUser = async (req, res = response) => {
-    const { nombre, correo, password, id_estatus, id_estado, id_pais, id_perfil } = req.body;
-  
-    let hashedPassword = await bcrypt.hash(password, 10);
-  
-    const emailUpperCase = correo.toUpperCase();
-    pool.connect().then((client) => {
-      return client
-        .query(`SELECT * FROM usuarios WHERE upper(correo)=$1`, [emailUpperCase])
-        .then((response) => {
-          if (response.rows.length > 0) {
-            res.status(200).json({
-              ok: true,
-              msg: "Ya se encuentra registrado el correo",
-            });
-          } else {
-            return client
-              .query(`INSERT INTO usuarios( id_pais, id_estado, nombre, correo, password, fecha_registro, id_estatus, id_perfil)
-                VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, [
-                id_pais, id_estado, nombre, correo, hashedPassword, getDateNow(), id_estatus, id_perfil
-              ])
-              .then((response) => {
-                client.release();
-                res.status(201).json({
-                  ok: true,
-                  msg: response.command,
-                });
-              })
-              .catch((err) => {
-                client.release();
-                res.status(400).json({
-                  ok: false,
-                  msg: err,
-                });
+        } else {
+          return client
+            .query(
+              `INSERT INTO usuarios( id_pais, id_estado, nombre, correo, password, fecha_registro, id_estatus, id_perfil)
+                VALUES($1,$2,$3,$4,$5,$6,$7,$8)`,
+              [
+                id_pais,
+                id_estado,
+                nombre,
+                correo,
+                hashedPassword,
+                getDateNow(),
+                id_estatus,
+                id_perfil,
+              ]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
               });
-          }
-        })
-        .catch((err) => {
-          client.release();
-          res.status(400).json({
-            ok: false,
-            msg: err,
-          });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
         });
-    });
-  };
-  module.exports={
-    getUser,postUser
-  }
+      });
+  });
+};
+
+const updateUser = async (req, res = response) => {
+  const {
+    id_usuario,
+    id_pais,
+    id_estado,
+    nombre,
+    correo,
+    id_estatus,
+    id_perfil,
+  } = req.body;
+  const nombreUpper = nombre.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE usuarios SET nombre=$2, correo=$3, id_estatus=$4, id_estado=$5, id_pais=$6, id_perfil=$7 where id_usuario=$1`,
+        [
+          id_usuario,
+          nombreUpper,
+          correo,
+          id_estatus,
+          id_estado,
+          id_pais,
+          id_perfil,
+        ]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const getPaymentsByUser = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT pu.id_pago_usuario,pu.id_usuario,u.nombre,pu.id_medio_pago,pu.monto_pago, to_char((pu.fecha_pago),'DD/MM/YYYY')as fecha_pago,pu.id_estatus,e.estatus
+        FROM pagos_usuarios pu,usuarios u, medios_pago mp, estatus e
+        WHERE pu.id_usuario=u.id_usuario AND pu.id_medio_pago=mp.id_medio_pago AND pu.id_estatus=e.id_estatus;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+module.exports = {
+  getUser,
+  postUser,
+  getPaymentsByUser,
+  updateUser,
+};
