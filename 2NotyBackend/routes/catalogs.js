@@ -53,14 +53,13 @@ const {
   getSubscribers,
   postSubscriptor,
   updateSubscriptor,
-  getTypespay,
-  postTypepay,
-  updateTypepay,
-  getPaymentsmeans,
-  getSubscriptiondetail,
-  postImage,
-  postpaymentsmeans,
-  getPaymentsuser
+  getTypesPay,
+  postTypePay,
+  updateTypePay,
+  getPaymentsMeans,
+  getSubscriptionDetail,
+  postPaymentsMeans,
+  getPaymentsUser
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -73,10 +72,10 @@ router.get("/getCategories", getCategories);
 router.get("/getMarks", getMarks);
 router.get("/getSubscriptions", getSubscriptions);
 router.get("/getSubscribers", getSubscribers);
-router.get("/getTypespay", getTypespay);
-router.get("/getPaymentsmeans", getPaymentsmeans);
-router.get("/getPaymentsuser", getPaymentsuser);
-router.get("/getSubscriptiondetail", getSubscriptiondetail);
+router.get("/getTypespay", getTypesPay);
+router.get("/getPaymentsmeans", getPaymentsMeans);
+router.get("/getPaymentsuser", getPaymentsUser);
+router.get("/getSubscriptiondetail", getSubscriptionDetail);
 
 router.post(
   "/state",
@@ -119,8 +118,8 @@ router.post("/category", postCategory)
 router.post("/mark", postMark)
 router.post("/subscription", postSubscription)
 router.post("/subscriptor", postSubscriptor)
-router.post("/typepay", postTypepay)
-router.post("/paymentsmeans", postpaymentsmeans)
+router.post("/typepay", postTypePay)
+router.post("/paymentsmeans", postPaymentsMeans)
 router.post("/saveImage", fileUpload, (req, res) => {
   res.status(200).json({
     ok: true,
@@ -139,7 +138,7 @@ router.put("/updateCategory", updateCategory);
 router.put("/updateMark", updateMark);
 router.put("/updateSubscription", updateSubscription);
 router.put("/updateSubscriptor", updateSubscriptor);
-router.put("/updateTypepay", updateTypepay);
+router.put("/updateTypepay", updateTypePay);
 /* router.put("/activateCountry/:id", activateCountry);
 router.put("/activateState/:id", activateState); */
 

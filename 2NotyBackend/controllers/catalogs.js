@@ -238,7 +238,7 @@ const getSubscribers = async (req, res = response) => {
       });
   });
 };
-const getTypespay = async (req, res = response) => {
+const getTypesPay = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(`SELECT tp.id_tipo_pago,tp.tipo_pago,tp.id_estatus,e.estatus 
@@ -260,7 +260,7 @@ const getTypespay = async (req, res = response) => {
       });
   });
 };
-const getPaymentsmeans = async (req, res = response) => {
+const getPaymentsMeans = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(`SELECT mp.id_medio_pago,mp.id_usuario,u.nombre,mp.id_tipo_pago,tp.tipo_pago,mp.numero_tarjeta_cuenta,mp.correo,to_char((mp.fecha_vigencia), 'DD/MM/YYYY')as fecha_vigencia 
@@ -282,7 +282,7 @@ const getPaymentsmeans = async (req, res = response) => {
       });
   });
 };
-const getPaymentsuser = async (req, res = response) => {
+const getPaymentsUser = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(`SELECT pu.id_pago_usuario,pu.id_usuario,u.nombre,pu.id_medio_pago,pu.monto_pago, to_char((pu.fecha_pago),'DD/MM/YYYY')as fecha_pago,pu.id_estatus,e.estatus
@@ -304,7 +304,7 @@ const getPaymentsuser = async (req, res = response) => {
       });
   });
 };
-const getSubscriptiondetail = async (req, res = response) => {
+const getSubscriptionDetail = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(`SELECT ds.id_detalle,ds.id_suscriptor,u.nombre,ds.descripcion,ds.valor 
@@ -586,7 +586,7 @@ const updateSubscriptor = async (req, res = response) => {
       });
   });
 };
-const updateTypepay = async (req, res = response) => {
+const updateTypePay = async (req, res = response) => {
   const { id_tipo_pago, tipo_pago, id_estatus } = req.body;
   const tipopagoUpper = tipo_pago.toUpperCase();
   pool.connect().then((client) => {
@@ -1095,7 +1095,7 @@ const postSubscriptor = async (req, res = response) => {
       });
   });
 };
-const postTypepay = async (req, res = response) => {
+const postTypePay = async (req, res = response) => {
   const { tipo_pago, id_estatus } = req.body;
   const tipopagoUpper = tipo_pago.toUpperCase();
   pool.connect().then((client) => {
@@ -1140,7 +1140,7 @@ const postTypepay = async (req, res = response) => {
       });
   });
 };
-const postpaymentsmeans = async (req, res = response) => {
+const postPaymentsMeans = async (req, res = response) => {
   const { id_usuario,id_tipo_pago,numero_tarjeta_cuenta,correo,fecha_vigencia } = req.body;
   pool.connect().then((client) => {
     // return client
@@ -1201,10 +1201,10 @@ module.exports = {
   getMarks,
   getSubscriptions,
   getSubscribers,
-  getTypespay,
-  getPaymentsuser,
-  getPaymentsmeans,
-  getSubscriptiondetail,
+  getTypesPay,
+  getPaymentsUser,
+  getPaymentsMeans,
+  getSubscriptionDetail,
   postStates,
   postContry,
   postStatus,
@@ -1215,8 +1215,8 @@ module.exports = {
   postMark,
   postSubscription,
   postSubscriptor,
-  postTypepay,
-  postpaymentsmeans,
+  postTypePay,
+  postPaymentsMeans,
   updateState,
   updateCountry,
   updateStatus,
@@ -1227,7 +1227,7 @@ module.exports = {
   updateMark,
   updateSubscription,
   updateSubscriptor,
-  updateTypepay,
+  updateTypePay,
   activateCountry,
   activateState,
 };
