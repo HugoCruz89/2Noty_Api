@@ -1,4 +1,4 @@
-const multer = require('multer');
+const multer = require("multer");
 const { getDateNowCurrent } = require("./../helpers/helpers");
 
 const { pool } = require("./../dbCongif");
@@ -130,33 +130,122 @@ const postSubscription = async (req, res = response) => {
 };
 
 const postSubscriptionTest = async (req, res = response) => {
-  let sampleFile;
+  let url_imagen;
+  let url_icono;
   let uploadPath;
-console.log('req',req.body)
-  // if (!req.files.urlImage || Object.keys(req.files.urlImage).length === 0) {
-  //   return res.status(400).send('No files were uploaded.');
-  // }
+  let uploadPathIcono;
+  if (!req.files.urlImage || Object.keys(req.files.urlImage).length === 0) {
+    return res.status(400).send({
+      ok: false,
+      data: "'No files were uploaded.'",
+    });
+  }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  sampleFile = req.files.urlImage;
-  console.log('samplefile',sampleFile)
-   uploadPath =`/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${sampleFile.name}`;
-console.log('path',uploadPath)
+  url_imagen = req.files.imagen;
+  url_icono=req.files.Icono;
+  uploadPath = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
+    url_imagen.name
+  }`;
+  uploadPathIcono = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
+    url_icono.name
+  }`;
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv(uploadPath, function(err) {
+  url_icono.mv(uploadPathIcono, function (err) {
     if (err)
       return res.status(500).send({
         ok: false,
         data: err,
       });
-
-      res.status(201).json({
-        ok: true,
-        data: 'file update',
-      });
+    
   });
-
+  // Use the mv() method to place the file somewhere on your server
+  url_imagen.mv(uploadPath, function (err) {
+    if (err){
+      return res.status(500).send({
+        ok: false,
+        data: err,
+      });
+    }else{
+      const {
+        id_pais,
+        id_empresa,
+        id_marca,
+        id_categoria_suscripcion,
+        suscripcion,
+        descripcion,
+        id_estatus,
+        url_imagen,
+        url_icono,
+      } = req.body;
+      const suscripcionUpperCase = suscripcion.toUpperCase();
+      const descripcionUpperCase = descripcion.toUpperCase();
+      pool.connect().then((client) => {
+        return client
+          .query(
+            `SELECT * FROM suscripciones WHERE id_pais=$1 AND id_empresa=$2 AND id_marca=$3 AND id_categoria_suscripcion=$4 AND UPPER(suscripcion)=$5`,
+            [
+              id_pais,
+              id_empresa,
+              id_marca,
+              id_categoria_suscripcion,
+              suscripcionUpperCase,
+            ]
+          )
+          .then((response) => {
+            if (response.rows.length > 0) {
+              res.status(200).json({
+                ok: true,
+                msg: "Ya se encuentra registrada suscripción",
+              });
+            } else {
+              return client
+                .query(
+                  `INSERT INTO public.suscripciones(
+                    id_pais, id_empresa, id_marca, id_categoria_suscripcion, suscripcion, descripcion, id_estatus,url_imagen,url_icono)
+                    VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+                  [
+                    id_pais,
+                    id_empresa,
+                    id_marca,
+                    id_categoria_suscripcion,
+                    suscripcionUpperCase,
+                    descripcionUpperCase,
+                    id_estatus,
+                    urlImage,
+                    UrlIcono,
+                  ]
+                )
+                .then((response) => {
+                  client.release();
+                  res.status(201).json({
+                    ok: true,
+                    msg: response.command,
+                  });
+                })
+                .catch((err) => {
+                  client.release();
+                  res.status(400).json({
+                    ok: false,
+                    msg: err,
+                  });
+                });
+            }
+          })
+          .catch((err) => {
+            client.release();
+            res.status(400).json({
+              ok: false,
+              msg: err,
+            });
+          });
+      });
+    }
+  });
 };
+
+
+
 
 const updateSubscription = async (req, res = response) => {
   const {
@@ -214,5 +303,5 @@ module.exports = {
   getSubscriptionDetail,
   postSubscription,
   updateSubscription,
-  postSubscriptionTest
+  postSubscriptionTest,
 };
