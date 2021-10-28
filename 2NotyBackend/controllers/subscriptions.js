@@ -135,9 +135,7 @@ const insertData = async (data, pathImage, pathIcono) => {
 };
 
 const postSubscription = async (req, res = response) => {
-  let url_imagen;
-  let url_icono;
- 
+  
   if (!req.files.imagen || Object.keys(req.files.imagen).length === 0) {
     return res.status(400).send({
       ok: false,
@@ -146,8 +144,8 @@ const postSubscription = async (req, res = response) => {
   }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  url_imagen = req.files.imagen;
-  url_icono = req.files.icono;
+ let url_imagen = req.files.imagen;
+ let url_icono = req.files.icono;
  
 
   // Use the mv() method to place the file somewhere on your server
