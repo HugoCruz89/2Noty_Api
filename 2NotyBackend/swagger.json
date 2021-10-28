@@ -385,7 +385,7 @@
                 }
             }
         },
-        
+
         "/api/subscriptions": {
             "get": {
                 "operationId": "getSubscriptions",
@@ -455,64 +455,65 @@
                 "description": "Create a new subscription in system",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "formData",
-                    "name": "id_pais",
-                    "type": "integer",
-                    "description": ""
-                },{
-                    "in": "formData",
-                    "name": "id_empresa",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_marca",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_categoria_suscripcion",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "suscripcion",
-                    "type": "string",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "descripcion",
-                    "type": "string",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_estatus",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_estatus",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "imagen",
-                    "type": "file",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "icono",
-                    "type": "file",
-                    "description": ""
-                }],
+                        "in": "formData",
+                        "name": "id_pais",
+                        "type": "integer",
+                        "description": ""
+                    }, {
+                        "in": "formData",
+                        "name": "id_empresa",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_marca",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_categoria_suscripcion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "suscripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "descripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_estatus",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_estatus",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "imagen",
+                        "type": "file",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "icono",
+                        "type": "file",
+                        "description": ""
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Status Inserted succesfuly",
@@ -888,6 +889,45 @@
                 }
             }
         },
+        "/api/catalogs/getDataType": {
+            "get": {
+                "operationId": "getDataType",
+                "tags": ["Catalogs"],
+                "summary": "Get All Data type",
+                "description": "Get All Data type",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type":"array",
+                                    "items":{
+                                        "type":"object",
+                                        "properties":{
+                                            "id_tipo_dato":{
+                                                "type":"integer",
+                                                "example":1
+                                            },
+                                            "tipo_dato":{
+                                                "type":"string",
+                                                "example":"Entero"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/payment/getPaymentTypes": {
             "get": {
                 "operationId": "getTypespay",
@@ -1020,7 +1060,7 @@
                 }
             }
         },
-        
+
         "/api/catalogs/updateState": {
             "put": {
                 "operationId": "updateStates",
@@ -1265,7 +1305,52 @@
                     }
                 }
             }
-        },        
+        },
+        "/api/catalogs/updateDataype": {
+            "put": {
+                "operationId": "updateDatatype",
+                "tags": ["Catalogs"],
+                "summary": "update a data type",
+                "description": "Update a data type",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type":"object",
+                        "properties":{
+                            "id_tipo_pago":{
+                                "type":"intger",
+                                "example":1
+                            },
+                            "tipo_dato":{
+                                "type":"string",
+                                "example":"Entero"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/catalogs/country": {
             "post": {
                 "operationId": "register a country",
@@ -1441,7 +1526,7 @@
                     }
                 }
             }
-        }, 
+        },
         "/api/catalogs/company": {
             "post": {
                 "operationId": "register a company",
@@ -1584,8 +1669,49 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/datatype": {
+            "post": {
+                "operationId": "register a data type",
+                "tags": ["Catalogs"],
+                "summary": "Register a data type",
+                "description": "Create a new data type in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_dato": {
+                                "type": "string",
+                                "example": "Entero"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-       
+
     },
     "definitions": {
         "postSubscription": {
@@ -2392,6 +2518,22 @@
                     "fecha_vigencia": {
                         "type": "string",
                         "example": "10/10/2021"
+                    }
+                }
+            }
+        },
+        "DataType": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_tipo_dato": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "tipo_dato": {
+                        "type": "string",
+                        "example": "Entero"
                     }
                 }
             }

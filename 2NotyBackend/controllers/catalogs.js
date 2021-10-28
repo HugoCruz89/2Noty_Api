@@ -178,6 +178,28 @@ const getMarks = async (req, res = response) => {
       });
   });
 };
+const getDataType = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT * FROM cat_tipo_dato;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 const updateState = async (req, res = response) => {
   const { id_pais, id_estatus, estado_provincia, id_estado } = req.body;
   const estadoUpperCase = estado_provincia.toUpperCase();
@@ -347,6 +369,52 @@ const updateMark = async (req, res = response) => {
           ok: true,
           data: response.command,
         });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+const updateDataType = async (req, res = response) => {
+  const {id_tipo_dato, tipo_dato } = req.body;
+  const tipodatoUpperCase = tipo_dato.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM cat_tipo_dato WHERE upper(tipo_dato)=$1`, [
+        tipodatoUpperCase
+      ])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra el tipo de dato",
+          });
+        } else {
+          return client
+            .query(
+              `UPDATE cat_tipo_dato set tipo_dato=$2 WHERE id_tipo_dato=$1`,
+              [id_tipo_dato,tipodatoUpperCase]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                data: response.command,
+              });
+            })
+            .catch((err) => {
+              console.log(err)
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
       })
       .catch((err) => {
         client.release();
@@ -715,6 +783,54 @@ const postMark = async (req, res = response) => {
   });
 };
 
+const postDataType = async (req, res = response) => {
+  const { tipo_dato } = req.body;
+  const tipodatoUpperCase = tipo_dato.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM cat_tipo_dato WHERE upper(tipo_dato)=$1`, [
+        tipodatoUpperCase
+      ])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra el tipo de dato",
+          });
+        } else {
+          return client
+            .query(
+              `INSERT INTO cat_tipo_dato(tipo_dato)
+              VALUES($1)`,
+              [tipodatoUpperCase]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              console.log(err)
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
 
 
 module.exports = {
@@ -726,6 +842,7 @@ module.exports = {
   getBills,
   getCategories,
   getMarks,
+  getDataType,
   postStates,
   postContry,
   postStatus,
@@ -733,6 +850,7 @@ module.exports = {
   postCompany,
   postCategory,
   postMark,
+  postDataType,
   updateState,
   updateCountry,
   updateStatus,
@@ -740,6 +858,7 @@ module.exports = {
   updateCompany,
   updateCategory,
   updateMark,
+  updateDataType,
   activateCountry,
   activateState,
 };
