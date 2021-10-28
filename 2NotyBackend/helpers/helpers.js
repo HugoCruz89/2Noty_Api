@@ -51,20 +51,13 @@ const getDateNowCurrent = () => {
   // current seconds
   let seconds = date_ob.getSeconds();
 
+  // current miliseconds
+  let miliseconds = date_ob.getMilliseconds();
+
   // prints date in YYYY-MM-DD format
   // console.log(year + "-" + month + "-" + date);
-  const dateNow =
-    year +
-    "-" +
-    month +
-    "-" +
-    date +
-    "-" +
-    hours +
-    "-" +
-    minutes +
-    "-" +
-    seconds;
+  const dateNow = `${year}-${month}-${date}-${hours}-${minutes}-${seconds}-${miliseconds}`;
+
   return dateNow;
 };
 
@@ -74,11 +67,15 @@ const hashedPassword = async (password) => {
 };
 
 const buildPathToSaveDataBaseImage = (name) => {
-  return `${process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE}${getDateNowCurrent()}-${name}`;
+  return `${
+    process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
+  }${getDateNowCurrent()}-${name}`;
 };
 
 const buildPathToSaveServerImage = (name) => {
-  return `${process.env.PATH_SERVER_TO_SAVE_IMAGE}${getDateNowCurrent()}-${name}`;
+  return `${
+    process.env.PATH_SERVER_TO_SAVE_IMAGE
+  }${getDateNowCurrent()}-${name}`;
 };
 
 module.exports = {
