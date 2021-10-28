@@ -144,12 +144,20 @@ const postSubscription = async (req, res = response) => {
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   url_imagen = req.files.imagen;
   url_icono=req.files.icono;
-  uploadPath = `http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+  uploadPath = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
     url_imagen.name
   }`;
-  uploadPathIcono = `http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+  pathImage=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+    url_imagen.name
+  }`;
+
+  uploadPathIcono = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
     url_icono.name
   }`;
+  pathIcono=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+    url_icono.name
+  }`;
+
   // Use the mv() method to place the file somewhere on your server
   url_icono.mv(uploadPathIcono, function (err) {
     if (err)
