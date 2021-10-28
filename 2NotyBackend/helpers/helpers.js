@@ -74,15 +74,11 @@ const hashedPassword = async (password) => {
 };
 
 const buildPathToSaveDataBaseImage = (name) => {
-  return `${
-    process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
-  }${getDateNowCurrent()}-${name}`;
+  return `${process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE}${getDateNowCurrent()}-${name}`;
 };
 
 const buildPathToSaveServerImage = (name) => {
-  return `${
-    process.env.PATH_SERVER_TO_SAVE_IMAGE
-  }${getDateNowCurrent()}-${name}`;
+  return `${process.env.PATH_SERVER_TO_SAVE_IMAGE}${getDateNowCurrent()}-${name}`;
 };
 
 module.exports = {
