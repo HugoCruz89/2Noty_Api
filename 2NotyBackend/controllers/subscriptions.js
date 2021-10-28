@@ -147,14 +147,14 @@ const postSubscription = async (req, res = response) => {
   uploadPath = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
     url_imagen.name
   }`;
-  pathImage=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+  let pathImage=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
     url_imagen.name
   }`;
 
   uploadPathIcono = `/var/www/html/assets/img/subscription/${getDateNowCurrent()}-${
     url_icono.name
   }`;
-  pathIcono=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
+  let pathIcono=`http://3.136.19.219/assets/img/subscription/${getDateNowCurrent()}-${
     url_icono.name
   }`;
 
@@ -220,8 +220,8 @@ const postSubscription = async (req, res = response) => {
                     suscripcionUpperCase,
                     descripcionUpperCase,
                     id_estatus,
-                    urlImage,
-                    UrlIcono,
+                    pathImage,
+                    pathIcono,
                   ]
                 )
                 .then((response) => {
