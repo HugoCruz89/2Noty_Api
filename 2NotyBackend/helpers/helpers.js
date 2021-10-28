@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+require("dotenv").config();
+
 const getDateNow = () => {
   let date_ob = new Date();
 
@@ -70,4 +72,23 @@ const hashedPassword = async (password) => {
   let hashedPassword = await bcrypt.hash(password, 10);
   return hashedPassword;
 };
-module.exports = { getDateNow, hashedPassword, getDateNowCurrent };
+
+const buildPathToSaveDataBaseImage = (name) => {
+  return `${
+    process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
+  }${getDateNowCurrent()}-${name}`;
+};
+
+const buildPathToSaveServerImage = (name) => {
+  return `${
+    process.env.PATH_SERVER_TO_SAVE_IMAGE
+  }${getDateNowCurrent()}-${name}`;
+};
+
+module.exports = {
+  getDateNow,
+  hashedPassword,
+  getDateNowCurrent,
+  buildPathToSaveDataBaseImage,
+  buildPathToSaveServerImage,
+};
