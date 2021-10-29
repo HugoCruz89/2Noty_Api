@@ -95,4 +95,42 @@ const insertSubscription = async (data, pathImage, pathIcono) => {
   return databaseResponse;
 };
 
-module.exports = { existSubscrition, insertSubscription };
+const insertPropiedadesSuscripcion=async(data, idSubscription)=>{
+
+const {label,hidden,required,editable,type,name}=data
+const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.propiedades_suscripcion(
+            label, type, regex, hidden, id_suscripcion,required,editable,name)
+            VALUES ( $1, $2, $3, $4, $5, $6, $7, $8);`,
+        [
+            label,
+            type,
+          "",
+          hidden,
+          idSubscription,
+          required,
+          editable,
+          name
+        ]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+}
+
+module.exports = { existSubscrition, insertSubscription,insertPropiedadesSuscripcion };

@@ -7,6 +7,7 @@ const { pool } = require("./../dbCongif");
 const {
   existSubscrition,
   insertSubscription,
+  insertPropiedadesSuscripcion,
 } = require("./../DataBase/querys");
 const { response } = require("express");
 require("dotenv").config();
@@ -61,8 +62,6 @@ const getSubscriptionDetail = async (req, res = response) => {
   });
 };
 
-
-
 const postSubscription = async (req, res = response) => {
   const {
     id_pais,
@@ -70,16 +69,15 @@ const postSubscription = async (req, res = response) => {
     id_marca,
     id_categoria_suscripcion,
     suscripcion,
-    propiedadesSuscripcion    
+    propiedadesSuscripcion,
   } = req.body;
-  const suscripcionUpperCase = suscripcion.toUpperCase();
 
   const respuestaDatabase = await existSubscrition(
     id_pais,
     id_empresa,
     id_marca,
     id_categoria_suscripcion,
-    suscripcionUpperCase
+    suscripcion.toUpperCase()
   );
   if (respuestaDatabase.ok) {
     return res.status(200).send(respuestaDatabase);
@@ -122,6 +120,19 @@ const postSubscription = async (req, res = response) => {
       buildPathToSaveDataBaseImage(url_icono.name)
     );
     if (insertResponse.ok) {
+      //extraigo el id
+      const respuestaDatabase = await existSubscrition(
+        id_pais,
+        id_empresa,
+        id_marca,
+        id_categoria_suscripcion,
+        suscripcion.toUpperCase()
+      );
+      //inserto las propiedades
+      const Properties = JSON.parse(propiedadesSuscripcion);
+      Properties.map((item) => {
+        insertPropiedadesSuscripcion(item, respuestaDatabase.id_suscripcion);
+      });
       return res.status(201).json(insertResponse);
     } else {
       return res.status(400).json(insertResponse);
