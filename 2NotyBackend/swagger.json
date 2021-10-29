@@ -503,6 +503,12 @@
                     },
                     {
                         "in": "formData",
+                        "name": "propiedadesSuscripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
                         "name": "imagen",
                         "type": "file",
                         "description": ""
