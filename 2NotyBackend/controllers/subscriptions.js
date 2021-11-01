@@ -8,33 +8,19 @@ const {
   existSubscrition,
   insertSubscription,
   insertPropiedadesSuscripcion,
+  getAllSubscription,
 } = require("./../DataBase/querys");
 const { response } = require("express");
+// const { report } = require("../routes/subscritions");
 require("dotenv").config();
 
 const getSubscriptions = async (req, res = response) => {
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono
-        FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es
-        WHERE sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus;`
-      )
-      .then((response) => {
-        client.release();
-        res.status(200).json({
-          ok: true,
-          data: response.rows,
-        });
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
-          ok: false,
-          msg: err,
-        });
-      });
-  });
+  const getResponse = await getAllSubscription();
+  if (getResponse.ok) {
+    return res.status(201).json(getResponse);
+  } else {
+    return res.status(400).json(getResponse);
+  }
 };
 
 const getSubscriptionDetail = async (req, res = response) => {

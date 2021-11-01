@@ -913,17 +913,17 @@
                                     "example": true
                                 },
                                 "data": {
-                                    "type":"array",
-                                    "items":{
-                                        "type":"object",
-                                        "properties":{
-                                            "id_tipo_dato":{
-                                                "type":"integer",
-                                                "example":1
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_tipo_dato": {
+                                                "type": "integer",
+                                                "example": 1
                                             },
-                                            "tipo_dato":{
-                                                "type":"string",
-                                                "example":"Entero"
+                                            "tipo_dato": {
+                                                "type": "string",
+                                                "example": "Entero"
                                             }
                                         }
                                     }
@@ -1324,15 +1324,15 @@
                     "name": "2Noty",
                     "description": "object to send from client",
                     "schema": {
-                        "type":"object",
-                        "properties":{
-                            "id_tipo_pago":{
-                                "type":"intger",
-                                "example":1
+                        "type": "object",
+                        "properties": {
+                            "id_tipo_pago": {
+                                "type": "intger",
+                                "example": 1
                             },
-                            "tipo_dato":{
-                                "type":"string",
-                                "example":"Entero"
+                            "tipo_dato": {
+                                "type": "string",
+                                "example": "Entero"
                             }
                         }
                     }
@@ -2420,6 +2420,50 @@
                     "url_icono": {
                         "type": "string",
                         "example": "http://example"
+                    },
+                    "propertys": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id_suscripcion": {
+                                    "type": "intger",
+                                    "example": 1
+                                },
+                                "id_propiedad": {
+                                    "type": "intger",
+                                    "example": 1
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "example": "name label"
+                                },
+                                "type": {
+                                    "type": "intger",
+                                    "example": 1
+                                },
+                                "regex": {
+                                    "type": "string",
+                                    "example": ""
+                                },
+                                "hidden": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "required": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "editable": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "name_label"
+                                }
+                            }
+                        }
                     }
                 }
             }
