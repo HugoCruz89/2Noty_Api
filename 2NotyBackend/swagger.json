@@ -2478,14 +2478,6 @@
                         "items": {
                             "type": "object",
                             "properties": {
-                                "id_suscripcion": {
-                                    "type": "intger",
-                                    "example": 1
-                                },
-                                "id_propiedad": {
-                                    "type": "intger",
-                                    "example": 1
-                                },
                                 "label": {
                                     "type": "string",
                                     "example": "name label"
@@ -2493,10 +2485,6 @@
                                 "type": {
                                     "type": "intger",
                                     "example": 1
-                                },
-                                "regex": {
-                                    "type": "string",
-                                    "example": ""
                                 },
                                 "hidden": {
                                     "type": "boolean",
