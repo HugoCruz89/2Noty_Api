@@ -147,7 +147,9 @@ const getAllSubscription = async () => {
         if (response.rows.length > 0) {
 
           response.rows.forEach((val) => {
-            if (data[data.length - 1]?.id_suscripcion !== val.id_suscripcion) {
+            if (data.length <= 0)
+              data.push(val);
+            else if (data[data.length - 1].id_suscripcion !== val.id_suscripcion) {
               data.push(val);
             }
           })
@@ -157,8 +159,8 @@ const getAllSubscription = async () => {
             auxArray.map((item) => {
               arr.push({
                 id_suscripcion: item.id_suscripcion,
-                id_propiedad: item.id_propiedad, 
-                label: item.label, 
+                id_propiedad: item.id_propiedad,
+                label: item.label,
                 type: item.type,
                 regex: item.regex,
                 hidden: item.hidden,
@@ -185,6 +187,7 @@ const getAllSubscription = async () => {
         };
       })
       .catch((err) => {
+        console.log(err)
         client.release();
         return {
           ok: false,
