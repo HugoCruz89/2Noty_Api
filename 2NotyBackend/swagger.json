@@ -2483,8 +2483,8 @@
                                     "example": "name label"
                                 },
                                 "type": {
-                                    "type": "intger",
-                                    "example": 1
+                                    "type": "string",
+                                    "example": "TEXTO"
                                 },
                                 "hidden": {
                                     "type": "boolean",
