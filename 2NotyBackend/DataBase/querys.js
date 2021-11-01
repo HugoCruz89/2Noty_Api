@@ -1,5 +1,6 @@
 // this file, help you to call some querys
 const { pool } = require("./../dbCongif");
+const { groupList } = require("./../helpers/helpers");
 const existSubscrition = async (
   id_pais,
   id_empresa,
@@ -221,6 +222,8 @@ const getAllSubscription = async () => {
         // client.release();
         let data = [];
         if (response.rows.length > 0) {
+        
+         // groupList(response.rows)
           response.rows.forEach((val) => {
             if (data.length <= 0) data.push(val);
             else if (
@@ -265,7 +268,6 @@ const getAllSubscription = async () => {
         };
       })
       .catch((err) => {
-        console.log(err);
         client.release();
         return {
           ok: false,
@@ -273,7 +275,7 @@ const getAllSubscription = async () => {
         };
       });
   });
-  return databaseResponse;
+  return dataBaseResponse;
 };
 
 module.exports = {

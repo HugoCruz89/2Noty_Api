@@ -41,4 +41,5 @@ const SendEmail = async (body, email, title, subject) => {
 
 };
 
+
 module.exports = { SendEmail };

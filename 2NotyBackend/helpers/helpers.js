@@ -78,10 +78,26 @@ const buildPathToSaveServerImage = (name) => {
   }${getDateNowCurrent()}-${name}`;
 };
 
+
+const groupList=(item)=>{
+  let group = item.reduce((r, a) => {
+    r[a.id_suscripcion] = [...r[a.id_suscripcion] || [], a];
+    return r;
+   }, {});
+
+  //  const ListaArreglada= group.map((item,key)=>{
+  //    console.log(item)
+  //    console.log('key',key)
+  //  })
+   console.log('group',group)
+}
+
+
 module.exports = {
   getDateNow,
   hashedPassword,
   getDateNowCurrent,
   buildPathToSaveDataBaseImage,
   buildPathToSaveServerImage,
+  groupList
 };
