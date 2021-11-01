@@ -80,7 +80,7 @@ const insertToken = async (req, res = response) => {
   if (tokenAuth) {
     jwt.verify(tokenAuth, config.llave, async (err, decoded) => {
       if (err) {
-        return res.status(401).json({
+        return res.status(200).json({
           ok: false,
           msg: "Token inválida",
         });
