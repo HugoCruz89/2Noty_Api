@@ -1,5 +1,6 @@
 // this file, help you to call some querys
 const { pool } = require("./../dbCongif");
+const { groupList } = require("./../helpers/helpers");
 const existSubscrition = async (
   id_pais,
   id_empresa,
@@ -96,24 +97,14 @@ const insertSubscription = async (data, pathImage, pathIcono) => {
 };
 
 const insertPropiedadesSuscripcion = async (data, idSubscription) => {
-
-  const { label, hidden, required, editable, type, name } = data
+  const { label, hidden, required, editable, type, name } = data;
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.propiedades_suscripcion(
             label, type, regex, hidden, id_suscripcion,required,editable,name)
             VALUES ( $1, $2, $3, $4, $5, $6, $7, $8);`,
-        [
-          label,
-          type,
-          "",
-          hidden,
-          idSubscription,
-          required,
-          editable,
-          name
-        ]
+        [label, type, "", hidden, idSubscription, required, editable, name]
       )
       .then((response) => {
         client.release();
@@ -131,7 +122,93 @@ const insertPropiedadesSuscripcion = async (data, idSubscription) => {
       });
   });
   return databaseResponse;
-}
+};
+
+const insertTokenToPushNotification = async (idTItular, platform, token) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.token_notificaciones(
+            id_usuario, token, plataforma)
+            VALUES ( $1, $2, $3);`,
+        [idTItular, token, platform]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const updateTokenToPushNotification = async (idTItular, platform, token) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE public.token_notificaciones SET token=$3, plataforma=$2 WHERE id_usuario=$1`,
+        [idTItular, platform, token]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const existTokenNotification = async (idTItular) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM token_notificaciones WHERE id_usuario=$1`, [
+        idTItular,
+      ])
+      .then((response) => {
+        client.release();
+        if (response.rows.length > 0) {
+          const obj = {
+            ok: true,
+            msg: "Ya se encuentra en BD la token",
+            id_suscripcion: response.rows[0].id_usuario,
+          };
+          return obj;
+        } else {
+          const obj = {
+            ok: false,
+            msg: "No se encontro ningua suscripcion",
+          };
+          return obj;
+        }
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
 
 const getAllSubscription = async () => {
   const dataBaseResponse = await pool.connect().then((client) => {
@@ -143,19 +220,23 @@ const getAllSubscription = async () => {
       )
       .then((response) => {
         // client.release();
-        let data = []
+        let data = [];
         if (response.rows.length > 0) {
-
+        
+         // groupList(response.rows)
           response.rows.forEach((val) => {
-            if (data.length <= 0)
-              data.push(val);
-            else if (data[data.length - 1].id_suscripcion !== val.id_suscripcion) {
+            if (data.length <= 0) data.push(val);
+            else if (
+              data[data.length - 1].id_suscripcion !== val.id_suscripcion
+            ) {
               data.push(val);
             }
-          })
+          });
           data.forEach((Element) => {
-            const auxArray = response.rows.filter(x => x.id_suscripcion === Element.id_suscripcion);
-            let arr = []
+            const auxArray = response.rows.filter(
+              (x) => x.id_suscripcion === Element.id_suscripcion
+            );
+            let arr = [];
             auxArray.map((item) => {
               arr.push({
                 id_suscripcion: item.id_suscripcion,
@@ -166,28 +247,27 @@ const getAllSubscription = async () => {
                 hidden: item.hidden,
                 required: item.required,
                 editable: item.editable,
-                name: item.name
-              })
-              Element.propertys = arr
-            })
-            delete Element.id_propiedad
-            delete Element.label
-            delete Element.type
-            delete Element.regex
-            delete Element.hidden
-            delete Element.required
-            delete Element.editable
-            delete Element.name
-          })
+                name: item.name,
+              });
+              Element.propertys = arr;
+            });
+            delete Element.id_propiedad;
+            delete Element.label;
+            delete Element.type;
+            delete Element.regex;
+            delete Element.hidden;
+            delete Element.required;
+            delete Element.editable;
+            delete Element.name;
+          });
         }
 
         return {
           ok: true,
-          data
+          data,
         };
       })
       .catch((err) => {
-        console.log(err)
         client.release();
         return {
           ok: false,
@@ -195,7 +275,15 @@ const getAllSubscription = async () => {
         };
       });
   });
-
   return dataBaseResponse;
-}
-module.exports = { existSubscrition, insertSubscription, insertPropiedadesSuscripcion, getAllSubscription };
+};
+
+module.exports = {
+  existSubscrition,
+  insertSubscription,
+  insertPropiedadesSuscripcion,
+  insertTokenToPushNotification,
+  existTokenNotification,
+  updateTokenToPushNotification,
+  getAllSubscription,
+};
