@@ -222,16 +222,15 @@ const getAllSubscription = async () => {
         // client.release();
         let data = [];
         if (response.rows.length > 0) {
-        
-         // groupList(response.rows)
-          response.rows.forEach((val) => {
-            if (data.length <= 0) data.push(val);
-            else if (
-              data[data.length - 1].id_suscripcion !== val.id_suscripcion
-            ) {
-              data.push(val);
+
+          // groupList(response.rows)
+          data = response.rows.reduce((acc, item) => {
+            if (!acc.find(x => x.id_suscripcion === item.id_suscripcion)) {
+              acc.push(item);
             }
-          });
+            return acc;
+          }, [])
+         
           data.forEach((Element) => {
             const auxArray = response.rows.filter(
               (x) => x.id_suscripcion === Element.id_suscripcion
@@ -239,11 +238,8 @@ const getAllSubscription = async () => {
             let arr = [];
             auxArray.map((item) => {
               arr.push({
-                id_suscripcion: item.id_suscripcion,
-                id_propiedad: item.id_propiedad,
                 label: item.label,
                 type: item.type,
-                regex: item.regex,
                 hidden: item.hidden,
                 required: item.required,
                 editable: item.editable,
