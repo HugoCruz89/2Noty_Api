@@ -240,7 +240,7 @@ const getAllSubscription = async () => {
             auxArray.map((item) => {
               arr.push({
                 label: item.label,
-                type: item.type,
+                type: item.type.toLowerCase(),
                 hidden: item.hidden,
                 required: item.required,
                 editable: item.editable,
