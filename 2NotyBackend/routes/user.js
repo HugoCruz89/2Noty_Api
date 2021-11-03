@@ -7,7 +7,6 @@ const { check } = require("express-validator");
 const {
   getUser,
   postUser,
-  getPaymentsByUser,
   updateUser,
 } = require("../controllers/user");
 router.get("/", getUser);
@@ -20,5 +19,4 @@ router.post(
   postUser
 );
 router.put("/updateUser", updateUser);
-router.get("/getPaymentsByUser", getPaymentsByUser);
 module.exports = router;
