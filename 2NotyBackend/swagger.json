@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "3.136.19.219:4000",
+    "host": "localhost:4000",
     "basePath": "/",
     "tags": [{
             "name": "Auth",
@@ -1025,6 +1025,59 @@
                 }
             }
         },
+        "/api/payment/getCustomersPayments": {
+            "get": {
+                "operationId": "getCustomersPayments",
+                "tags": ["Payment"],
+                "summary": "Get All CustomersPayments",
+                "description": "Get All CustomersPayments",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CustomersPayments"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment/getUsersPayments": {
+            "get": {
+                "operationId": "getUsersPayments",
+                "tags": ["Payment"],
+                "summary": "Get All UsersPayments",
+                "description": "Get All UsersPayments",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/UsersPayments"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/payment/updatePaymentType": {
             "put": {
                 "operationId": "updateTypepay",
@@ -2624,6 +2677,90 @@
                     "tipo_dato": {
                         "type": "string",
                         "example": "Entero"
+                    }
+                }
+            }
+        },
+        "CustomersPayments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_pago_cliente": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "monto_pago": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "periodo": {
+                        "type": "string",
+                        "example": "Marzo_Abril"
+                    },
+                    "fecha_pago": {
+                        "type": "string",
+                        "example": "10/10/2021"
+                    },
+                    "id_factura": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_tipo_pago": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "Mensual"
+                    }
+                }
+            }
+        },
+        "UsersPayments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_pago_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_medio_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "monto_pago": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "fecha_pago": {
+                        "type": "string",
+                        "example": "01/01/1990"
+                    },
+                    "id_estatus": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
                     }
                 }
             }

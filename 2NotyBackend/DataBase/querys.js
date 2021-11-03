@@ -220,7 +220,7 @@ const getAllSubscription = async () => {
         WHERE sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion = ps.id_suscripcion;`
       )
       .then((response) => {
-        // client.release();
+        client.release();
         let data = [];
         if (response.rows.length > 0) {
 

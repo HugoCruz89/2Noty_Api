@@ -164,9 +164,61 @@ const postPaymentMethod = async (req, res = response) => {
       });
   });
 };
+
+const getUsersPayments = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT pu.id_pago_usuario,pu.id_usuario,u.nombre,pu.id_medio_pago,pu.monto_pago,to_char(pu.fecha_pago,'DD/MM/YYYY')as fecha_pago,pu.id_estatus,e.estatus
+        FROM pagos_usuarios pu, usuarios u, medios_pago mp, estatus e
+        WHERE pu.id_usuario=u.id_usuario AND pu.id_medio_pago=mp.id_medio_pago AND pu.id_estatus=e.id_estatus;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const getCustomersPayments = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT pc.id_pago_cliente,pc.id_empresa,em.empresa,pc.monto_pago,pc.periodo,to_char(pc.fecha_pago,'DD/MM/YYYY')as fecha_pago,pc.id_factura,pc.id_tipo_pago,tp.tipo_pago
+        FROM pagos_clientes pc, empresas em, tipo_pago tp
+        WHERE pc.id_empresa=em.id_empresa AND pc.id_tipo_pago=tp.id_tipo_pago;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 module.exports = {
   getPaymentTypes,
   getPaymentMethod,
+  getUsersPayments,
+  getCustomersPayments,
   updatePaymentType,
   postPaymentType,
   postPaymentMethod,
