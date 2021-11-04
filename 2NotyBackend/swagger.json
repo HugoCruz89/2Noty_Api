@@ -80,6 +80,292 @@
                 }
             }
         },
+        "/api/notifications/typeNotification": {
+            "get": {
+                "operationId": "typeNotification",
+                "tags": ["Notifications"],
+                "summary": "Get All Type Notification",
+                "description": "Get All Type Notification",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_tipo_notificacion": {
+                                                "type": "integer",
+                                                "exmaple": 1
+                                            },
+                                            "tipo_notificacion": {
+                                                "type": "string",
+                                                "exmaple": "Example"
+                                            },
+                                            "id_estatus": {
+                                                "type": "integer",
+                                                "exmaple": 1
+                                            },
+                                            "estatus": {
+                                                "type": "string",
+                                                "example": "Activo"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/insertTypeNotification": {
+            "post": {
+                "operationId": "inertTypeNotification",
+                "tags": ["Notifications"],
+                "summary": "insert a TypeNotification",
+                "description": "insert a TypeNotification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_notificacion": {
+                                "type": "string",
+                                "exmaple": "Example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "exmaple": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/updateTypeNotification": {
+            "put": {
+                "operationId": "updateTypeNotification",
+                "tags": ["Notifications"],
+                "summary": "update a TypeNotification",
+                "description": "Update a TypeNotification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "exmaple": 1
+                            },
+                            "tipo_notificacion": {
+                                "type": "string",
+                                "exmaple": "Example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "exmaple": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications": {
+            "get": {
+                "operationId": "notifications",
+                "tags": ["Notifications"],
+                "summary": "Get All Notifications",
+                "description": "Get All Notifications",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Notifications"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/insertNotification": {
+            "post": {
+                "operationId": "inertNotification",
+                "tags": ["Notifications"],
+                "summary": "insert a Notification",
+                "description": "insert a Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "notificacion": {
+                                "type": "string",
+                                "example": "Descripción"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/updateNotification": {
+            "put": {
+                "operationId": "updateNotification",
+                "tags": ["Notifications"],
+                "summary": "update a Notification",
+                "description": "Update a Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "notificacion": {
+                                "type": "string",
+                                "example": "Descripción"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/auth": {
             "post": {
                 "operationId": "login",
@@ -2761,6 +3047,54 @@
                     "estatus": {
                         "type": "string",
                         "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Notifications": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_notificacion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Telmex"
+                    },
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "Claro"
+                    },
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "id_tipo_notificacion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tipo_notificacion": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "notificacion": {
+                        "type": "string",
+                        "example": "Descripción"
                     }
                 }
             }
