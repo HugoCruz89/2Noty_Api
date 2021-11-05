@@ -9,7 +9,7 @@ const {
   postUser,
   updateUser,
 } = require("../controllers/user");
-router.get("/", getUser);
+router.get("/:id", getUser);
 router.post(
   "/insertUser",
   [

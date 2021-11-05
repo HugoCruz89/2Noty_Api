@@ -13,7 +13,7 @@ const {
 } = require("./../DataBase/querys");
 
 const sendNotification = async (req, res = response) => {
-  const { body } = req.body;
+  const { title, body } = req.body;
   var topics = "weather";
   var registrationToken =
     "fyMOucp1IEpNoEdF-avTyd:APA91bGr574OqhR0RsprtvwdO86mXn1AQDWqquo0mHqa2dHQkVB31ImsC4hay1sTRji1Y_no-wBYzHRT1k8h5khiU-uOKd1ufK7ipUa2DT6atu8g99NRGnFCzy5h0g3y848jpkgO_qGn";
@@ -22,8 +22,8 @@ const sendNotification = async (req, res = response) => {
 
   const message = {
     notification: {
-      title: "`$FooCorp` up 1.43% on the day",
-      body: "FooCorp gained 11.80 points to close at 835.67, up 1.43% on the day.",
+      title,
+      body
     },
     android: {
       notification: {
@@ -64,15 +64,20 @@ const sendNotification = async (req, res = response) => {
     .send(message)
     .then((response) => {
       console.log("successfuly sent message:", response);
+      res.status(200).json({
+        ok: true,
+        msg: "send",
+      });
     })
     .catch((error) => {
       console.log("error sending message:", error);
+      res.status(400).json({
+        ok: false,
+        msg: error,
+      });
     });
 
-  res.status(200).json({
-    ok: true,
-    msg: "test",
-  });
+
 };
 const insertToken = async (req, res = response) => {
   const tokenAuth = req.headers["access-token"];
@@ -205,12 +210,14 @@ const updateTypeNotification = async (req, res = response) => {
 };
 
 const getNotification = async (req, res = response) => {
+  const idNotification = req.params.id;
+  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_notificacion=${idNotification}`;
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.notificacion
+        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.notificacion,n.titulo
         FROM notificaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
-        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion;`
+        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
       )
       .then((response) => {
         client.release();
@@ -230,14 +237,14 @@ const getNotification = async (req, res = response) => {
 };
 
 const postNotification = async (req, res = response) => {
-  const { id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion } = req.body;
+  const { id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
   pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.notificaciones(
-          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion)
+          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
           VALUES ($1, $2, $3, $4, $5);`,
-        [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion]
+        [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
       )
       .then((response) => {
         client.release();
@@ -257,14 +264,14 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const {id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion } = req.body;
+  const { id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
   pool.connect().then((client) => {
     return client
       .query(
         `UPDATE public.notificaciones
-        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
         WHERE id_notificacion=$1;`,
-        [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion ]
+        [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
       )
       .then((response) => {
         client.release();

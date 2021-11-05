@@ -80,6 +80,51 @@
                 }
             }
         },
+        "/api/notifications/sendNotification": {
+            "post": {
+                "operationId": "sendNotification",
+                "tags": ["Notifications"],
+                "summary": "Send Notification",
+                "description": "Send Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "example": "Titulo"
+                            },
+                            "body": {
+                                "type": "string",
+                                "example": "Mensaje"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "send"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/notifications/typeNotification": {
             "get": {
                 "operationId": "typeNotification",
@@ -104,15 +149,15 @@
                                         "properties": {
                                             "id_tipo_notificacion": {
                                                 "type": "integer",
-                                                "exmaple": 1
+                                                "example": 1
                                             },
                                             "tipo_notificacion": {
                                                 "type": "string",
-                                                "exmaple": "Example"
+                                                "example": "Example"
                                             },
                                             "id_estatus": {
                                                 "type": "integer",
-                                                "exmaple": 1
+                                                "example": 1
                                             },
                                             "estatus": {
                                                 "type": "string",
@@ -143,11 +188,11 @@
                         "properties": {
                             "tipo_notificacion": {
                                 "type": "string",
-                                "exmaple": "Example"
+                                "example": "Example"
                             },
                             "id_estatus": {
                                 "type": "integer",
-                                "exmaple": 1
+                                "example": 1
                             }
                         }
                     }
@@ -188,15 +233,15 @@
                         "properties": {
                             "id_tipo_notificacion": {
                                 "type": "integer",
-                                "exmaple": 1
+                                "example": 1
                             },
                             "tipo_notificacion": {
                                 "type": "string",
-                                "exmaple": "Example"
+                                "example": "Example"
                             },
                             "id_estatus": {
                                 "type": "integer",
-                                "exmaple": 1
+                                "example": 1
                             }
                         }
                     }
@@ -221,13 +266,21 @@
                 }
             }
         },
-        "/api/notifications": {
+        "/api/notifications/{id}": {
             "get": {
                 "operationId": "notifications",
                 "tags": ["Notifications"],
                 "summary": "Get All Notifications",
                 "description": "Get All Notifications",
                 "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de notificación"
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -280,6 +333,10 @@
                             "notificacion": {
                                 "type": "string",
                                 "example": "Descripción"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo"
                             }
                         }
                     }
@@ -341,6 +398,10 @@
                             "notificacion": {
                                 "type": "string",
                                 "example": "Descripción"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo"
                             }
                         }
                     }
@@ -580,13 +641,21 @@
                 }
             }
         },
-        "/api/user": {
+        "/api/user/{id}": {
             "get": {
                 "operationId": "getUsers",
                 "tags": ["User"],
                 "summary": "Get All Users",
                 "description": "Get All Users",
                 "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de usuario"
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -3095,6 +3164,10 @@
                     "notificacion": {
                         "type": "string",
                         "example": "Descripción"
+                    },
+                    "titulo": {
+                        "type": "string",
+                        "example": "Titulo"
                     }
                 }
             }

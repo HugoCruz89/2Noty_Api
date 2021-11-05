@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
 
 const getUser = async (req, res = response) => {
+  const idUsuario = req.params.id;
+  const aux = (idUsuario === 'undefined' || idUsuario === '{id}') ? '' : `AND u.id_usuario=${idUsuario}`;
   pool.connect().then((client) => {
     return client
       .query(
         `select u.id_usuario, u.nombre,u.correo,to_char(u.fecha_registro,'DD/MM/YYYY')as fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
         from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
-        where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil
+        where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil ${aux}
         order by 1;`
       )
       .then((response) => {

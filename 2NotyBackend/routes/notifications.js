@@ -9,7 +9,7 @@ router.get("/typeNotification",getTypeNotification);
 router.post("/insertTypeNotification", postTypeNotification);
 router.put("/updateTypeNotification", updateTypeNotification);
 
-router.get("/",getNotification);
+router.get("/:id",getNotification);
 router.post("/insertNotification",postNotification);
 router.put("/updateNotification",updateNotification);
 
