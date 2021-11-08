@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
 
 const getUser = async (req, res = response) => {
+  const idUsuario = req.params.id;
+  const aux = (idUsuario === 'undefined' || idUsuario === '{id}') ? '' : `AND u.id_usuario=${idUsuario}`;
   pool.connect().then((client) => {
     return client
       .query(
-        `select u.id_usuario, u.nombre,u.correo,u.fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
+        `select u.id_usuario, u.nombre,u.correo,to_char(u.fecha_registro,'DD/MM/YYYY')as fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
         from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
-        where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil
+        where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil ${aux}
         order by 1;`
       )
       .then((response) => {
@@ -134,33 +136,9 @@ const updateUser = async (req, res = response) => {
       });
   });
 };
-const getPaymentsByUser = async (req, res = response) => {
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `SELECT pu.id_pago_usuario,pu.id_usuario,u.nombre,pu.id_medio_pago,pu.monto_pago, to_char((pu.fecha_pago),'DD/MM/YYYY')as fecha_pago,pu.id_estatus,e.estatus
-        FROM pagos_usuarios pu,usuarios u, medios_pago mp, estatus e
-        WHERE pu.id_usuario=u.id_usuario AND pu.id_medio_pago=mp.id_medio_pago AND pu.id_estatus=e.id_estatus;`
-      )
-      .then((response) => {
-        client.release();
-        res.status(200).json({
-          ok: true,
-          data: response.rows,
-        });
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
-          ok: false,
-          msg: err,
-        });
-      });
-  });
-};
+
 module.exports = {
   getUser,
   postUser,
-  getPaymentsByUser,
   updateUser,
 };

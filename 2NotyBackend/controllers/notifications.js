@@ -1,5 +1,6 @@
 var admin = require("firebase-admin");
 var serviceAccount = require("./../serviceAccountKey.json");
+const { pool } = require("../dbCongif");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -12,7 +13,7 @@ const {
 } = require("./../DataBase/querys");
 
 const sendNotification = async (req, res = response) => {
-  const { body } = req.body;
+  const { title, body } = req.body;
   var topics = "weather";
   var registrationToken =
     "fyMOucp1IEpNoEdF-avTyd:APA91bGr574OqhR0RsprtvwdO86mXn1AQDWqquo0mHqa2dHQkVB31ImsC4hay1sTRji1Y_no-wBYzHRT1k8h5khiU-uOKd1ufK7ipUa2DT6atu8g99NRGnFCzy5h0g3y848jpkgO_qGn";
@@ -21,8 +22,8 @@ const sendNotification = async (req, res = response) => {
 
   const message = {
     notification: {
-      title: "`$FooCorp` up 1.43% on the day",
-      body: "FooCorp gained 11.80 points to close at 835.67, up 1.43% on the day.",
+      title,
+      body
     },
     android: {
       notification: {
@@ -63,15 +64,20 @@ const sendNotification = async (req, res = response) => {
     .send(message)
     .then((response) => {
       console.log("successfuly sent message:", response);
+      res.status(200).json({
+        ok: true,
+        msg: "send",
+      });
     })
     .catch((error) => {
       console.log("error sending message:", error);
+      res.status(400).json({
+        ok: false,
+        msg: error,
+      });
     });
 
-  res.status(200).json({
-    ok: true,
-    msg: "test",
-  });
+
 };
 const insertToken = async (req, res = response) => {
   const tokenAuth = req.headers["access-token"];
@@ -103,7 +109,194 @@ const insertToken = async (req, res = response) => {
   }
 };
 
+const getTypeNotification = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT tn.*,e.estatus FROM tipo_notificacion tn, estatus e
+        WHERE tn.id_estatus=e.id_estatus;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const postTypeNotification = async (req, res = response) => {
+  const { tipo_notificacion, id_estatus } = req.body;
+  const tiponotificacionUpper = tipo_notificacion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM tipo_notificacion WHERE UPPER(tipo_notificacion)=$1`, [
+        tiponotificacionUpper,
+      ])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya existe el tipo de notificación",
+          });
+        } else {
+          return client
+            .query(
+              `INSERT INTO tipo_notificacion (
+                tipo_notificacion, id_estatus)
+                VALUES ($1, $2);`,
+              [tiponotificacionUpper, id_estatus]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const updateTypeNotification = async (req, res = response) => {
+  const { id_tipo_notificacion, tipo_notificacion, id_estatus } = req.body;
+  const tiponotificacionUpper = tipo_notificacion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE tipo_notificacion
+        SET tipo_notificacion=$2, id_estatus=$3
+        WHERE id_tipo_notificacion=$1;`,
+        [id_tipo_notificacion, tiponotificacionUpper, id_estatus]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const getNotification = async (req, res = response) => {
+  const idNotification = req.params.id;
+  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_notificacion=${idNotification}`;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.notificacion,n.titulo
+        FROM notificaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
+        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const postNotification = async (req, res = response) => {
+  const { id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.notificaciones(
+          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
+          VALUES ($1, $2, $3, $4, $5);`,
+        [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          msg: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const updateNotification = async (req, res = response) => {
+  const { id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE public.notificaciones
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
+        WHERE id_notificacion=$1;`,
+        [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
 module.exports = {
   sendNotification,
   insertToken,
+  getTypeNotification,
+  postTypeNotification,
+  updateTypeNotification,
+  getNotification,
+  postNotification,
+  updateNotification
 };

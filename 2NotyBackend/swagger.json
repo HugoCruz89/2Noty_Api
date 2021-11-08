@@ -80,6 +80,353 @@
                 }
             }
         },
+        "/api/notifications/sendNotification": {
+            "post": {
+                "operationId": "sendNotification",
+                "tags": ["Notifications"],
+                "summary": "Send Notification",
+                "description": "Send Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "example": "Titulo"
+                            },
+                            "body": {
+                                "type": "string",
+                                "example": "Mensaje"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "send"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/typeNotification": {
+            "get": {
+                "operationId": "typeNotification",
+                "tags": ["Notifications"],
+                "summary": "Get All Type Notification",
+                "description": "Get All Type Notification",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_tipo_notificacion": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "tipo_notificacion": {
+                                                "type": "string",
+                                                "example": "Example"
+                                            },
+                                            "id_estatus": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "estatus": {
+                                                "type": "string",
+                                                "example": "Activo"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/insertTypeNotification": {
+            "post": {
+                "operationId": "inertTypeNotification",
+                "tags": ["Notifications"],
+                "summary": "insert a TypeNotification",
+                "description": "insert a TypeNotification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "tipo_notificacion": {
+                                "type": "string",
+                                "example": "Example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/updateTypeNotification": {
+            "put": {
+                "operationId": "updateTypeNotification",
+                "tags": ["Notifications"],
+                "summary": "update a TypeNotification",
+                "description": "Update a TypeNotification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "tipo_notificacion": {
+                                "type": "string",
+                                "example": "Example"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/{id}": {
+            "get": {
+                "operationId": "notifications",
+                "tags": ["Notifications"],
+                "summary": "Get All Notifications",
+                "description": "Get All Notifications",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de notificación"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Notifications"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/insertNotification": {
+            "post": {
+                "operationId": "inertNotification",
+                "tags": ["Notifications"],
+                "summary": "insert a Notification",
+                "description": "insert a Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "notificacion": {
+                                "type": "string",
+                                "example": "Descripción"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/updateNotification": {
+            "put": {
+                "operationId": "updateNotification",
+                "tags": ["Notifications"],
+                "summary": "update a Notification",
+                "description": "Update a Notification",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_empresa": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_marca": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_suscripcion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_tipo_notificacion": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "notificacion": {
+                                "type": "string",
+                                "example": "Descripción"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/auth": {
             "post": {
                 "operationId": "login",
@@ -294,13 +641,21 @@
                 }
             }
         },
-        "/api/user": {
+        "/api/user/{id}": {
             "get": {
                 "operationId": "getUsers",
                 "tags": ["User"],
                 "summary": "Get All Users",
                 "description": "Get All Users",
                 "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de usuario"
+                }],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -1025,6 +1380,59 @@
                 }
             }
         },
+        "/api/payment/getCustomersPayments": {
+            "get": {
+                "operationId": "getCustomersPayments",
+                "tags": ["Payment"],
+                "summary": "Get All CustomersPayments",
+                "description": "Get All CustomersPayments",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CustomersPayments"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment/getUsersPayments": {
+            "get": {
+                "operationId": "getUsersPayments",
+                "tags": ["Payment"],
+                "summary": "Get All UsersPayments",
+                "description": "Get All UsersPayments",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/UsersPayments"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/payment/updatePaymentType": {
             "put": {
                 "operationId": "updateTypepay",
@@ -2478,25 +2886,13 @@
                         "items": {
                             "type": "object",
                             "properties": {
-                                "id_suscripcion": {
-                                    "type": "intger",
-                                    "example": 1
-                                },
-                                "id_propiedad": {
-                                    "type": "intger",
-                                    "example": 1
-                                },
                                 "label": {
                                     "type": "string",
                                     "example": "name label"
                                 },
                                 "type": {
-                                    "type": "intger",
-                                    "example": 1
-                                },
-                                "regex": {
                                     "type": "string",
-                                    "example": ""
+                                    "example": "TEXTO"
                                 },
                                 "hidden": {
                                     "type": "boolean",
@@ -2636,6 +3032,142 @@
                     "tipo_dato": {
                         "type": "string",
                         "example": "Entero"
+                    }
+                }
+            }
+        },
+        "CustomersPayments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_pago_cliente": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "monto_pago": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "periodo": {
+                        "type": "string",
+                        "example": "Marzo_Abril"
+                    },
+                    "fecha_pago": {
+                        "type": "string",
+                        "example": "10/10/2021"
+                    },
+                    "id_factura": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_tipo_pago": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tipo_pago": {
+                        "type": "string",
+                        "example": "Mensual"
+                    }
+                }
+            }
+        },
+        "UsersPayments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_pago_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "id_usuario": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Irineo"
+                    },
+                    "id_medio_pago": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "monto_pago": {
+                        "type": "string",
+                        "example": "$5000"
+                    },
+                    "fecha_pago": {
+                        "type": "string",
+                        "example": "01/01/1990"
+                    },
+                    "id_estatus": {
+                        "type": "intger",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "Activo"
+                    }
+                }
+            }
+        },
+        "Notifications": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_notificacion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "empresa": {
+                        "type": "string",
+                        "example": "Telmex"
+                    },
+                    "id_marca": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "marca": {
+                        "type": "string",
+                        "example": "Claro"
+                    },
+                    "id_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "suscripcion": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "id_tipo_notificacion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tipo_notificacion": {
+                        "type": "string",
+                        "example": "Example"
+                    },
+                    "notificacion": {
+                        "type": "string",
+                        "example": "Descripción"
+                    },
+                    "titulo": {
+                        "type": "string",
+                        "example": "Titulo"
                     }
                 }
             }

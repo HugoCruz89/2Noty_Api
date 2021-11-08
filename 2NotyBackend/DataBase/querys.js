@@ -214,24 +214,24 @@ const getAllSubscription = async () => {
   const dataBaseResponse = await pool.connect().then((client) => {
     return client
       .query(
-        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,ps.*
+        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
+        ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type
         FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es, propiedades_suscripcion ps
         WHERE sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion = ps.id_suscripcion;`
       )
       .then((response) => {
-        // client.release();
+        client.release();
         let data = [];
         if (response.rows.length > 0) {
-        
-         // groupList(response.rows)
-          response.rows.forEach((val) => {
-            if (data.length <= 0) data.push(val);
-            else if (
-              data[data.length - 1].id_suscripcion !== val.id_suscripcion
-            ) {
-              data.push(val);
+
+          // groupList(response.rows)
+          data = response.rows.reduce((acc, item) => {
+            if (!acc.find(x => x.id_suscripcion === item.id_suscripcion)) {
+              acc.push(item);
             }
-          });
+            return acc;
+          }, [])
+         
           data.forEach((Element) => {
             const auxArray = response.rows.filter(
               (x) => x.id_suscripcion === Element.id_suscripcion
@@ -239,11 +239,8 @@ const getAllSubscription = async () => {
             let arr = [];
             auxArray.map((item) => {
               arr.push({
-                id_suscripcion: item.id_suscripcion,
-                id_propiedad: item.id_propiedad,
                 label: item.label,
-                type: item.type,
-                regex: item.regex,
+                type: item.type.toLowerCase(),
                 hidden: item.hidden,
                 required: item.required,
                 editable: item.editable,
