@@ -92,7 +92,7 @@ const insertToken = async (req, res = response) => {
         respuestaDatabase = respuestaDatabase.ok
           ? await updateTokenToPushNotification(decoded.id_usuario, platform, token)
           : await insertTokenToPushNotification(decoded.id_usuario, platform, token);
-        return res.status(200).send(respuestaDatabase);
+        return res.status(201).send(respuestaDatabase);
       }
     });
   } else {
