@@ -119,7 +119,7 @@ const login = (req, res = response) => {
           }
           if (isMatch) {
             const token = jwt.sign(user, config.llave, {
-              expiresIn: 1440,
+              // expiresIn: 1440,
             });
             res.status(200).json({
               ok: true,
