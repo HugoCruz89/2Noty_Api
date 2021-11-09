@@ -3,7 +3,9 @@ Rutas para Notificaciones
 host + /api/notifications
  */
 const router = require("express").Router();
-const { sendNotification,insertToken, getTypeNotification, postTypeNotification, updateTypeNotification, getNotification, postNotification, updateNotification } = require("../controllers/notifications");
+const { check } = require("express-validator");
+const{validarCampos}=require('../middlewares/validar-campos')
+const { sendNotification,insertToken, getTypeNotification, postTypeNotification, updateTypeNotification, getNotification, postNotification, updateNotification, sendNotificationsAllSubscribers } = require("../controllers/notifications");
 
 router.get("/typeNotification",getTypeNotification);
 router.post("/insertTypeNotification", postTypeNotification);
@@ -16,6 +18,10 @@ router.put("/updateNotification",updateNotification);
 router.post("/sendNotification", sendNotification);
 router.post("/insertToken", insertToken);
 
+router.post("/sendNotificationsAllSubscribers/:id",[
+    check("id", "El id es obligatorio").not().isEmpty(),
+    validarCampos
+  ],sendNotificationsAllSubscribers);
 
 
 
