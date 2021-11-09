@@ -1,6 +1,6 @@
 // this file, help you to call some querys
 const { pool } = require("./../dbCongif");
-const { groupList } = require("./../helpers/helpers");
+const { getDateNow } = require("./../helpers/helpers");
 const existSubscrition = async (
   id_pais,
   id_empresa,
@@ -84,6 +84,106 @@ const insertSubscription = async (data, pathImage, pathIcono) => {
           ok: true,
           msg: response.command,
         };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const insertSuscriptor = async (data, idusuario) => {
+  const id_suscripcion = parseInt(data.id_suscripcion);
+  const id_usuario = parseInt(idusuario);
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.suscriptores(
+      id_usuario, id_suscripcion, fecha_suscripcion, id_estatus)
+      VALUES ($1, $2, $3, $4) RETURNING id_suscriptor;`,
+        [id_usuario, id_suscripcion, getDateNow(), 1]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          idSuscriptor: response.rows[0].id_suscriptor,
+          codigo: 201,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+          codigo: 200,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const insertSuscriptorPropertyes = async (id_suscriptor, descripcion,valor) => {
+
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.detalle_suscripcion(
+      id_suscriptor, descripcion, valor)
+      VALUES ($1, $2, $3) RETURNING id_suscriptor;`,
+        [id_suscriptor, descripcion, valor]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          idSuscriptor: response.command,
+          codigo: 201,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+          codigo: 200,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const existSubscritor = async (data, idusuario) => {
+  const id_suscripcion = parseInt(data.id_suscripcion);
+  const id_usuario = parseInt(idusuario);
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `select * from suscriptores WHERE id_usuario=$1 AND id_suscripcion=$2`,
+        [id_usuario, id_suscripcion]
+      )
+      .then((response) => {
+        client.release();
+        if (response.rows.length > 0) {
+          const obj = {
+            ok: true,
+            msg: "Ya cuentas con esta suscripcion",
+            id_suscripcion: response.rows[0].id_suscripcion,
+            codigo: 200,
+          };
+          return obj;
+        } else {
+          const obj = {
+            ok: false,
+            msg: "No se encontro ningun suscriptor",
+            codigo: 200,
+          };
+          return obj;
+        }
       })
       .catch((err) => {
         client.release();
@@ -223,15 +323,14 @@ const getAllSubscription = async () => {
         client.release();
         let data = [];
         if (response.rows.length > 0) {
-
           // groupList(response.rows)
           data = response.rows.reduce((acc, item) => {
-            if (!acc.find(x => x.id_suscripcion === item.id_suscripcion)) {
+            if (!acc.find((x) => x.id_suscripcion === item.id_suscripcion)) {
               acc.push(item);
             }
             return acc;
-          }, [])
-         
+          }, []);
+
           data.forEach((Element) => {
             const auxArray = response.rows.filter(
               (x) => x.id_suscripcion === Element.id_suscripcion
@@ -283,4 +382,7 @@ module.exports = {
   existTokenNotification,
   updateTokenToPushNotification,
   getAllSubscription,
+  insertSuscriptor,
+  existSubscritor,
+  insertSuscriptorPropertyes
 };

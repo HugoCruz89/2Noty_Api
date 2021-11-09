@@ -641,6 +641,7 @@
                 }
             }
         },
+
         "/api/user/{id}": {
             "get": {
                 "operationId": "getUsers",
@@ -1036,17 +1037,12 @@
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "id_usuario": {
-                                "type": "integer",
-                                "example": 1
-                            },
                             "id_suscripcion": {
                                 "type": "integer",
                                 "example": 1
                             },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
+                            "propertyes": {
+                                "$ref": "#/definitions/Propertyes"
                             }
                         }
                     }
@@ -1061,9 +1057,13 @@
                                     "type": "string",
                                     "example": "ok"
                                 },
-                                "msg": {
-                                    "type": "string",
-                                    "example": "INSERT"
+                                "idSuscriptor": {
+                                    "type": "number",
+                                    "example": 1
+                                },
+                                "codigo": {
+                                    "type": "number",
+                                    "example": 201
                                 }
                             }
                         }
@@ -2567,6 +2567,22 @@
                     "id_estatus": {
                         "type": "integer",
                         "example": 1
+                    }
+                }
+            }
+        },
+        "Propertyes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "descripcion": {
+                        "type": "string",
+                        "example": "name_file"
+                    },
+                    "valor": {
+                        "type": "string",
+                        "example": "Valor"
                     }
                 }
             }
