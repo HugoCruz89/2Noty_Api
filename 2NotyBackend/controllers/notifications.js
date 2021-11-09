@@ -290,6 +290,31 @@ const updateNotification = async (req, res = response) => {
   });
 };
 
+const sendNotificationsAllSubscribers = (req, res = response) => {
+  const idNotification = req.params.id;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT n.titulo as title,n.notificacion as body,tn.token FROM suscripciones s, notificaciones n, suscriptores sc, token_notificaciones tn
+        WHERE s.id_suscripcion=n.id_suscripcion AND s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND n.id_notificacion=${idNotification};`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+}
+
 module.exports = {
   sendNotification,
   insertToken,
@@ -298,5 +323,6 @@ module.exports = {
   updateTypeNotification,
   getNotification,
   postNotification,
-  updateNotification
+  updateNotification,
+  sendNotificationsAllSubscribers
 };

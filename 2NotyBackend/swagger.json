@@ -80,7 +80,7 @@
                 }
             }
         },
-        "/api/notifications/sendNotification": {
+        "/api/notifications/sendNotificationsAllSubscribers/{id}": {
             "post": {
                 "operationId": "sendNotification",
                 "tags": ["Notifications"],
@@ -88,22 +88,13 @@
                 "description": "Send Notification",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
+                    "in": "path",
+                    "name": "id",
                     "schema": {
-                        "type": "object",
-                        "properties": {
-                            "title": {
-                                "type": "string",
-                                "example": "Titulo"
-                            },
-                            "body": {
-                                "type": "string",
-                                "example": "Mensaje"
-                            }
-                        }
-                    }
+                        "type": "integer"
+                    },
+                    "required": true,
+                    "description": "Id de notificación"
                 }],
                 "responses": {
                     "200": {
