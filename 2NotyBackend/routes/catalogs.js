@@ -24,9 +24,7 @@ const {
   updateCompany,
   postCompany,
   getBills,
-  getCategories,
   updateCategory,
-  postCategory,
   getMarks,
   updateMark,
   postMark,
@@ -40,7 +38,6 @@ router.get("/getStates/:id", getStates);
 router.get("/getProfiles", getProfiles);
 router.get("/getCompanies", getCompanies);
 router.get("/getBills", getBills);
-router.get("/getCategories", getCategories);
 router.get("/getMarks", getMarks);
 router.get("/getDataType", getDataType);
 
@@ -80,7 +77,6 @@ router.post(
   ],
   postCompany
 );
-router.post("/category", postCategory);
 router.post("/mark", postMark);
 router.post("/datatype",[check("tipo_dato", "El tipo de dato es obligatoria").not().isEmpty()], postDataType);
 

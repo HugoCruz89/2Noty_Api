@@ -176,10 +176,82 @@ const updateSubscription = async (req, res = response) => {
       });
   });
 };
+const postCategorySubscription = async (req, res = response) => {
+  const { categoria, id_estatus } = req.body;
+  const categoriaUpperCase = categoria.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM categoria_suscripcion WHERE upper(categoria)=$1`, [
+        categoriaUpperCase,
+      ])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrada la categoria",
+          });
+        } else {
+          return client
+            .query(
+              `INSERT INTO categoria_suscripcion( categoria, id_estatus)
+              VALUES($1,$2)`,
+              [categoriaUpperCase, id_estatus]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
+const getCategoriesSubscription = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `select cs.id_categoria_suscripcion,cs.categoria,cs.id_estatus,e.estatus
+      from categoria_suscripcion cs, estatus e 
+      where cs.id_estatus=e.id_estatus;`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 module.exports = {
   getSubscriptions,
   getSubscriptionDetail,
   postSubscription,
   updateSubscription,
+  postCategorySubscription,
+  getCategoriesSubscription
 };
