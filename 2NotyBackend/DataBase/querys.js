@@ -338,12 +338,14 @@ const getAllSubscription = async () => {
             let arr = [];
             auxArray.map((item) => {
               arr.push({
+                id: item.id_propiedad,
                 label: item.label,
                 type: item.type.toLowerCase(),
                 hidden: item.hidden,
                 required: item.required,
                 editable: item.editable,
                 name: item.name,
+                order: item.order
               });
               Element.propertys = arr;
             });
