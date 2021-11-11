@@ -197,14 +197,14 @@ const existSubscritor = async (data, idusuario) => {
 };
 
 const insertPropiedadesSuscripcion = async (data, idSubscription) => {
-  const { label, hidden, required, editable, type, name } = data;
+  const { label, hidden, required, editable, type, name,order } = data;
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.propiedades_suscripcion(
-            label, type, regex, hidden, id_suscripcion,required,editable,name)
-            VALUES ( $1, $2, $3, $4, $5, $6, $7, $8);`,
-        [label, type, "", hidden, idSubscription, required, editable, name]
+            label, type, regex, hidden, id_suscripcion,required,editable,name,order)
+            VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+        [label, type, "", hidden, idSubscription, required, editable, name,order]
       )
       .then((response) => {
         client.release();
@@ -315,7 +315,7 @@ const getAllSubscription = async () => {
     return client
       .query(
         `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
-        ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type
+        ps.id_propiedad,ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order
         FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es, propiedades_suscripcion ps
         WHERE sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion = ps.id_suscripcion;`
       )
