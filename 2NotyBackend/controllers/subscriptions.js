@@ -177,12 +177,12 @@ const updateSubscription = async (req, res = response) => {
   });
 };
 const postCategorySubscription = async (req, res = response) => {
-  const { categoria, id_estatus } = req.body;
-  const categoriaUpperCase = categoria.toUpperCase();
+  const { categoria, id_estatus,name_icono, color } = req.body;
+
   pool.connect().then((client) => {
     return client
       .query(`SELECT * FROM categoria_suscripcion WHERE upper(categoria)=$1`, [
-        categoriaUpperCase,
+        categoria,
       ])
       .then((response) => {
         if (response.rows.length > 0) {
@@ -193,9 +193,9 @@ const postCategorySubscription = async (req, res = response) => {
         } else {
           return client
             .query(
-              `INSERT INTO categoria_suscripcion( categoria, id_estatus)
-              VALUES($1,$2)`,
-              [categoriaUpperCase, id_estatus]
+              `INSERT INTO categoria_suscripcion(categoria, id_estatus,name_icono,color)
+              VALUES($1,$2,$3,$4)`,
+              [categoria, id_estatus,name_icono,color]
             )
             .then((response) => {
               client.release();

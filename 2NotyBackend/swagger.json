@@ -952,6 +952,41 @@
                 }
             }
         },
+        "api/subscriptions/insertCategorySubscription": {
+            "post": {
+                "operationId": "register a category",
+                "tags": ["Subscriptions"],
+                "summary": "Register a category of subscription",
+                "description": "Create a new category in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "$ref": "#/definitions/categorySubscription"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
 
         "/api/subscribers": {
             "get": {
@@ -1062,6 +1097,7 @@
                 }
             }
         },
+      
 
         "/api/catalogs/getStatus": {
             "get": {
@@ -2024,51 +2060,6 @@
                 }
             }
         },
-        "/api/catalogs/category": {
-            "post": {
-                "operationId": "register a category",
-                "tags": ["Catalogs"],
-                "summary": "Register a category",
-                "description": "Create a new category in system",
-                "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "categoria": {
-                                "type": "string",
-                                "example": "Platino"
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            }
-                        }
-                    }
-                }],
-                "responses": {
-                    "201": {
-                        "description": "Status Inserted succesfuly",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "type": "string",
-                                    "example": "ok"
-                                },
-                                "msg": {
-                                    "type": "string",
-                                    "example": "INSERT"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/catalogs/mark": {
             "post": {
                 "operationId": "register a mark",
@@ -2158,6 +2149,28 @@
 
     },
     "definitions": {
+        "categorySubscription": {
+            "type": "object",
+            "required": ["body", "email"],
+            "properties": {
+                "categoria": {
+                    "type": "string",
+                    "required": true
+                },
+                "name_icono": {
+                    "type": "string",
+                    "required": true
+                },
+                "id_estatus": {
+                    "type": "number",
+                    "required": true
+                },
+                "color": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
         "insertTokenNotification": {
             "type": "object",
             "properties": {
