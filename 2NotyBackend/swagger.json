@@ -2944,6 +2944,10 @@
                         "items": {
                             "type": "object",
                             "properties": {
+                                "id_propiedad": {
+                                    "type": "number",
+                                    "example": "id"
+                                },
                                 "label": {
                                     "type": "string",
                                     "example": "name label"
@@ -2967,6 +2971,10 @@
                                 "name": {
                                     "type": "string",
                                     "example": "name_label"
+                                },
+                                "order": {
+                                    "type": "number",
+                                    "example": "1"
                                 }
                             }
                         }
