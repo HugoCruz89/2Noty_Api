@@ -227,7 +227,7 @@ const getCategoriesSubscription = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `select cs.id_categoria_suscripcion,cs.categoria,cs.id_estatus,e.estatus
+        `select *
       from categoria_suscripcion cs, estatus e 
       where cs.id_estatus=e.id_estatus;`
       )

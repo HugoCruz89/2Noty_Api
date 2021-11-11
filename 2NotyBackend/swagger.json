@@ -987,6 +987,32 @@
                 }
             }
         },
+        "/api/subscriptions/getCategorySubscription": {
+            "get": {
+                "operationId": "getCategorySubscription",
+                "tags": ["Subscriptions"],
+                "summary": "Get All Categories of subscriptions",
+                "description": "Get All categories",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CategorySubscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
 
         "/api/subscribers": {
             "get": {
@@ -2727,26 +2753,6 @@
                 }
             }
         },
-        "Categories": {
-            "types": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id_categoria_suscripcion": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "categoria": {
-                        "type": "string",
-                        "example": "Platino"
-                    },
-                    "id_estatus": {
-                        "type": "integer",
-                        "example": 1
-                    }
-                }
-            }
-        },
         "Register": {
             "type": "object",
             "required": ["name", "email", "password", "password2", "idPais", "idEstado"],
@@ -2832,6 +2838,38 @@
                     "marca": {
                         "type": "string",
                         "example": "Patito"
+                    }
+                }
+            }
+        },
+        "CategorySubscriptions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id_categoria_suscripcion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "categoria": {
+                        "type": "string",
+                        "example": "servicios"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name_icono": {
+                        "type": "string",
+                        "example": "eye"
+                    },                  
+                    "color": {
+                        "type": "string",
+                        "example": "#f043e8"
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "ACTIVO"
                     }
                 }
             }

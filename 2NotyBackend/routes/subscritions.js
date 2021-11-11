@@ -18,6 +18,6 @@ router.get("/detail", getSubscriptionDetail);
 router.post("/insertSubscription", postSubscription);
 router.put("/updateSubscription", updateSubscription);
 router.post("/insertCategorySubscription", postCategorySubscription);
-router.post("/getCategorySubscription", getCategoriesSubscription);
+router.get("/getCategorySubscription", getCategoriesSubscription);
 
 module.exports = router;
