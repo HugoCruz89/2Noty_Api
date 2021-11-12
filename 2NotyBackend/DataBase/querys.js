@@ -202,7 +202,7 @@ const insertPropiedadesSuscripcion = async (data, idSubscription) => {
     return client
       .query(
         `INSERT INTO public.propiedades_suscripcion(
-            label, type, regex, hidden, id_suscripcion,required,editable,name,order)
+            label, type, regex, hidden, id_suscripcion,required,editable,name,"order")
             VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
         [label, type, "", hidden, idSubscription, required, editable, name,order]
       )
