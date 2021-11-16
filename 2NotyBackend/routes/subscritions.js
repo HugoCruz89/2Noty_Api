@@ -11,7 +11,8 @@ const {
   putSubscription,
   postCategorySubscription,
   getCategoriesSubscription,
-  getSubscriptionsByIdCategory
+  getSubscriptionsByIdCategory,
+  updateCategorySubscription
 } = require("../controllers/subscriptions");
 
 router.get("/", getSubscriptions);
@@ -20,6 +21,7 @@ router.post("/insertSubscription", postSubscription);
 router.put("/updateSubscription", putSubscription);
 router.post("/insertCategorySubscription", postCategorySubscription);
 router.get("/getCategorySubscription", getCategoriesSubscription);
+router.put("/updateCategorySubscription", updateCategorySubscription);
 router.get("/getSubscriptionByIdCategory/:id", getSubscriptionsByIdCategory);
 
 

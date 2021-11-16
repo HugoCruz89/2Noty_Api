@@ -24,7 +24,6 @@ const {
   updateCompany,
   postCompany,
   getBills,
-  updateCategory,
   getMarks,
   updateMark,
   postMark,
@@ -86,7 +85,6 @@ router.put("/updateStatus", updateStatus);
 router.put("/updateProfile", updateProfiles);
 
 router.put("/updateCompany", updateCompany);
-router.put("/updateCategory", updateCategory);
 router.put("/updateMark", updateMark);
 router.put("/updateDatatype", updateDataType);
 

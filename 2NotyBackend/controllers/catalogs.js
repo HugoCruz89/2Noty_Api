@@ -305,31 +305,7 @@ const updateCompany = async (req, res = response) => {
       });
   });
 };
-const updateCategory = async (req, res = response) => {
-  const { id_categoria_suscripcion, categoria, id_estatus } = req.body;
-  const categoriaUpper = categoria.toUpperCase();
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `UPDATE categoria_suscripcion SET categoria=$2, id_estatus=$3 WHERE id_categoria_suscripcion=$1`,
-        [id_categoria_suscripcion, categoriaUpper, id_estatus]
-      )
-      .then((response) => {
-        client.release();
-        res.status(201).json({
-          ok: true,
-          data: response.command,
-        });
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
-          ok: false,
-          msg: err,
-        });
-      });
-  });
-};
+
 const updateMark = async (req, res = response) => {
   const { id_marca, id_empresa, marca } = req.body;
   const marcaUpper = marca.toUpperCase();
@@ -357,7 +333,7 @@ const updateMark = async (req, res = response) => {
   });
 };
 const updateDataType = async (req, res = response) => {
-  const {id_tipo_dato, tipo_dato } = req.body;
+  const { id_tipo_dato, tipo_dato } = req.body;
   const tipodatoUpperCase = tipo_dato.toUpperCase();
   pool.connect().then((client) => {
     return client
@@ -374,7 +350,7 @@ const updateDataType = async (req, res = response) => {
           return client
             .query(
               `UPDATE cat_tipo_dato set tipo_dato=$2 WHERE id_tipo_dato=$1`,
-              [id_tipo_dato,tipodatoUpperCase]
+              [id_tipo_dato, tipodatoUpperCase]
             )
             .then((response) => {
               client.release();
@@ -786,7 +762,6 @@ module.exports = {
   updateStatus,
   updateProfiles,
   updateCompany,
-  updateCategory,
   updateMark,
   updateDataType,
   activateCountry,

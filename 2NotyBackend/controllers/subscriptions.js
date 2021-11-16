@@ -259,6 +259,33 @@ const getCategoriesSubscription = async (req, res = response) => {
       });
   });
 };
+
+const updateCategorySubscription = async (req, res = response) => {
+  const { id_categoria_suscripcion, categoria, name_icono, id_estatus, color } = req.body;
+  const categoriaUpper = categoria.toUpperCase();
+
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE categoria_suscripcion SET categoria=$2, id_estatus=$3, name_icono=$4, color=$5 WHERE id_categoria_suscripcion=$1`,
+        [id_categoria_suscripcion, categoriaUpper, id_estatus, name_icono, color]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          msg: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 module.exports = {
   getSubscriptions,
   getSubscriptionDetail,
@@ -266,5 +293,6 @@ module.exports = {
   putSubscription,
   postCategorySubscription,
   getCategoriesSubscription,
-  getSubscriptionsByIdCategory
+  getSubscriptionsByIdCategory,
+  updateCategorySubscription
 };
