@@ -95,6 +95,55 @@ const insertSubscription = async (data, pathImage, pathIcono) => {
   });
   return databaseResponse;
 };
+const updateSubscription = async (data, pathImage, pathIcono) => {
+  const {
+    id_suscripcion,
+    id_pais,
+    id_empresa,
+    id_marca,
+    id_categoria_suscripcion,
+    suscripcion,
+    descripcion,
+    id_estatus,
+  } = data;
+  const suscripcionUpperCase = suscripcion.toUpperCase();
+  const descripcionUpperCase = descripcion.toUpperCase();
+  const queryImagen=pathImage ? `,url_imagen='${pathImage}'` : '';
+  const queryIcono=pathIcono ? `,url_icono='${pathIcono}'` : '';
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE public.suscripciones
+        SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8  ${queryImagen} ${queryIcono}
+        WHERE id_suscripcion=$1;`,
+        [
+          id_suscripcion,
+          id_pais,
+          id_empresa,
+          id_marca,
+          id_categoria_suscripcion,
+          suscripcionUpperCase,
+          descripcionUpperCase,
+          id_estatus,
+        ]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
 
 const insertSuscriptor = async (data, idusuario) => {
   const id_suscripcion = parseInt(data.id_suscripcion);
@@ -127,7 +176,7 @@ const insertSuscriptor = async (data, idusuario) => {
   return databaseResponse;
 };
 
-const insertSuscriptorPropertyes = async (id_suscriptor, descripcion,valor) => {
+const insertSuscriptorPropertyes = async (id_suscriptor, descripcion, valor) => {
 
   const databaseResponse = await pool.connect().then((client) => {
     return client
@@ -197,14 +246,14 @@ const existSubscritor = async (data, idusuario) => {
 };
 
 const insertPropiedadesSuscripcion = async (data, idSubscription) => {
-  const { label, hidden, required, editable, type, name,order } = data;
+  const { label, hidden, required, editable, type, name, order } = data;
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.propiedades_suscripcion(
             label, type, regex, hidden, id_suscripcion,required,editable,name,"order")
             VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-        [label, type, "", hidden, idSubscription, required, editable, name,order]
+        [label, type, "", hidden, idSubscription, required, editable, name, order]
       )
       .then((response) => {
         client.release();
@@ -220,6 +269,55 @@ const insertPropiedadesSuscripcion = async (data, idSubscription) => {
           msg: err,
         };
       });
+  });
+  return databaseResponse;
+};
+const updatePropiedadesSuscripcion = async (data,idSubscription) => {
+  const { id, label, hidden, required, editable, type, name, order } = data;
+  const databaseResponse = await pool.connect().then((client) => {
+
+    if (id <= 0)
+      return client.query(
+        `INSERT INTO public.propiedades_suscripcion(
+          label, type, regex, hidden, id_suscripcion,required,editable,name,"order")
+          VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+        [label, type, "", hidden, idSubscription, required, editable, name, order]
+      )
+        .then((response) => {
+          client.release();
+          return {
+            ok: true,
+            msg: response.command,
+          };
+        })
+        .catch((err) => {
+          client.release();
+          return {
+            ok: false,
+            msg: err,
+          };
+        });
+    else
+      return client.query(
+        `UPDATE propiedades_suscripcion SET
+            label=$2, type=$3, hidden=$4, required=$5,editable=$6,name=$7,"order"=$8
+            WHERE id_propiedad=$1`,
+        [id, label, type, hidden, required, editable, name, order]
+      )
+        .then((response) => {
+          client.release();
+          return {
+            ok: true,
+            msg: response.command,
+          };
+        })
+        .catch((err) => {
+          client.release();
+          return {
+            ok: false,
+            msg: err,
+          };
+        });
   });
   return databaseResponse;
 };
@@ -385,6 +483,8 @@ module.exports = {
   updateTokenToPushNotification,
   getAllSubscription,
   insertSuscriptor,
+  updateSubscription,
   existSubscritor,
-  insertSuscriptorPropertyes
+  insertSuscriptorPropertyes,
+  updatePropiedadesSuscripcion
 };

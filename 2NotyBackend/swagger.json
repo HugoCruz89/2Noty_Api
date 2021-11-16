@@ -806,13 +806,78 @@
                 "description": "Update a subscription",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateSubscription"
-                    }
-                }],
+                    "in": "formData",
+                    "name": "id_suscripcion",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "id_pais",
+                    "type": "integer",
+                    "description": ""
+                }, 
+                {
+                    "in": "formData",
+                    "name": "id_empresa",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "id_marca",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "id_categoria_suscripcion",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "suscripcion",
+                    "type": "string",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "descripcion",
+                    "type": "string",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "id_estatus",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "id_estatus",
+                    "type": "integer",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "propiedadesSuscripcion",
+                    "type": "string",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "imagen",
+                    "type": "file",
+                    "description": ""
+                },
+                {
+                    "in": "formData",
+                    "name": "icono",
+                    "type": "file",
+                    "description": ""
+                }
+            ],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -2391,51 +2456,6 @@
                 "marca": {
                     "type": "string",
                     "example": "Patito"
-                }
-            }
-        },
-        "updateSubscription": {
-            "type": "object",
-            "properties": {
-                "id_suscripcion": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_pais": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_empresa": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_marca": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_categoria_suscripcion": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "suscripcion": {
-                    "type": "string",
-                    "example": "Prueba"
-                },
-                "descripcion": {
-                    "type": "string",
-                    "example": "Prueba"
-                },
-                "id_estatus": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "uel_imagen": {
-                    "type": "string",
-                    "example": "http://example"
-                },
-                "url_icono": {
-                    "type": "string",
-                    "example": "http://example"
                 }
             }
         },

@@ -8,7 +8,7 @@ const {
   getSubscriptions,
   getSubscriptionDetail,
   postSubscription,
-  updateSubscription,
+  putSubscription,
   postCategorySubscription,
   getCategoriesSubscription,
 } = require("../controllers/subscriptions");
@@ -16,7 +16,7 @@ const {
 router.get("/", getSubscriptions);
 router.get("/detail", getSubscriptionDetail);
 router.post("/insertSubscription", postSubscription);
-router.put("/updateSubscription", updateSubscription);
+router.put("/updateSubscription", putSubscription);
 router.post("/insertCategorySubscription", postCategorySubscription);
 router.get("/getCategorySubscription", getCategoriesSubscription);
 

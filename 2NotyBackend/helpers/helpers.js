@@ -67,29 +67,29 @@ const hashedPassword = async (password) => {
 };
 
 const buildPathToSaveDataBaseImage = (name) => {
-  return `${
-    process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
-  }${getDateNowCurrent()}-${name}`;
+  if (name)
+    return `${process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
+      }${getDateNowCurrent()}-${name}`;
+  else
+    return name
 };
 
 const buildPathToSaveServerImage = (name) => {
-  return `${
-    process.env.PATH_SERVER_TO_SAVE_IMAGE
-  }${getDateNowCurrent()}-${name}`;
+  return `${process.env.PATH_SERVER_TO_SAVE_IMAGE
+    }${getDateNowCurrent()}-${name}`;
 };
 
 
-const groupList=(item)=>{
+const groupList = (item) => {
   let group = item.reduce((r, a) => {
     r[a.id_suscripcion] = [...r[a.id_suscripcion] || [], a];
     return r;
-   }, {});
+  }, {});
 
   //  const ListaArreglada= group.map((item,key)=>{
   //    console.log(item)
   //    console.log('key',key)
   //  })
-   console.log('group',group)
 }
 
 
