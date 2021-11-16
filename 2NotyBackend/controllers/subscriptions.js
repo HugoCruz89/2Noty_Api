@@ -10,7 +10,8 @@ const {
   insertPropiedadesSuscripcion,
   getAllSubscription,
   updateSubscription,
-  updatePropiedadesSuscripcion
+  updatePropiedadesSuscripcion,
+  getAllSubscriptionByIdCategory
 } = require("./../DataBase/querys");
 const { response } = require("express");
 // const { report } = require("../routes/subscritions");

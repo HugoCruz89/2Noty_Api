@@ -551,5 +551,6 @@ module.exports = {
   updateSubscription,
   existSubscritor,
   insertSuscriptorPropertyes,
-  updatePropiedadesSuscripcion
+  updatePropiedadesSuscripcion,
+  getAllSubscriptionByIdCategory
 };
