@@ -9,6 +9,8 @@ const {
   insertSubscription,
   insertPropiedadesSuscripcion,
   getAllSubscription,
+  updateSubscription,
+  updatePropiedadesSuscripcion,
   getAllSubscriptionByIdCategory
 } = require("./../DataBase/querys");
 const { response } = require("express");
@@ -138,58 +140,57 @@ const postSubscription = async (req, res = response) => {
   }
 };
 
-const updateSubscription = async (req, res = response) => {
-  const {
-    id_suscripcion,
-    id_pais,
-    id_empresa,
-    id_marca,
-    id_categoria_suscripcion,
-    suscripcion,
-    descripcion,
-    id_estatus,
-    url_imagen,
-    url_icono,
-  } = req.body;
-  const suscripcionUpper = suscripcion.toUpperCase();
-  const descripcionUpper = descripcion.toUpperCase();
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `UPDATE public.suscripciones
-        SET  id_pais=$2, id_empresa=$3, id_marca=$4, id_categoria_suscripcion=$5, suscripcion=$6, descripcion=$7, id_estatus=$8, url_imagen=$9, url_icono=$10
-        WHERE id_suscripcion=$1;`,
-        [
-          id_suscripcion,
-          id_pais,
-          id_empresa,
-          id_marca,
-          id_categoria_suscripcion,
-          suscripcionUpper,
-          descripcionUpper,
-          id_estatus,
-          url_imagen,
-          url_icono,
-        ]
-      )
-      .then((response) => {
-        client.release();
-        res.status(201).json({
-          ok: true,
-          data: response.command,
-        });
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
+const putSubscription = async (req, res = response) => {
+  const {id_suscripcion, propiedadesSuscripcion } = req.body;
+  let url_imagen;
+  let url_icono;
+  if (req.files?.imagen) {
+    url_imagen = req.files.imagen;
+    // Use the mv() method to place the file somewhere on your server
+    url_imagen.mv(
+      buildPathToSaveServerImage(url_imagen.name),
+      async function (err) {
+        if (err) {
+          return res.status(500).send({
+            ok: false,
+            data: err,
+          });
+        }
+      }
+    );
+  }
+
+  if (req.files?.icono) {
+    url_icono = req.files.icono;
+    // Use the mv() method to place the file somewhere on your server
+    url_icono.mv(buildPathToSaveServerImage(url_icono.name), function (err) {
+      if (err)
+        return res.status(500).send({
           ok: false,
-          msg: err,
+          data: err,
         });
-      });
-  });
+    });
+  }
+
+  const updateResponse = await updateSubscription(
+    req.body,
+    buildPathToSaveDataBaseImage(url_imagen?.name),
+    buildPathToSaveDataBaseImage(url_icono?.name)
+  );
+  if (updateResponse.ok) {
+    //modifico las propiedades
+    const Properties = JSON.parse(propiedadesSuscripcion);
+    Properties.map((item) => {
+      updatePropiedadesSuscripcion(item,id_suscripcion);
+    });
+    return res.status(201).json(updateResponse);
+  } else {
+    return res.status(400).json(updateResponse);
+  }
+
 };
 const postCategorySubscription = async (req, res = response) => {
-  const { categoria, id_estatus,name_icono, color } = req.body;
+  const { categoria, id_estatus, name_icono, color } = req.body;
 
   pool.connect().then((client) => {
     return client
@@ -207,7 +208,7 @@ const postCategorySubscription = async (req, res = response) => {
             .query(
               `INSERT INTO categoria_suscripcion(categoria, id_estatus,name_icono,color)
               VALUES($1,$2,$3,$4)`,
-              [categoria, id_estatus,name_icono,color]
+              [categoria, id_estatus, name_icono, color]
             )
             .then((response) => {
               client.release();
@@ -263,7 +264,7 @@ module.exports = {
   getSubscriptions,
   getSubscriptionDetail,
   postSubscription,
-  updateSubscription,
+  putSubscription,
   postCategorySubscription,
   getCategoriesSubscription,
   getSubscriptionsByIdCategory
