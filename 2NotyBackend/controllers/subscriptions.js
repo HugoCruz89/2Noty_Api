@@ -171,11 +171,10 @@ const putSubscription = async (req, res = response) => {
         });
     });
   }
-
   const updateResponse = await updateSubscription(
     req.body,
-    buildPathToSaveDataBaseImage(url_imagen?.name),
-    buildPathToSaveDataBaseImage(url_icono?.name)
+    url_imagen === undefined ? null : buildPathToSaveDataBaseImage(url_imagen.name),
+    url_icono === undefined ? null : buildPathToSaveDataBaseImage(url_icono.name)
   );
   if (updateResponse.ok) {
     //modifico las propiedades
