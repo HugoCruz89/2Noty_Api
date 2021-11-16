@@ -141,10 +141,10 @@ const postSubscription = async (req, res = response) => {
 };
 
 const putSubscription = async (req, res = response) => {
-  const {id_suscripcion, propiedadesSuscripcion } = req.body;
+  const { id_suscripcion, propiedadesSuscripcion } = req.body;
   let url_imagen;
   let url_icono;
-  if (req.files?.imagen) {
+  if (req.files !== null && req.files.imagen !== undefined) {
     url_imagen = req.files.imagen;
     // Use the mv() method to place the file somewhere on your server
     url_imagen.mv(
@@ -160,7 +160,7 @@ const putSubscription = async (req, res = response) => {
     );
   }
 
-  if (req.files?.icono) {
+  if (req.files !== null && req.files.icono !== undefined) {
     url_icono = req.files.icono;
     // Use the mv() method to place the file somewhere on your server
     url_icono.mv(buildPathToSaveServerImage(url_icono.name), function (err) {
@@ -181,7 +181,7 @@ const putSubscription = async (req, res = response) => {
     //modifico las propiedades
     const Properties = JSON.parse(propiedadesSuscripcion);
     Properties.map((item) => {
-      updatePropiedadesSuscripcion(item,id_suscripcion);
+      updatePropiedadesSuscripcion(item, id_suscripcion);
     });
     return res.status(201).json(updateResponse);
   } else {
