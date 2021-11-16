@@ -25,6 +25,17 @@ const getSubscriptions = async (req, res = response) => {
   }
 };
 
+
+const getSubscriptionsByIdCategory = async (req, res = response) => {
+  const id_Category = req.params.id;
+  const getResponse = await getAllSubscriptionByIdCategory(id_Category);
+  if (getResponse.ok) {
+    return res.status(201).json(getResponse);
+  } else {
+    return res.status(400).json(getResponse);
+  }
+};
+
 const getSubscriptionDetail = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
@@ -254,5 +265,6 @@ module.exports = {
   postSubscription,
   putSubscription,
   postCategorySubscription,
-  getCategoriesSubscription
+  getCategoriesSubscription,
+  getSubscriptionsByIdCategory
 };
