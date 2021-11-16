@@ -9,6 +9,7 @@ const {
   insertSubscription,
   insertPropiedadesSuscripcion,
   getAllSubscription,
+  getAllSubscriptionByIdCategory
 } = require("./../DataBase/querys");
 const { response } = require("express");
 // const { report } = require("../routes/subscritions");
@@ -16,6 +17,17 @@ require("dotenv").config();
 
 const getSubscriptions = async (req, res = response) => {
   const getResponse = await getAllSubscription();
+  if (getResponse.ok) {
+    return res.status(201).json(getResponse);
+  } else {
+    return res.status(400).json(getResponse);
+  }
+};
+
+
+const getSubscriptionsByIdCategory = async (req, res = response) => {
+  const id_Category = req.params.id;
+  const getResponse = await getAllSubscriptionByIdCategory(id_Category);
   if (getResponse.ok) {
     return res.status(201).json(getResponse);
   } else {
@@ -253,5 +265,6 @@ module.exports = {
   postSubscription,
   updateSubscription,
   postCategorySubscription,
-  getCategoriesSubscription
+  getCategoriesSubscription,
+  getSubscriptionsByIdCategory
 };

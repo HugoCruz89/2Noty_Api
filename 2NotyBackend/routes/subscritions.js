@@ -11,6 +11,7 @@ const {
   updateSubscription,
   postCategorySubscription,
   getCategoriesSubscription,
+  getSubscriptionsByIdCategory
 } = require("../controllers/subscriptions");
 
 router.get("/", getSubscriptions);
@@ -19,5 +20,7 @@ router.post("/insertSubscription", postSubscription);
 router.put("/updateSubscription", updateSubscription);
 router.post("/insertCategorySubscription", postCategorySubscription);
 router.get("/getCategorySubscription", getCategoriesSubscription);
+router.get("/getSubscriptionByIdCategory/:id", getSubscriptionsByIdCategory);
+
 
 module.exports = router;

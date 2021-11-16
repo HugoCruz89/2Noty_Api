@@ -798,6 +798,40 @@
                 }
             }
         },
+        "/api/subscriptions/getSubscriptionByIdCategory/{id}": {
+            "get": {
+                "operationId": "Subscriptions by Category",
+                "tags": ["Subscriptions"],
+                "summary": "Get All Subscriptions by Category",
+                "description": "Get Subscriptions by Category",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de notificación"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/subscriptions/updateSubscription": {
             "put": {
                 "operationId": "updateSubscription",

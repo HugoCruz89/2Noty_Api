@@ -127,8 +127,11 @@ const insertSuscriptor = async (data, idusuario) => {
   return databaseResponse;
 };
 
-const insertSuscriptorPropertyes = async (id_suscriptor, descripcion,valor) => {
-
+const insertSuscriptorPropertyes = async (
+  id_suscriptor,
+  descripcion,
+  valor
+) => {
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
@@ -197,14 +200,24 @@ const existSubscritor = async (data, idusuario) => {
 };
 
 const insertPropiedadesSuscripcion = async (data, idSubscription) => {
-  const { label, hidden, required, editable, type, name,order } = data;
+  const { label, hidden, required, editable, type, name, order } = data;
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.propiedades_suscripcion(
             label, type, regex, hidden, id_suscripcion,required,editable,name,order)
             VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-        [label, type, "", hidden, idSubscription, required, editable, name,order]
+        [
+          label,
+          type,
+          "",
+          hidden,
+          idSubscription,
+          required,
+          editable,
+          name,
+          order,
+        ]
       )
       .then((response) => {
         client.release();
@@ -374,6 +387,71 @@ const getAllSubscription = async () => {
   return dataBaseResponse;
 };
 
+const getAllSubscriptionByIdCategory = async (id) => {
+  const dataBaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
+        ps.id_propiedad,ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order
+        FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es, propiedades_suscripcion ps
+        WHERE sc.id_categoria_suscripcion=$1 AND sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion = ps.id_suscripcion;`,
+        [id]
+      )
+      .then((response) => {
+        client.release();
+        let data = [];
+        if (response.rows.length > 0) {
+          // groupList(response.rows)
+          data = response.rows.reduce((acc, item) => {
+            if (!acc.find((x) => x.id_suscripcion === item.id_suscripcion)) {
+              acc.push(item);
+            }
+            return acc;
+          }, []);
+
+          data.forEach((Element) => {
+            const auxArray = response.rows.filter(
+              (x) => x.id_suscripcion === Element.id_suscripcion
+            );
+            let arr = [];
+            auxArray.map((item) => {
+              arr.push({
+                label: item.label,
+                type: item.type.toLowerCase(),
+                hidden: item.hidden,
+                required: item.required,
+                editable: item.editable,
+                name: item.name,
+              });
+              Element.propertys = arr;
+            });
+            delete Element.id_propiedad;
+            delete Element.label;
+            delete Element.type;
+            delete Element.regex;
+            delete Element.hidden;
+            delete Element.required;
+            delete Element.editable;
+            delete Element.name;
+          });
+        }
+
+        return {
+          ok: true,
+          data,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: "error: " + err,
+        };
+      });
+  });
+  return dataBaseResponse;
+};
+
 module.exports = {
   existSubscrition,
   insertSubscription,
@@ -384,5 +462,6 @@ module.exports = {
   getAllSubscription,
   insertSuscriptor,
   existSubscritor,
-  insertSuscriptorPropertyes
+  insertSuscriptorPropertyes,
+  getAllSubscriptionByIdCategory,
 };
