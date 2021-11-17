@@ -840,78 +840,78 @@
                 "description": "Update a subscription",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "formData",
-                    "name": "id_suscripcion",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_pais",
-                    "type": "integer",
-                    "description": ""
-                }, 
-                {
-                    "in": "formData",
-                    "name": "id_empresa",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_marca",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_categoria_suscripcion",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "suscripcion",
-                    "type": "string",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "descripcion",
-                    "type": "string",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_estatus",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "id_estatus",
-                    "type": "integer",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "propiedadesSuscripcion",
-                    "type": "string",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "imagen",
-                    "type": "file",
-                    "description": ""
-                },
-                {
-                    "in": "formData",
-                    "name": "icono",
-                    "type": "file",
-                    "description": ""
-                }
-            ],
+                        "in": "formData",
+                        "name": "id_suscripcion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_pais",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_empresa",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_marca",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_categoria_suscripcion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "suscripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "descripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_estatus",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_estatus",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "propiedadesSuscripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "imagen",
+                        "type": "file",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "icono",
+                        "type": "file",
+                        "description": ""
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -1222,7 +1222,7 @@
                 }
             }
         },
-      
+
 
         "/api/catalogs/getStatus": {
             "get": {
@@ -2924,7 +2924,7 @@
                     "name_icono": {
                         "type": "string",
                         "example": "eye"
-                    },                  
+                    },
                     "color": {
                         "type": "string",
                         "example": "#f043e8"
@@ -3080,6 +3080,30 @@
                     "estatus": {
                         "type": "string",
                         "example": "Activo"
+                    },
+                    "detalle": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id_detalle": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "id_suscriptor": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "descripcion": {
+                                    "type": "string",
+                                    "example": "numero_usuario"
+                                },
+                                "valor": {
+                                    "type": "string",
+                                    "example": "7751462777"
+                                }
+                            }
+                        }
                     }
                 }
             }

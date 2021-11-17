@@ -6,9 +6,10 @@ const getSubscribers = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT s.id_suscriptor,s.id_usuario,u.nombre,s.id_suscripcion,sc.suscripcion,to_char((s.fecha_suscripcion), 'DD/MM/YYYY')as fecha_suscripcion,s.id_estatus,e.estatus 
-        FROM suscriptores s, usuarios u, suscripciones sc, estatus e
-        WHERE s.id_usuario=u.id_usuario AND s.id_suscripcion=sc.id_suscripcion AND s.id_estatus=e.id_estatus;`
+        `SELECT s.id_suscriptor,s.id_usuario,u.nombre,s.id_suscripcion,sc.suscripcion,to_char((s.fecha_suscripcion), 'DD/MM/YYYY')as fecha_suscripcion,s.id_estatus,e.estatus, 
+          (select array_to_json(array_agg(ds.*)) from detalle_suscripcion ds where ds.id_suscriptor=s.id_suscriptor) as detalle
+          FROM suscriptores s, usuarios u, suscripciones sc, estatus e
+          WHERE s.id_usuario=u.id_usuario AND s.id_suscripcion=sc.id_suscripcion AND s.id_estatus=e.id_estatus;`
       )
       .then((response) => {
         client.release();
