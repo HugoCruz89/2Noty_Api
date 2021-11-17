@@ -1841,10 +1841,10 @@
                 }
             }
         },
-        "/api/catalogs/updateCategory": {
+        "/api/subscriptions/updateCategorySubscription": {
             "put": {
                 "operationId": "updateCategory",
-                "tags": ["Catalogs"],
+                "tags": ["Subscriptions"],
                 "summary": "update a category",
                 "description": "Update a category",
                 "consumes": "application/json",
@@ -2469,6 +2469,14 @@
                 "categoria": {
                     "type": "string",
                     "example": "Platino"
+                },
+                "name_icono": {
+                    "type": "string",
+                    "example": "pencil"
+                },
+                "color": {
+                    "type": "string",
+                    "example": "#607d8b"
                 },
                 "id_estatus": {
                     "type": "integer",
