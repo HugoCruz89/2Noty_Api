@@ -30,6 +30,9 @@ const {
   getDataType,
   postDataType,
   updateDataType,
+  getAction,
+  postAction,
+  updateAction,
 } = require("../controllers/catalogs");
 router.get("/getStatus", getStatus);
 router.get("/getCountries", getCountries);
@@ -39,6 +42,7 @@ router.get("/getCompanies", getCompanies);
 router.get("/getBills", getBills);
 router.get("/getMarks", getMarks);
 router.get("/getDataType", getDataType);
+router.get("/getActions", getAction);
 
 router.post(
   "/state",
@@ -78,6 +82,7 @@ router.post(
 );
 router.post("/mark", postMark);
 router.post("/datatype",[check("tipo_dato", "El tipo de dato es obligatoria").not().isEmpty()], postDataType);
+router.post("/insertAction", postAction);
 
 router.put("/updateCountry", updateCountry);
 router.put("/updateState", updateState);
@@ -87,6 +92,7 @@ router.put("/updateProfile", updateProfiles);
 router.put("/updateCompany", updateCompany);
 router.put("/updateMark", updateMark);
 router.put("/updateDatatype", updateDataType);
+router.put("/updateAction", updateAction);
 
 
 /* router.put("/activateCountry/:id", activateCountry);

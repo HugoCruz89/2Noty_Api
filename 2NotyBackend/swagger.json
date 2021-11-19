@@ -2270,8 +2270,132 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/getActions": {
+            "get": {
+                "operationId": "getAllActions",
+                "tags": ["Catalogs"],
+                "summary": "Get all actions",
+                "description": "Get all actions",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_accion": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "accion": {
+                                                "type": "string",
+                                                "example": "Vista"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/insertAction": {
+            "post": {
+                "operationId": "register action",
+                "tags": ["Catalogs"],
+                "summary": "Register a action",
+                "description": "Create a new action in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "accion": {
+                                "type": "string",
+                                "example": "Vista"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateAction": {
+            "put": {
+                "operationId": "updateAction",
+                "tags": ["Catalogs"],
+                "summary": "update a action",
+                "description": "Update a action",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_accion": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "accion": {
+                                "type": "string",
+                                "example": "Vista app"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-
     },
     "definitions": {
         "categorySubscription": {
