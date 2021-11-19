@@ -10,6 +10,7 @@ const {
   existTokenNotification,
   insertTokenToPushNotification,
   updateTokenToPushNotification,
+  getAllTokensSubscribers,
 } = require("./../DataBase/querys");
 
 const sendNotification = async (req, res = response) => {
@@ -215,8 +216,8 @@ const getNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.notificacion,n.titulo
-        FROM notificaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
+        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion
+        FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
         WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
       )
       .then((response) => {
@@ -241,7 +242,7 @@ const postNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `INSERT INTO public.notificaciones(
+        `INSERT INTO publicaciones(
           id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
           VALUES ($1, $2, $3, $4, $5);`,
         [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
@@ -268,7 +269,7 @@ const updateNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `UPDATE public.notificaciones
+        `UPDATE publicaciones
         SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
         WHERE id_notificacion=$1;`,
         [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
@@ -290,30 +291,12 @@ const updateNotification = async (req, res = response) => {
   });
 };
 
-const sendNotificationsAllSubscribers = (req, res = response) => {
-  const idNotification = req.params.id;
-  pool.connect().then((client) => {
-    return client
-      .query(
-        `SELECT n.titulo as title,n.notificacion as body,tn.token FROM suscripciones s, notificaciones n, suscriptores sc, token_notificaciones tn
-        WHERE s.id_suscripcion=n.id_suscripcion AND s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND n.id_notificacion=${idNotification};`
-      )
-      .then((response) => {
-        client.release();
-        res.status(200).json({
-          ok: true,
-          data: response.rows,
-        });
-      })
-      .catch((err) => {
-        client.release();
-        res.status(400).json({
-          ok: false,
-          msg: err,
-        });
-      });
-  });
-}
+const sendNotificationsAllSubscribers = async (req, res = response) => {
+  const { idSubscription, title, body } = req.body;
+  const responseData = await getAllTokensSubscribers(idSubscription);
+  if (responseData.ok)
+    console.log(responseData)
+};
 
 module.exports = {
   sendNotification,
