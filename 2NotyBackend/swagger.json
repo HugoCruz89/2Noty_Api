@@ -366,7 +366,7 @@
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "id_notificacion": {
+                            "id_publicacion": {
                                 "type": "integer",
                                 "example": 1
                             },
@@ -3401,7 +3401,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "id_notificacion": {
+                    "id_publicacion": {
                         "type": "integer",
                         "example": 1
                     },

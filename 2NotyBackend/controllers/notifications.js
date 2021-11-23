@@ -212,11 +212,11 @@ const updateTypeNotification = async (req, res = response) => {
 
 const getNotification = async (req, res = response) => {
   const idNotification = req.params.id;
-  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_notificacion=${idNotification}`;
+  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_publicacion=${idNotification}`;
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion
         FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
         WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
       )
@@ -265,14 +265,14 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const { id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
   pool.connect().then((client) => {
     return client
       .query(
         `UPDATE publicaciones
         SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
-        WHERE id_notificacion=$1;`,
-        [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+        WHERE id_publicacion=$1;`,
+        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
       )
       .then((response) => {
         client.release();
