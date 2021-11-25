@@ -1,11 +1,7 @@
-var admin = require("firebase-admin");
-var serviceAccount = require("./../serviceAccountKey.json");
 const { pool } = require("../dbCongif");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
+const { SendSingleNotification,SendMultiNotifications } = require("./../helpers/notifications");
 const {
   existTokenNotification,
   insertTokenToPushNotification,
@@ -13,71 +9,9 @@ const {
 } = require("./../DataBase/querys");
 
 const sendNotification = async (req, res = response) => {
-  const { title, body } = req.body;
-  var topics = "weather";
-  var registrationToken =
-    "fyMOucp1IEpNoEdF-avTyd:APA91bGr574OqhR0RsprtvwdO86mXn1AQDWqquo0mHqa2dHQkVB31ImsC4hay1sTRji1Y_no-wBYzHRT1k8h5khiU-uOKd1ufK7ipUa2DT6atu8g99NRGnFCzy5h0g3y848jpkgO_qGn";
-
-  const topicName = "industry-tech";
-
-  const message = {
-    notification: {
-      title,
-      body
-    },
-    android: {
-      notification: {
-        clickAction: "test",
-        icon: "splash_icon",
-        color: "#7e55c3",
-        sound: "default",
-        channelId: "Noticias_id",
-        imageUrl:
-          "https://e1.pngegg.com/pngimages/618/911/png-clipart-handwritten-doodles-and-abr-black-sun.png",
-      },
-
-      priority: "high",
-    },
-    apns: {
-      payload: {
-        aps: {
-          contentAvailable: true,
-          "mutable-content": 1,
-        },
-      },
-      headers: {
-        "apns-push-type": "background",
-        "apns-priority": "5",
-        "apns-topic": "com.alerty", // your app bundle identifier
-      },
-    },
-    token: registrationToken,
-    data: {
-      route: "Agenda",
-      item1: "item1",
-      item2: "item2",
-    },
-  };
-
-  admin
-    .messaging()
-    .send(message)
-    .then((response) => {
-      console.log("successfuly sent message:", response);
-      res.status(200).json({
-        ok: true,
-        msg: "send",
-      });
-    })
-    .catch((error) => {
-      console.log("error sending message:", error);
-      res.status(400).json({
-        ok: false,
-        msg: error,
-      });
-    });
-
-
+  const { title, body,token,imageUrl } = req.body;
+  const respuestaNotification =await SendMultiNotifications( title, body,token,imageUrl );
+  return res.status(200).json(respuestaNotification);
 };
 const insertToken = async (req, res = response) => {
   const tokenAuth = req.headers["access-token"];
@@ -96,8 +30,16 @@ const insertToken = async (req, res = response) => {
           decoded.id_usuario
         );
         respuestaDatabase = respuestaDatabase.ok
-          ? await updateTokenToPushNotification(decoded.id_usuario, platform, token)
-          : await insertTokenToPushNotification(decoded.id_usuario, platform, token);
+          ? await updateTokenToPushNotification(
+              decoded.id_usuario,
+              platform,
+              token
+            )
+          : await insertTokenToPushNotification(
+              decoded.id_usuario,
+              platform,
+              token
+            );
         return res.status(201).send(respuestaDatabase);
       }
     });
@@ -138,9 +80,10 @@ const postTypeNotification = async (req, res = response) => {
   const tiponotificacionUpper = tipo_notificacion.toUpperCase();
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM tipo_notificacion WHERE UPPER(tipo_notificacion)=$1`, [
-        tiponotificacionUpper,
-      ])
+      .query(
+        `SELECT * FROM tipo_notificacion WHERE UPPER(tipo_notificacion)=$1`,
+        [tiponotificacionUpper]
+      )
       .then((response) => {
         if (response.rows.length > 0) {
           res.status(200).json({
@@ -211,7 +154,10 @@ const updateTypeNotification = async (req, res = response) => {
 
 const getNotification = async (req, res = response) => {
   const idNotification = req.params.id;
-  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_notificacion=${idNotification}`;
+  const aux =
+    idNotification === "undefined" || idNotification === "{id}"
+      ? ""
+      : `AND n.id_notificacion=${idNotification}`;
   pool.connect().then((client) => {
     return client
       .query(
@@ -237,14 +183,28 @@ const getNotification = async (req, res = response) => {
 };
 
 const postNotification = async (req, res = response) => {
-  const { id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  const {
+    id_empresa,
+    id_marca,
+    id_suscripcion,
+    id_tipo_notificacion,
+    notificacion,
+    titulo,
+  } = req.body;
   pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.notificaciones(
           id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
           VALUES ($1, $2, $3, $4, $5);`,
-        [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+        [
+          id_empresa,
+          id_marca,
+          id_suscripcion,
+          id_tipo_notificacion,
+          notificacion,
+          titulo,
+        ]
       )
       .then((response) => {
         client.release();
@@ -264,14 +224,30 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const { id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  const {
+    id_notificacion,
+    id_empresa,
+    id_marca,
+    id_suscripcion,
+    id_tipo_notificacion,
+    notificacion,
+    titulo,
+  } = req.body;
   pool.connect().then((client) => {
     return client
       .query(
         `UPDATE public.notificaciones
         SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
         WHERE id_notificacion=$1;`,
-        [id_notificacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+        [
+          id_notificacion,
+          id_empresa,
+          id_marca,
+          id_suscripcion,
+          id_tipo_notificacion,
+          notificacion,
+          titulo,
+        ]
       )
       .then((response) => {
         client.release();
@@ -313,7 +289,7 @@ const sendNotificationsAllSubscribers = (req, res = response) => {
         });
       });
   });
-}
+};
 
 module.exports = {
   sendNotification,
@@ -324,5 +300,5 @@ module.exports = {
   getNotification,
   postNotification,
   updateNotification,
-  sendNotificationsAllSubscribers
+  sendNotificationsAllSubscribers,
 };
