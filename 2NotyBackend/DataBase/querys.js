@@ -504,14 +504,41 @@ const getAllTokensSubscribers = async (id) => {
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
-        `SELECT array_to_json(array_agg(tn.token)) as array_to_json FROM suscripciones s, suscriptores sc, token_notificaciones tn
-      WHERE s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND s.id_suscripcion=${id};`
+        `SELECT array_to_json(array_agg(tn.token)) as jsontokens ,array_to_json(array_agg(sc.id_suscriptor)) as jsonsuscribers
+        FROM suscripciones s, suscriptores sc, token_notificaciones tn
+        WHERE s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND sc.id_suscripcion=s.id_suscripcion AND s.id_suscripcion=${id};`
+      )
+      .then((response) => {
+        client.release();
+        return {
+          data: response.rows
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const insertSubscriberPublication = async (id_suscriptor, id_publicacion) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.publicacion_suscriptor(
+          id_suscriptor, id_publicacion, id_estatus)
+          VALUES ( $1, $2, 1);`,
+        [id_suscriptor, id_publicacion]
       )
       .then((response) => {
         client.release();
         return {
           ok: true,
-          data: response.rowCount > 0 ? response.rows[0].array_to_json : [],
+          msg: response.command,
         };
       })
       .catch((err) => {
@@ -539,5 +566,6 @@ module.exports = {
   insertSuscriptorPropertyes,
   updatePropiedadesSuscripcion,
   getAllSubscriptionByIdCategory,
-  getAllTokensSubscribers
+  getAllTokensSubscribers,
+  insertSubscriberPublication
 };

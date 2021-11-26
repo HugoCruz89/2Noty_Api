@@ -1,84 +1,20 @@
-var admin = require("firebase-admin");
-var serviceAccount = require("./../serviceAccountKey.json");
 const { pool } = require("../dbCongif");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
+const { SendSingleNotification, SendMultiNotifications } = require("./../helpers/notifications");
 const {
   existTokenNotification,
   insertTokenToPushNotification,
   updateTokenToPushNotification,
   getAllTokensSubscribers,
+  insertSubscriberPublication,
 } = require("./../DataBase/querys");
+const { buildPathToSaveDataBaseImage, buildPathToSaveServerImage } = require("../helpers/helpers");
 
 const sendNotification = async (req, res = response) => {
-  const { title, body } = req.body;
-  var topics = "weather";
-  var registrationToken =
-    "fyMOucp1IEpNoEdF-avTyd:APA91bGr574OqhR0RsprtvwdO86mXn1AQDWqquo0mHqa2dHQkVB31ImsC4hay1sTRji1Y_no-wBYzHRT1k8h5khiU-uOKd1ufK7ipUa2DT6atu8g99NRGnFCzy5h0g3y848jpkgO_qGn";
-
-  const topicName = "industry-tech";
-
-  const message = {
-    notification: {
-      title,
-      body
-    },
-    android: {
-      notification: {
-        clickAction: "test",
-        icon: "splash_icon",
-        color: "#7e55c3",
-        sound: "default",
-        channelId: "Noticias_id",
-        imageUrl:
-          "https://e1.pngegg.com/pngimages/618/911/png-clipart-handwritten-doodles-and-abr-black-sun.png",
-      },
-
-      priority: "high",
-    },
-    apns: {
-      payload: {
-        aps: {
-          contentAvailable: true,
-          "mutable-content": 1,
-        },
-      },
-      headers: {
-        "apns-push-type": "background",
-        "apns-priority": "5",
-        "apns-topic": "com.alerty", // your app bundle identifier
-      },
-    },
-    token: registrationToken,
-    data: {
-      route: "Agenda",
-      item1: "item1",
-      item2: "item2",
-    },
-  };
-
-  admin
-    .messaging()
-    .send(message)
-    .then((response) => {
-      console.log("successfuly sent message:", response);
-      res.status(200).json({
-        ok: true,
-        msg: "send",
-      });
-    })
-    .catch((error) => {
-      console.log("error sending message:", error);
-      res.status(400).json({
-        ok: false,
-        msg: error,
-      });
-    });
-
-
+  const { title, body, token, imageUrl } = req.body;
+  const respuestaNotification = await SendMultiNotifications(title, body, token, imageUrl);
+  return res.status(200).json(respuestaNotification);
 };
 const insertToken = async (req, res = response) => {
   const tokenAuth = req.headers["access-token"];
@@ -97,8 +33,16 @@ const insertToken = async (req, res = response) => {
           decoded.id_usuario
         );
         respuestaDatabase = respuestaDatabase.ok
-          ? await updateTokenToPushNotification(decoded.id_usuario, platform, token)
-          : await insertTokenToPushNotification(decoded.id_usuario, platform, token);
+          ? await updateTokenToPushNotification(
+            decoded.id_usuario,
+            platform,
+            token
+          )
+          : await insertTokenToPushNotification(
+            decoded.id_usuario,
+            platform,
+            token
+          );
         return res.status(201).send(respuestaDatabase);
       }
     });
@@ -139,9 +83,10 @@ const postTypeNotification = async (req, res = response) => {
   const tiponotificacionUpper = tipo_notificacion.toUpperCase();
   pool.connect().then((client) => {
     return client
-      .query(`SELECT * FROM tipo_notificacion WHERE UPPER(tipo_notificacion)=$1`, [
-        tiponotificacionUpper,
-      ])
+      .query(
+        `SELECT * FROM tipo_notificacion WHERE UPPER(tipo_notificacion)=$1`,
+        [tiponotificacionUpper]
+      )
       .then((response) => {
         if (response.rows.length > 0) {
           res.status(200).json({
@@ -216,7 +161,7 @@ const getNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,n.url_imagen,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin
         FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
         WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
       )
@@ -238,14 +183,55 @@ const getNotification = async (req, res = response) => {
 };
 
 const postNotification = async (req, res = response) => {
-  const { id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  const {
+    id_empresa,
+    id_marca,
+    id_suscripcion,
+    id_tipo_notificacion,
+    cuerpo,
+    titulo,
+    id_accion,
+    url_accion,
+    descripcion,
+    fecha_inicio,
+    fecha_fin
+  } = req.body;
+  let url_imagen = '';
+  if (req?.files?.imagen) {
+    file = req.files.imagen;
+    file.mv(
+      buildPathToSaveServerImage(file.name),
+      async function (err) {
+        if (err) {
+          return res.status(500).send({
+            ok: false,
+            data: err,
+          });
+        }
+      }
+    );
+    url_imagen = buildPathToSaveDataBaseImage(file.name);
+  }
   pool.connect().then((client) => {
     return client
       .query(
-        `INSERT INTO publicaciones(
-          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
-          VALUES ($1, $2, $3, $4, $5);`,
-        [id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+        `INSERT INTO public.publicaciones(
+          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, url_imagen, descripcion, fecha_inicio, fecha_fin, id_estatus)
+          VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 4);`,
+        [
+          id_empresa,
+          id_marca,
+          id_suscripcion,
+          id_tipo_notificacion,
+          cuerpo,
+          titulo,
+          id_accion,
+          url_accion,
+          url_imagen,
+          descripcion,
+          fecha_inicio,
+          fecha_fin
+        ]
       )
       .then((response) => {
         client.release();
@@ -265,14 +251,32 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo } = req.body;
+  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin } = req.body;
+  let url_imagen = '';
+  if (req?.files?.imagen) {
+    file = req.files.imagen;
+    file.mv(
+      buildPathToSaveServerImage(file.name),
+      async function (err) {
+        if (err) {
+          return res.status(500).send({
+            ok: false,
+            data: err,
+          });
+        }
+      }
+    );
+    url_imagen = buildPathToSaveDataBaseImage(file.name);
+  };
+  const script = url_imagen ? ` ,url_imagen='${url_imagen}'` : '';
+
   pool.connect().then((client) => {
     return client
       .query(
-        `UPDATE publicaciones
-        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
+        `UPDATE public.publicaciones
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, url_accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12 ${script}
         WHERE id_publicacion=$1;`,
-        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion, titulo]
+        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin]
       )
       .then((response) => {
         client.release();
@@ -292,10 +296,60 @@ const updateNotification = async (req, res = response) => {
 };
 
 const sendNotificationsAllSubscribers = async (req, res = response) => {
-  const { idSubscription, title, body } = req.body;
+  const { idSubscription, title, body, idPublicacion, urlImagen } = req.body;
   const responseData = await getAllTokensSubscribers(idSubscription);
-  if (responseData.ok)
-    console.log(responseData)
+  if (responseData.data[0].jsontokens) {
+    const arrayIdSuscribers = responseData.data[0].jsonsuscribers;
+    const respuestaNotification = await SendMultiNotifications(title, body, responseData.data[0].jsontokens, urlImagen);
+    if (respuestaNotification.ok) {
+      arrayIdSuscribers.forEach((val) => {
+        insertSubscriberPublication(val, idPublicacion);
+      });
+      return res.status(201).json({
+        ok: true,
+        msg: 'SEND'
+      });
+    }
+    else {
+      return res.status(400).json({
+        ok: false,
+        msg: respuestaNotification.msg
+      });
+    }
+  }
+  else {
+    return res.status(400).json({
+      ok: false,
+      msg: 'No hay suscriptores'
+    });
+  }
+};
+
+const getPublicationsById = async (req, res = response) => {
+  const idSuscriber = req.params.id;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `select p.titulo,p.cuerpo,p.descripcion from publicacion_suscriptor ps, suscriptores sc, publicaciones p
+        where ps.id_suscriptor=sc.id_suscriptor and ps.id_publicacion=p.id_publicacion 
+        and sc.id_suscriptor=$1 and ps.id_estatus=1;`,
+        [idSuscriber]
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
 };
 
 module.exports = {
@@ -307,5 +361,6 @@ module.exports = {
   getNotification,
   postNotification,
   updateNotification,
-  sendNotificationsAllSubscribers
+  sendNotificationsAllSubscribers,
+  getPublicationsById
 };
