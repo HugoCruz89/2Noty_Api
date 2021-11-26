@@ -197,7 +197,7 @@ const postNotification = async (req, res = response) => {
     fecha_fin
   } = req.body;
   let url_imagen = '';
-  if (req?.files?.imagen) {
+  if (req.files) {
     file = req.files.imagen;
     file.mv(
       buildPathToSaveServerImage(file.name),
@@ -253,7 +253,7 @@ const postNotification = async (req, res = response) => {
 const updateNotification = async (req, res = response) => {
   const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin } = req.body;
   let url_imagen = '';
-  if (req?.files?.imagen) {
+  if (req.files) {
     file = req.files.imagen;
     file.mv(
       buildPathToSaveServerImage(file.name),
