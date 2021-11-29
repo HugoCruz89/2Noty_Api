@@ -552,6 +552,36 @@ const insertSubscriberPublication = async (id_suscriptor, id_publicacion) => {
   return databaseResponse;
 };
 
+const updateStatusPublication = async (idPublication) => {
+  
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE publicaciones
+        SET id_estatus=5
+        WHERE id_publicacion=$1;`,
+        [
+          idPublication
+        ]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
 module.exports = {
   existSubscrition,
   insertSubscription,
@@ -567,5 +597,6 @@ module.exports = {
   updatePropiedadesSuscripcion,
   getAllSubscriptionByIdCategory,
   getAllTokensSubscribers,
-  insertSubscriberPublication
+  insertSubscriberPublication,
+  updateStatusPublication
 };

@@ -3586,6 +3586,10 @@
                     "fecha_fin": {
                         "type": "string",
                         "example": "2021-12-01"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
                     }
                 }
             }
