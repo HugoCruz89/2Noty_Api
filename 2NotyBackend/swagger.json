@@ -499,12 +499,12 @@
                 }
             }
         },
-        "/api/notifications/getPublicationsByIdSubscriber/{id}":{
+        "/api/notifications/getPublicationsByIdUser/{id}":{
             "get": {
-                "operationId": "getPublicationsById",
+                "operationId": "getPublicationsByIdUser",
                 "tags": ["Notifications"],
-                "summary": "Get All Publications by id subscriber",
-                "description": "Get All Publications by id subscriber",
+                "summary": "Get All Publications by id user",
+                "description": "Get All Publications by id user",
                 "consumes": "application/json",
                 "parameters": [{
                     "in": "path",
