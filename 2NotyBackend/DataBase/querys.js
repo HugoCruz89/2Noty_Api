@@ -108,8 +108,8 @@ const updateSubscription = async (data, pathImage, pathIcono) => {
   } = data;
   const suscripcionUpperCase = suscripcion.toUpperCase();
   const descripcionUpperCase = descripcion.toUpperCase();
-  const queryImagen=pathImage ? `,url_imagen='${pathImage}'` : '';
-  const queryIcono=pathIcono ? `,url_icono='${pathIcono}'` : '';
+  const queryImagen = pathImage ? `,url_imagen='${pathImage}'` : '';
+  const queryIcono = pathIcono ? `,url_icono='${pathIcono}'` : '';
   const databaseResponse = await pool.connect().then((client) => {
     return client
       .query(
@@ -272,7 +272,7 @@ const insertPropiedadesSuscripcion = async (data, idSubscription) => {
   });
   return databaseResponse;
 };
-const updatePropiedadesSuscripcion = async (data,idSubscription) => {
+const updatePropiedadesSuscripcion = async (data, idSubscription) => {
   const { id, label, hidden, required, editable, type, name, order } = data;
   const databaseResponse = await pool.connect().then((client) => {
 
@@ -421,7 +421,7 @@ const getAllSubscription = async () => {
         client.release();
         return {
           ok: true,
-          data:response.rows,
+          data: response.rows,
         };
       })
       .catch((err) => {
@@ -500,6 +500,88 @@ const getAllSubscriptionByIdCategory = async (id) => {
   return dataBaseResponse;
 };
 
+const getAllTokensSubscribers = async (id) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT array_to_json(array_agg(tn.token)) as jsontokens ,array_to_json(array_agg(sc.id_suscriptor)) as jsonsuscribers
+        FROM suscripciones s, suscriptores sc, token_notificaciones tn
+        WHERE s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND sc.id_suscripcion=s.id_suscripcion AND s.id_suscripcion=${id};`
+      )
+      .then((response) => {
+        client.release();
+        return {
+          data: response.rows
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const insertSubscriberPublication = async (id_suscriptor, id_publicacion) => {
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO public.publicacion_suscriptor(
+          id_suscriptor, id_publicacion, id_estatus)
+          VALUES ( $1, $2, 1);`,
+        [id_suscriptor, id_publicacion]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
+const updateStatusPublication = async (idPublication) => {
+  
+  const databaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE publicaciones
+        SET id_estatus=5
+        WHERE id_publicacion=$1;`,
+        [
+          idPublication
+        ]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          msg: response.command,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: err,
+        };
+      });
+  });
+  return databaseResponse;
+};
+
 module.exports = {
   existSubscrition,
   insertSubscription,
@@ -513,5 +595,8 @@ module.exports = {
   existSubscritor,
   insertSuscriptorPropertyes,
   updatePropiedadesSuscripcion,
-  getAllSubscriptionByIdCategory
+  getAllSubscriptionByIdCategory,
+  getAllTokensSubscribers,
+  insertSubscriberPublication,
+  updateStatusPublication
 };

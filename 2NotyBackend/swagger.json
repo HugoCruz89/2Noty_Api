@@ -94,7 +94,7 @@
                         "type": "integer"
                     },
                     "required": true,
-                    "description": "Id de notificación"
+                    "description": "Id de publicación"
                 }],
                 "responses": {
                     "200": {
@@ -270,7 +270,7 @@
                     "schema": {
                         "type": "integer"
                     },
-                    "description": "Id de notificación"
+                    "description": "Id de publicación"
                 }],
                 "responses": {
                     "200": {
@@ -298,40 +298,80 @@
                 "summary": "insert a Notification",
                 "description": "insert a Notification",
                 "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "id_empresa": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_marca": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_suscripcion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_tipo_notificacion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "notificacion": {
-                                "type": "string",
-                                "example": "Descripción"
-                            },
-                            "titulo": {
-                                "type": "string",
-                                "example": "Titulo"
-                            }
-                        }
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id_empresa",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_marca",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_suscripcion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_tipo_notificacion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "cuerpo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "titulo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "descripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "imagen",
+                        "type": "file",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "url_accion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_accion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "fecha_inicio",
+                        "type": "date",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "fecha_fin",
+                        "type": "date",
+                        "description": ""
                     }
-                }],
+                ],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -359,44 +399,86 @@
                 "summary": "update a Notification",
                 "description": "Update a Notification",
                 "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "id_notificacion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_empresa": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_marca": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_suscripcion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_tipo_notificacion": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "notificacion": {
-                                "type": "string",
-                                "example": "Descripción"
-                            },
-                            "titulo": {
-                                "type": "string",
-                                "example": "Titulo"
-                            }
-                        }
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id_publicacion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_empresa",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_marca",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_suscripcion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_tipo_notificacion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "cuerpo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "titulo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "descripcion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "imagen",
+                        "type": "file",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "url_accion",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "id_accion",
+                        "type": "integer",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "fecha_inicio",
+                        "type": "date",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "fecha_fin",
+                        "type": "date",
+                        "description": ""
                     }
-                }],
+                ],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -410,6 +492,41 @@
                                 "data": {
                                     "type": "string",
                                     "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/getPublicationsByIdUser/{id}":{
+            "get": {
+                "operationId": "getPublicationsByIdUser",
+                "tags": ["Notifications"],
+                "summary": "Get All Publications by id user",
+                "description": "Get All Publications by id user",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required":true,
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id user"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/PublicationsById"
                                 }
                             }
                         }
@@ -811,7 +928,7 @@
                     "schema": {
                         "type": "integer"
                     },
-                    "description": "Id de notificación"
+                    "description": "Id de publicación"
                 }],
                 "responses": {
                     "200": {
@@ -839,7 +956,8 @@
                 "summary": "update a subscription",
                 "description": "Update a subscription",
                 "consumes": "application/json",
-                "parameters": [{
+                "parameters": [
+                    {
                         "in": "formData",
                         "name": "id_suscripcion",
                         "type": "integer",
@@ -2270,8 +2388,132 @@
                     }
                 }
             }
+        },
+        "/api/catalogs/getActions": {
+            "get": {
+                "operationId": "getAllActions",
+                "tags": ["Catalogs"],
+                "summary": "Get all actions",
+                "description": "Get all actions",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_accion": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "accion": {
+                                                "type": "string",
+                                                "example": "Vista"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/insertAction": {
+            "post": {
+                "operationId": "register action",
+                "tags": ["Catalogs"],
+                "summary": "Register a action",
+                "description": "Create a new action in system",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "accion": {
+                                "type": "string",
+                                "example": "Vista"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/catalogs/updateAction": {
+            "put": {
+                "operationId": "updateAction",
+                "tags": ["Catalogs"],
+                "summary": "update a action",
+                "description": "Update a action",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_accion": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "accion": {
+                                "type": "string",
+                                "example": "Vista app"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-
     },
     "definitions": {
         "categorySubscription": {
@@ -3277,7 +3519,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "id_notificacion": {
+                    "id_publicacion": {
                         "type": "integer",
                         "example": 1
                     },
@@ -3313,14 +3555,75 @@
                         "type": "string",
                         "example": "Example"
                     },
-                    "notificacion": {
+                    "cuerpo": {
+                        "type": "string",
+                        "example": "Cuerpo"
+                    },
+                    "descripcion": {
                         "type": "string",
                         "example": "Descripción"
                     },
                     "titulo": {
                         "type": "string",
                         "example": "Titulo"
+                    },
+                    "id_accion": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "url_accion": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "url_imagen": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "fecha_inicio": {
+                        "type": "string",
+                        "example": "2021-11-01"
+                    },
+                    "fecha_fin": {
+                        "type": "string",
+                        "example": "2021-12-01"
+                    },
+                    "id_estatus": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "GUARDADA"
                     }
+                }
+            }
+        },
+        "PublicationsById": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "titulo": {
+                        "type": "string",
+                        "example": "Titulo"
+                    },
+                    "cuerpo": {
+                        "type": "string",
+                        "example": "Cuerpo"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Descripción"
+                    },
+                    "url_accion": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "url_imagen": {
+                        "type": "string",
+                        "example": "http://example"
+                    }
+                    
                 }
             }
         }

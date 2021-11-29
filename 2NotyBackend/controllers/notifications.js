@@ -1,16 +1,20 @@
 const { pool } = require("../dbCongif");
 const jwt = require("jsonwebtoken");
 const config = require("./../configs/config");
-const { SendSingleNotification,SendMultiNotifications } = require("./../helpers/notifications");
+const { SendSingleNotification, SendMultiNotifications } = require("./../helpers/notifications");
 const {
   existTokenNotification,
   insertTokenToPushNotification,
   updateTokenToPushNotification,
+  getAllTokensSubscribers,
+  insertSubscriberPublication,
+  updateStatusPublication,
 } = require("./../DataBase/querys");
+const { buildPathToSaveDataBaseImage, buildPathToSaveServerImage } = require("../helpers/helpers");
 
 const sendNotification = async (req, res = response) => {
-  const { title, body,token,imageUrl } = req.body;
-  const respuestaNotification =await SendMultiNotifications( title, body,token,imageUrl );
+  const { title, body, token, imageUrl } = req.body;
+  const respuestaNotification = await SendMultiNotifications(title, body, token, imageUrl);
   return res.status(200).json(respuestaNotification);
 };
 const insertToken = async (req, res = response) => {
@@ -31,15 +35,15 @@ const insertToken = async (req, res = response) => {
         );
         respuestaDatabase = respuestaDatabase.ok
           ? await updateTokenToPushNotification(
-              decoded.id_usuario,
-              platform,
-              token
-            )
+            decoded.id_usuario,
+            platform,
+            token
+          )
           : await insertTokenToPushNotification(
-              decoded.id_usuario,
-              platform,
-              token
-            );
+            decoded.id_usuario,
+            platform,
+            token
+          );
         return res.status(201).send(respuestaDatabase);
       }
     });
@@ -154,16 +158,13 @@ const updateTypeNotification = async (req, res = response) => {
 
 const getNotification = async (req, res = response) => {
   const idNotification = req.params.id;
-  const aux =
-    idNotification === "undefined" || idNotification === "{id}"
-      ? ""
-      : `AND n.id_notificacion=${idNotification}`;
+  const aux = (idNotification === 'undefined' || idNotification === '{id}') ? '' : `AND n.id_publicacion=${idNotification}`;
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_notificacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.notificacion,n.titulo
-        FROM notificaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
-        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,n.url_imagen,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus
+        FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn, estatus e
+        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion AND n.id_estatus=e.id_estatus ${aux};`
       )
       .then((response) => {
         client.release();
@@ -188,22 +189,49 @@ const postNotification = async (req, res = response) => {
     id_marca,
     id_suscripcion,
     id_tipo_notificacion,
-    notificacion,
+    cuerpo,
     titulo,
+    id_accion,
+    url_accion,
+    descripcion,
+    fecha_inicio,
+    fecha_fin
   } = req.body;
+  let url_imagen = '';
+  if (req.files) {
+    file = req.files.imagen;
+    file.mv(
+      buildPathToSaveServerImage(file.name),
+      async function (err) {
+        if (err) {
+          return res.status(500).send({
+            ok: false,
+            data: err,
+          });
+        }
+      }
+    );
+    url_imagen = buildPathToSaveDataBaseImage(file.name);
+  }
   pool.connect().then((client) => {
     return client
       .query(
-        `INSERT INTO public.notificaciones(
-          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, notificacion,titulo)
-          VALUES ($1, $2, $3, $4, $5);`,
+        `INSERT INTO public.publicaciones(
+          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, url_imagen, descripcion, fecha_inicio, fecha_fin, id_estatus)
+          VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 4);`,
         [
           id_empresa,
           id_marca,
           id_suscripcion,
           id_tipo_notificacion,
-          notificacion,
+          cuerpo,
           titulo,
+          id_accion,
+          url_accion,
+          url_imagen,
+          descripcion,
+          fecha_inicio,
+          fecha_fin
         ]
       )
       .then((response) => {
@@ -224,30 +252,32 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const {
-    id_notificacion,
-    id_empresa,
-    id_marca,
-    id_suscripcion,
-    id_tipo_notificacion,
-    notificacion,
-    titulo,
-  } = req.body;
+  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin } = req.body;
+  let url_imagen = '';
+  if (req.files) {
+    file = req.files.imagen;
+    file.mv(
+      buildPathToSaveServerImage(file.name),
+      async function (err) {
+        if (err) {
+          return res.status(500).send({
+            ok: false,
+            data: err,
+          });
+        }
+      }
+    );
+    url_imagen = buildPathToSaveDataBaseImage(file.name);
+  };
+  const script = url_imagen ? ` ,url_imagen='${url_imagen}'` : '';
+
   pool.connect().then((client) => {
     return client
       .query(
-        `UPDATE public.notificaciones
-        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, notificacion=$6,titulo=$7
-        WHERE id_notificacion=$1;`,
-        [
-          id_notificacion,
-          id_empresa,
-          id_marca,
-          id_suscripcion,
-          id_tipo_notificacion,
-          notificacion,
-          titulo,
-        ]
+        `UPDATE public.publicaciones
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, url_accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12 ${script}
+        WHERE id_publicacion=$1;`,
+        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin]
       )
       .then((response) => {
         client.release();
@@ -266,13 +296,47 @@ const updateNotification = async (req, res = response) => {
   });
 };
 
-const sendNotificationsAllSubscribers = (req, res = response) => {
-  const idNotification = req.params.id;
+const sendNotificationsAllSubscribers = async (req, res = response) => {
+  const { idSubscription, title, body, idPublicacion, urlImagen } = req.body;
+  const responseData = await getAllTokensSubscribers(idSubscription);
+  if (responseData.data[0].jsontokens) {
+    const arrayIdSuscribers = responseData.data[0].jsonsuscribers;
+    const respuestaNotification = await SendMultiNotifications(title, body, responseData.data[0].jsontokens, urlImagen);
+    if (respuestaNotification.ok) {
+      arrayIdSuscribers.forEach((val) => {
+        insertSubscriberPublication(val, idPublicacion);
+      });
+      updateStatusPublication(idPublicacion);
+      return res.status(201).json({
+        ok: true,
+        msg: 'SEND'
+      });
+    }
+    else {
+      return res.status(400).json({
+        ok: false,
+        msg: respuestaNotification.msg
+      });
+    }
+  }
+  else {
+    return res.status(400).json({
+      ok: false,
+      msg: 'No hay suscriptores'
+    });
+  }
+};
+
+const getPublicationsByIdUser = async (req, res = response) => {
+  const idUser = req.params.id;
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.titulo as title,n.notificacion as body,tn.token FROM suscripciones s, notificaciones n, suscriptores sc, token_notificaciones tn
-        WHERE s.id_suscripcion=n.id_suscripcion AND s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND n.id_notificacion=${idNotification};`
+        `SELECT p.titulo,p.cuerpo,p.descripcion,p.url_accion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=sc.id_suscripcion) ELSE p.url_imagen END
+        FROM publicacion_suscriptor ps, suscriptores sc, publicaciones p
+        WHERE ps.id_suscriptor=sc.id_suscriptor AND ps.id_publicacion=p.id_publicacion 
+        AND sc.id_usuario=$1 AND ps.id_estatus=1 AND to_char(p.fecha_fin,'YYYYMMDD')::integer >= to_char(current_timestamp,'YYYYMMDD')::integer;`,
+        [idUser]
       )
       .then((response) => {
         client.release();
@@ -301,4 +365,5 @@ module.exports = {
   postNotification,
   updateNotification,
   sendNotificationsAllSubscribers,
+  getPublicationsByIdUser
 };

@@ -739,7 +739,99 @@ const postDataType = async (req, res = response) => {
   });
 };
 
+const getAction = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM cat_acciones`)
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
+const postAction = async (req, res = response) => {
+  const { accion } = req.body;
+  const accionUpperCase = accion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(`SELECT * FROM cat_acciones WHERE upper(accion)=$1`, [
+        accionUpperCase,
+      ])
+      .then((response) => {
+        if (response.rows.length > 0) {
+          res.status(200).json({
+            ok: true,
+            msg: "Ya se encuentra registrada esta acción",
+          });
+        } else {
+          return client
+            .query(
+              `INSERT INTO cat_acciones( accion)
+              VALUES($1)`,
+              [accionUpperCase]
+            )
+            .then((response) => {
+              client.release();
+              res.status(201).json({
+                ok: true,
+                msg: response.command,
+              });
+            })
+            .catch((err) => {
+              client.release();
+              res.status(400).json({
+                ok: false,
+                msg: err,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
+const updateAction = async (req, res = response) => {
+  const { id_accion, accion } = req.body;
+  const accionUpper = accion.toUpperCase();
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE cat_acciones SET accion=$2 where id_accion=$1`,
+        [id_accion, accionUpper]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
 module.exports = {
   getStatus,
@@ -766,4 +858,7 @@ module.exports = {
   updateDataType,
   activateCountry,
   activateState,
+  getAction,
+  postAction,
+  updateAction
 };

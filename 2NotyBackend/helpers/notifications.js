@@ -67,7 +67,7 @@ const SendSingleNotification = async (title,body,token,imageUrl) => {
 const SendMultiNotifications = async (title,body,arrayToken,imageUrl) => {
     //   var topics = "weather";
     //   const topicName = "industry-tech";
-   
+
     const message = {
       notification: {
         title,
@@ -109,14 +109,14 @@ const SendMultiNotifications = async (title,body,arrayToken,imageUrl) => {
       .messaging()
       .sendMulticast(message)
       .then((response) => {
-        console.log("successfuly sent message:", response);
+        // console.log("successfuly sent message:", response);
         return {
           ok: true,
           msg: response,
         };
       })
       .catch((error) => {
-        console.log("error sending message:", error);
+        // console.log("error sending message:", error);
         return {
           ok: false,
           msg: error,
