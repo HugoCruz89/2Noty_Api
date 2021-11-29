@@ -3614,6 +3614,14 @@
                     "descripcion": {
                         "type": "string",
                         "example": "Descripción"
+                    },
+                    "url_accion": {
+                        "type": "string",
+                        "example": "http://example"
+                    },
+                    "url_imagen": {
+                        "type": "string",
+                        "example": "http://example"
                     }
                     
                 }
