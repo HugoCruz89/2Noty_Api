@@ -327,7 +327,7 @@ const sendNotificationsAllSubscribers = async (req, res = response) => {
   }
 };
 
-const getPublicationsById = async (req, res = response) => {
+const getPublicationsByIdSubscriber = async (req, res = response) => {
   const idSuscriber = req.params.id;
   pool.connect().then((client) => {
     return client
@@ -364,5 +364,5 @@ module.exports = {
   postNotification,
   updateNotification,
   sendNotificationsAllSubscribers,
-  getPublicationsById
+  getPublicationsByIdSubscriber
 };

@@ -5,7 +5,7 @@ host + /api/notifications
 const router = require("express").Router();
 const { check } = require("express-validator");
 const { validarCampos } = require('../middlewares/validar-campos')
-const { sendNotification, insertToken, getTypeNotification, postTypeNotification, updateTypeNotification, getNotification, postNotification, updateNotification, sendNotificationsAllSubscribers, getPublicationsById } = require("../controllers/notifications");
+const { sendNotification, insertToken, getTypeNotification, postTypeNotification, updateTypeNotification, getNotification, postNotification, updateNotification, sendNotificationsAllSubscribers, getPublicationsByIdSubscriber } = require("../controllers/notifications");
 
 router.get("/typeNotification", getTypeNotification);
 router.post("/insertTypeNotification", postTypeNotification);
@@ -20,6 +20,6 @@ router.post("/insertToken", insertToken);
 
 router.post("/sendNotificationsAllSubscribers", sendNotificationsAllSubscribers);
 
-router.get("/getPublicationsById/:id",getPublicationsById);
+router.get("/getPublicationsByIdSubscriber/:id",getPublicationsByIdSubscriber);
 
 module.exports = router;

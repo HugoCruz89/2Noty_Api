@@ -499,7 +499,7 @@
                 }
             }
         },
-        "/api/notifications/getPublicationsById/{id}":{
+        "/api/notifications/getPublicationsByIdSubscriber/{id}":{
             "get": {
                 "operationId": "getPublicationsById",
                 "tags": ["Notifications"],
