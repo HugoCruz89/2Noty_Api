@@ -513,7 +513,7 @@
                     "schema": {
                         "type": "integer"
                     },
-                    "description": "Id subscriber"
+                    "description": "Id user"
                 }],
                 "responses": {
                     "200": {

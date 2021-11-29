@@ -328,14 +328,14 @@ const sendNotificationsAllSubscribers = async (req, res = response) => {
 };
 
 const getPublicationsByIdUser = async (req, res = response) => {
-  const idSuscriber = req.params.id;
+  const idUser = req.params.id;
   pool.connect().then((client) => {
     return client
       .query(
         `select p.titulo,p.cuerpo,p.descripcion from publicacion_suscriptor ps, suscriptores sc, publicaciones p
         where ps.id_suscriptor=sc.id_suscriptor and ps.id_publicacion=p.id_publicacion 
         and sc.id_usuario=$1 and ps.id_estatus=1 and to_char(p.fecha_fin,'YYYYMMDD')::integer >= to_char(current_timestamp,'YYYYMMDD')::integer;`,
-        [idSuscriber]
+        [idUser]
       )
       .then((response) => {
         client.release();
