@@ -162,9 +162,9 @@ const getNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,n.url_imagen,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus
-        FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn
-        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion ${aux};`
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,n.url_imagen,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus
+        FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn, estatus e
+        WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion AND n.id_estatus=e.id_estatus ${aux};`
       )
       .then((response) => {
         client.release();

@@ -3590,6 +3590,10 @@
                     "id_estatus": {
                         "type": "integer",
                         "example": 1
+                    },
+                    "estatus": {
+                        "type": "string",
+                        "example": "GUARDADA"
                     }
                 }
             }
