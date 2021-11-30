@@ -76,11 +76,11 @@ const SendMultiNotifications = async (title,body,arrayToken,imageUrl) => {
       android: {
         notification: {
           // clickAction: "test",
-          // icon: "splash_icon",
-          // color: "#EA5048",
+           icon: "splash_icon",
+           color: "#EA5048",
           // sound: "default",
-          channelId: "test_id",
-          // imageUrl:imageUrl,
+          channelId: "Noticias_id",
+         imageUrl:imageUrl,
         },
         priority: "high",
       },
@@ -88,12 +88,12 @@ const SendMultiNotifications = async (title,body,arrayToken,imageUrl) => {
         payload: {
           aps: {
             contentAvailable: true,
-            "mutable-content": 1,
+
           },
         },
         headers: {
           "apns-push-type": "background",
-          "apns-priority": "5",
+          "apns-priority": "10",
           "apns-topic": "com.alerty", // your app bundle identifier
         },
       },
