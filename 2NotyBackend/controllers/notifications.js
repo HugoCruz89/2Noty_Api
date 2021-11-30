@@ -10,7 +10,7 @@ const {
   insertUserPublication,
   updateStatusPublication,
 } = require("./../DataBase/querys");
-const { buildPathToSaveDataBaseImage, buildPathToSaveServerImage } = require("../helpers/helpers");
+const { buildPathToSaveDataBaseImage, buildPathToSaveServerImage, createName } = require("../helpers/helpers");
 
 const sendNotification = async (req, res = response) => {
   const { title, body, token, imageUrl } = req.body;
@@ -162,7 +162,7 @@ const getNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,n.url_imagen,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,CASE WHEN n.url_imagen='' THEN s.url_imagen ELSE n.url_imagen END,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus
         FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn, estatus e
         WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion AND n.id_estatus=e.id_estatus ${aux};`
       )
@@ -256,8 +256,9 @@ const updateNotification = async (req, res = response) => {
   let url_imagen = '';
   if (req.files) {
     file = req.files.imagen;
+    const nameImage=createName(file.name);
     file.mv(
-      buildPathToSaveServerImage(file.name),
+      buildPathToSaveServerImage(nameImage),
       async function (err) {
         if (err) {
           return res.status(500).send({
@@ -267,7 +268,7 @@ const updateNotification = async (req, res = response) => {
         }
       }
     );
-    url_imagen = buildPathToSaveDataBaseImage(file.name);
+    url_imagen = buildPathToSaveDataBaseImage(nameImage);
   };
   const script = url_imagen ? ` ,url_imagen='${url_imagen}'` : '';
 
@@ -298,6 +299,7 @@ const updateNotification = async (req, res = response) => {
 
 const sendNotificationsAllSubscribers = async (req, res = response) => {
   const { idSubscription, title, body, idPublicacion, urlImagen } = req.body;
+  console.log(idSubscription, title, body, idPublicacion, urlImagen);
   const responseData = await getAllTokensSubscribers(idSubscription);
   if (responseData.data[0].jsontokens) {
     const arrayIdUser = responseData.data[0].jsonusers;

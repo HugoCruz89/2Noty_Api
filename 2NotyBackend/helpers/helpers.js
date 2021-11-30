@@ -69,16 +69,19 @@ const hashedPassword = async (password) => {
 const buildPathToSaveDataBaseImage = (name) => {
   if (name)
     return `${process.env.PATH_SERVER_TO_SAVE_DATABASE_IMAGE
-      }${getDateNowCurrent()}-${name}`;
+      }${name}`;
   else
     return name
 };
 
 const buildPathToSaveServerImage = (name) => {
   return `${process.env.PATH_SERVER_TO_SAVE_IMAGE
-    }${getDateNowCurrent()}-${name}`;
+    }${name}`;
 };
 
+const createName=(name)=>{
+  return `${getDateNowCurrent()}-${name.replace(/ /g,'_')}`;
+};
 
 const groupList = (item) => {
   let group = item.reduce((r, a) => {
@@ -99,5 +102,6 @@ module.exports = {
   getDateNowCurrent,
   buildPathToSaveDataBaseImage,
   buildPathToSaveServerImage,
-  groupList
+  groupList,
+  createName
 };

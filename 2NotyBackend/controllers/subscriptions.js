@@ -1,6 +1,7 @@
 const {
   buildPathToSaveDataBaseImage,
   buildPathToSaveServerImage,
+  createName,
 } = require("./../helpers/helpers");
 
 const { pool } = require("./../dbCongif");
@@ -144,11 +145,14 @@ const putSubscription = async (req, res = response) => {
   const { id_suscripcion, propiedadesSuscripcion } = req.body;
   let url_imagen;
   let url_icono;
+  let nameImage;
+  let nameIcon;
   if (req.files !== null && req.files.imagen !== undefined) {
     url_imagen = req.files.imagen;
+    nameImage=createName(url_imagen.name);
     // Use the mv() method to place the file somewhere on your server
     url_imagen.mv(
-      buildPathToSaveServerImage(url_imagen.name),
+      buildPathToSaveServerImage(nameImage),
       async function (err) {
         if (err) {
           return res.status(500).send({
@@ -162,8 +166,9 @@ const putSubscription = async (req, res = response) => {
 
   if (req.files !== null && req.files.icono !== undefined) {
     url_icono = req.files.icono;
+    nameIcon=createName(url_icono.name)
     // Use the mv() method to place the file somewhere on your server
-    url_icono.mv(buildPathToSaveServerImage(url_icono.name), function (err) {
+    url_icono.mv(buildPathToSaveServerImage(nameIcon), function (err) {
       if (err)
         return res.status(500).send({
           ok: false,
@@ -173,8 +178,8 @@ const putSubscription = async (req, res = response) => {
   }
   const updateResponse = await updateSubscription(
     req.body,
-    url_imagen === undefined ? null : buildPathToSaveDataBaseImage(url_imagen.name),
-    url_icono === undefined ? null : buildPathToSaveDataBaseImage(url_icono.name)
+    url_imagen === undefined ? null : buildPathToSaveDataBaseImage(nameImage),
+    url_icono === undefined ? null : buildPathToSaveDataBaseImage(nameIcon)
   );
   if (updateResponse.ok) {
     //modifico las propiedades
