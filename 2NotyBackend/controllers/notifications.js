@@ -299,7 +299,6 @@ const updateNotification = async (req, res = response) => {
 
 const sendNotificationsAllSubscribers = async (req, res = response) => {
   const { idSubscription, title, body, idPublicacion, urlImagen } = req.body;
-  console.log(idSubscription, title, body, idPublicacion, urlImagen);
   const responseData = await getAllTokensSubscribers(idSubscription);
   if (responseData.data[0].jsontokens) {
     const arrayIdUser = responseData.data[0].jsonusers;
