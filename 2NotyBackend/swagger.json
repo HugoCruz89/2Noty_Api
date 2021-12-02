@@ -3603,6 +3603,10 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "id_publicacion": {
+                        "type":"integer",
+                        "example":1
+                    },
                     "titulo": {
                         "type": "string",
                         "example": "Titulo"
