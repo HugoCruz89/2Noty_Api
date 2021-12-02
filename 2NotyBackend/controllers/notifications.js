@@ -333,7 +333,7 @@ const getPublicationsByIdUser = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT p.id_publicacion,p.titulo,p.cuerpo,p.descripcion,p.url_accion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END
+        `SELECT ps.id_publicacion_usuario as id_publicacion,p.titulo,p.cuerpo,p.descripcion,p.url_accion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END
         FROM publicacion_usuario ps, publicaciones p
         WHERE ps.id_publicacion=p.id_publicacion 
         AND ps.id_usuario=$1 AND ps.id_estatus=1 AND to_char(p.fecha_fin,'YYYYMMDD')::integer >= to_char(current_timestamp,'YYYYMMDD')::integer;`,
