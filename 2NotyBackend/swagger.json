@@ -298,8 +298,7 @@
                 "summary": "insert a Notification",
                 "description": "insert a Notification",
                 "consumes": "application/json",
-                "parameters": [
-                    {
+                "parameters": [{
                         "in": "formData",
                         "name": "id_empresa",
                         "type": "integer",
@@ -349,7 +348,7 @@
                     },
                     {
                         "in": "formData",
-                        "name": "url_accion",
+                        "name": "accion",
                         "type": "string",
                         "description": ""
                     },
@@ -370,6 +369,12 @@
                         "name": "fecha_fin",
                         "type": "date",
                         "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "titulo_accion",
+                        "type": "string",
+                        "description": "Titulo"
                     }
                 ],
                 "responses": {
@@ -399,8 +404,7 @@
                 "summary": "update a Notification",
                 "description": "Update a Notification",
                 "consumes": "application/json",
-                "parameters": [
-                    {
+                "parameters": [{
                         "in": "formData",
                         "name": "id_publicacion",
                         "type": "integer",
@@ -456,7 +460,7 @@
                     },
                     {
                         "in": "formData",
-                        "name": "url_accion",
+                        "name": "accion",
                         "type": "string",
                         "description": ""
                     },
@@ -476,6 +480,12 @@
                         "in": "formData",
                         "name": "fecha_fin",
                         "type": "date",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "titulo_accion",
+                        "type": "string",
                         "description": ""
                     }
                 ],
@@ -499,7 +509,7 @@
                 }
             }
         },
-        "/api/notifications/getPublicationsByIdUser/{id}":{
+        "/api/notifications/getPublicationsByIdUser/{id}": {
             "get": {
                 "operationId": "getPublicationsByIdUser",
                 "tags": ["Notifications"],
@@ -509,7 +519,7 @@
                 "parameters": [{
                     "in": "path",
                     "name": "id",
-                    "required":true,
+                    "required": true,
                     "schema": {
                         "type": "integer"
                     },
@@ -956,8 +966,7 @@
                 "summary": "update a subscription",
                 "description": "Update a subscription",
                 "consumes": "application/json",
-                "parameters": [
-                    {
+                "parameters": [{
                         "in": "formData",
                         "name": "id_suscripcion",
                         "type": "integer",
@@ -3571,7 +3580,7 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "url_accion": {
+                    "accion": {
                         "type": "string",
                         "example": "http://example"
                     },
@@ -3594,6 +3603,10 @@
                     "estatus": {
                         "type": "string",
                         "example": "GUARDADA"
+                    },
+                    "titulo_accion": {
+                        "type": "string",
+                        "example": "Titulo"
                     }
                 }
             }
@@ -3604,8 +3617,8 @@
                 "type": "object",
                 "properties": {
                     "id_publicacion": {
-                        "type":"integer",
-                        "example":1
+                        "type": "integer",
+                        "example": 1
                     },
                     "titulo": {
                         "type": "string",
@@ -3619,15 +3632,28 @@
                         "type": "string",
                         "example": "Descripción"
                     },
-                    "url_accion": {
-                        "type": "string",
-                        "example": "http://example"
-                    },
                     "url_imagen": {
                         "type": "string",
                         "example": "http://example"
+                    },
+                    "accion": {
+                        "type": "object",
+                        "properties": {
+                            "accion": {
+                                "type": "string",
+                                "example": "URLAccion"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo"
+                            },
+                            "tipo_accion": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        }
                     }
-                    
+
                 }
             }
         }

@@ -162,7 +162,7 @@ const getNotification = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.url_accion,CASE WHEN n.url_imagen='' THEN s.url_imagen ELSE n.url_imagen END,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus
+        `SELECT n.id_publicacion,n.id_empresa,em.empresa,n.id_marca,m.marca,n.id_suscripcion,s.suscripcion,n.id_tipo_notificacion,tn.tipo_notificacion,n.cuerpo,n.descripcion,n.titulo,n.id_accion,n.accion,CASE WHEN n.url_imagen='' THEN s.url_imagen ELSE n.url_imagen END,to_char(fecha_inicio,'YYYY-MM-DD') as fecha_inicio,to_char(fecha_fin,'YYYY-MM-DD') as fecha_fin, n.id_estatus, e.estatus, n.titulo_accion
         FROM publicaciones n, empresas em, marcas m, suscripciones s, tipo_notificacion tn, estatus e
         WHERE n.id_empresa=em.id_empresa AND n.id_marca=m.id_marca AND n.id_suscripcion=s.id_suscripcion AND n.id_tipo_notificacion=tn.id_tipo_notificacion AND n.id_estatus=e.id_estatus ${aux};`
       )
@@ -192,16 +192,18 @@ const postNotification = async (req, res = response) => {
     cuerpo,
     titulo,
     id_accion,
-    url_accion,
+    accion,
     descripcion,
     fecha_inicio,
-    fecha_fin
+    fecha_fin,
+    titulo_accion
   } = req.body;
   let url_imagen = '';
   if (req.files) {
     file = req.files.imagen;
+    const nameImage = createName(file.name);
     file.mv(
-      buildPathToSaveServerImage(file.name),
+      buildPathToSaveServerImage(nameImage),
       async function (err) {
         if (err) {
           return res.status(500).send({
@@ -211,14 +213,14 @@ const postNotification = async (req, res = response) => {
         }
       }
     );
-    url_imagen = buildPathToSaveDataBaseImage(file.name);
+    url_imagen = buildPathToSaveDataBaseImage(nameImage);
   }
   pool.connect().then((client) => {
     return client
       .query(
         `INSERT INTO public.publicaciones(
-          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, url_imagen, descripcion, fecha_inicio, fecha_fin, id_estatus)
-          VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 4);`,
+          id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, url_imagen, descripcion, fecha_inicio, fecha_fin, id_estatus, titulo_accion)
+          VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 4, $13);`,
         [
           id_empresa,
           id_marca,
@@ -227,11 +229,12 @@ const postNotification = async (req, res = response) => {
           cuerpo,
           titulo,
           id_accion,
-          url_accion,
+          accion,
           url_imagen,
           descripcion,
           fecha_inicio,
-          fecha_fin
+          fecha_fin,
+          titulo_accion
         ]
       )
       .then((response) => {
@@ -242,6 +245,7 @@ const postNotification = async (req, res = response) => {
         });
       })
       .catch((err) => {
+        console.log(err)
         client.release();
         res.status(400).json({
           ok: false,
@@ -252,11 +256,11 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin } = req.body;
+  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin } = req.body;
   let url_imagen = '';
   if (req.files) {
     file = req.files.imagen;
-    const nameImage=createName(file.name);
+    const nameImage = createName(file.name);
     file.mv(
       buildPathToSaveServerImage(nameImage),
       async function (err) {
@@ -276,9 +280,9 @@ const updateNotification = async (req, res = response) => {
     return client
       .query(
         `UPDATE public.publicaciones
-        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, url_accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12 ${script}
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12 ${script}
         WHERE id_publicacion=$1;`,
-        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, url_accion, descripcion, fecha_inicio, fecha_fin]
+        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin]
       )
       .then((response) => {
         client.release();
@@ -334,10 +338,11 @@ const getPublicationsByIdUser = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT ps.id_publicacion_usuario as id_publicacion,p.titulo,p.cuerpo,p.descripcion,p.url_accion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END
-        FROM publicacion_usuario ps, publicaciones p
-        WHERE ps.id_publicacion=p.id_publicacion 
-        AND ps.id_usuario=$1 AND ps.id_estatus=1 AND to_char(p.fecha_fin,'YYYYMMDD')::integer >= to_char(current_timestamp,'YYYYMMDD')::integer;`,
+        `SELECT ps.id_publicacion_usuario as id_publicacion,p.titulo,p.cuerpo,p.descripcion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END
+        ,(SELECT to_json(json.*) FROM (SELECT pa.accion,pa.titulo_accion as titulo,pa.id_accion as tipo_accion FROM publicaciones pa WHERE pa.id_publicacion=p.id_publicacion) as json) as accion
+            FROM publicacion_usuario ps, publicaciones p
+            WHERE ps.id_publicacion=p.id_publicacion 
+            AND ps.id_usuario=$1 AND ps.id_estatus=1 AND to_char(p.fecha_fin,'YYYYMMDD')::integer >= to_char(current_timestamp,'YYYYMMDD')::integer;`,
         [idUser]
       )
       .then((response) => {
