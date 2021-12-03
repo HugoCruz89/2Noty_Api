@@ -256,7 +256,7 @@ const postNotification = async (req, res = response) => {
 };
 
 const updateNotification = async (req, res = response) => {
-  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin } = req.body;
+  const { id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin, titulo_accion } = req.body;
   let url_imagen = '';
   if (req.files) {
     file = req.files.imagen;
@@ -280,9 +280,9 @@ const updateNotification = async (req, res = response) => {
     return client
       .query(
         `UPDATE public.publicaciones
-        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12 ${script}
+        SET id_empresa=$2, id_marca=$3, id_suscripcion=$4, id_tipo_notificacion=$5, cuerpo=$6, titulo=$7, id_accion=$8, accion=$9, descripcion=$10, fecha_inicio=$11, fecha_fin=$12, titulo_accion=$13 ${script}
         WHERE id_publicacion=$1;`,
-        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin]
+        [id_publicacion, id_empresa, id_marca, id_suscripcion, id_tipo_notificacion, cuerpo, titulo, id_accion, accion, descripcion, fecha_inicio, fecha_fin, titulo_accion]
       )
       .then((response) => {
         client.release();
