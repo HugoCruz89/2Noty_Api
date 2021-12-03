@@ -3636,6 +3636,10 @@
                         "type": "string",
                         "example": "http://example"
                     },
+                    "marca": {
+                        "type": "string",
+                        "example": "Telcel"
+                    },
                     "accion": {
                         "type": "object",
                         "properties": {
