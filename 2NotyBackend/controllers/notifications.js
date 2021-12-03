@@ -337,7 +337,7 @@ const getPublicationsByIdUser = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `SELECT ps.id_publicacion_usuario as id_publicacion,p.titulo,p.cuerpo,p.descripcion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END
+        `SELECT ps.id_publicacion_usuario as id_publicacion,p.titulo,p.cuerpo,p.descripcion, CASE WHEN p.url_imagen='' THEN (SELECT s.url_imagen FROM suscripciones s WHERE s.id_suscripcion=p.id_suscripcion) ELSE p.url_imagen END, (SELECT marca FROM Marcas ma WHERE ma.id_marca=p.id_marca)
         ,(SELECT to_json(json.*) FROM (SELECT pa.accion,pa.titulo_accion as titulo,pa.id_accion as tipo_accion FROM publicaciones pa WHERE pa.id_publicacion=p.id_publicacion) as json) as accion
             FROM publicacion_usuario ps, publicaciones p
             WHERE ps.id_publicacion=p.id_publicacion 
