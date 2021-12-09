@@ -42,6 +42,10 @@
         {
             "name": "Notifications",
             "description": "Here you will can to get all method wich you want or all you to need about Notifications"
+        },
+        {
+            "name": "Menus-Submenus",
+            "description": "Here you will can to get all method wich you want or all you to need about Notifications"
         }
     ],
     "paths": {
@@ -2235,6 +2239,26 @@
                             "id_estatus": {
                                 "type": "integer",
                                 "example": 1
+                            },
+                            "array": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id_menu": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "id_submenu": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "activo": {
+                                            "type":"boolean",
+                                            "example":false
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -2499,6 +2523,312 @@
                             "accion": {
                                 "type": "string",
                                 "example": "Vista app"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/{id}": {
+            "get": {
+                "operationId": "menu",
+                "tags": ["Menus-Submenus"],
+                "summary": "Get All Menus",
+                "description": "Get All Menus",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de menú"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_menu": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "menu": {
+                                                "type": "string",
+                                                "example": "Menu"
+                                            },
+                                            "icon": {
+                                                "type": "string",
+                                                "example": "icon-simple"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/insertMenu": {
+            "post": {
+                "operationId": "postmenu",
+                "tags": ["Menus-Submenus"],
+                "summary": "Register a menú",
+                "description": "Create a new menú",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "menu": {
+                                "type": "string",
+                                "example": "Menu"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "example": "simple-icon"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/updateMenu": {
+            "put": {
+                "operationId": "updateMenu",
+                "tags": ["Menus-Submenus"],
+                "summary": "update a menú",
+                "description": "Update a menú",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_menu": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "menu": {
+                                "type": "string",
+                                "example": "Menu"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "example": "simple-icon"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/getSubMenu/{id}": {
+            "get": {
+                "operationId": "submenu",
+                "tags": ["Menus-Submenus"],
+                "summary": "Get All SubMenus",
+                "description": "Get All SubMenus",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de submenu"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_submenu": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "id_menu": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "submenu": {
+                                                "type": "string",
+                                                "example": "SubMenu"
+                                            },
+                                            "icon": {
+                                                "type": "string",
+                                                "example": "icon-simple"
+                                            },
+                                            "menu": {
+                                                "type": "string",
+                                                "example": "Menu"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/insertSubMenu": {
+            "post": {
+                "operationId": "postsubmenu",
+                "tags": ["Menus-Submenus"],
+                "summary": "Register a submenú",
+                "description": "Create a new submenú",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_menu": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "submenu": {
+                                "type": "string",
+                                "example": "SubMenu"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "example": "simple-icon"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Status Inserted succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": "INSERT"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/updateSubMenu": {
+            "put": {
+                "operationId": "updateSubMenu",
+                "tags": ["Menus-Submenus"],
+                "summary": "update a submenú",
+                "description": "Update a submenú",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id_submenu": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "id_menu": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "submenu": {
+                                "type": "string",
+                                "example": "SubMenu"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "example": "simple-icon"
                             }
                         }
                     }
@@ -3660,7 +3990,45 @@
 
                 }
             }
+        },
+        "updateProfile":{
+            "type": "object",
+                        "properties": {
+                            "id_perfil": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "perfil": {
+                                "type": "string",
+                                "example": "Administrador"
+                            },
+                            "id_estatus": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "array": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id_menu": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "id_submenu": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "activo": {
+                                            "type":"boolean",
+                                            "example":false
+                                        }
+                                    }
+                                }
+                            }
+                        }
         }
+
     },
     "schemes": ["http", "https"],
     "consumes": ["application/json"],

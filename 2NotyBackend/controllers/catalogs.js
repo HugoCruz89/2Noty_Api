@@ -253,8 +253,44 @@ const updateStatus = async (req, res = response) => {
       });
   });
 };
+const updateProfilePermissions = async (id_perfil, id_menu, id_submenu, activo) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `do $$
+        declare
+        selected usuarios%rowtype;
+        begin  
+        
+          select * from permisos_perfil 
+          into selected
+          where id_perfil=${id_perfil} AND id_menu=${id_menu} AND id_submenu ${id_submenu?'=':'is'}  ${id_submenu};
+          
+          if not found then
+             INSERT INTO permisos_perfil (id_perfil,id_menu,id_submenu,activo) VALUES(${id_perfil},${id_menu},${id_submenu},${activo});
+          else
+             UPDATE permisos_perfil SET activo=${activo} WHERE id_perfil=${id_perfil} AND id_menu=${id_menu} AND id_submenu ${id_submenu?'=':'is'}  ${id_submenu};
+          end if;
+        end $$`
+      )
+      .then((response) => {
+        client.release();
+        // res.status(201).json({
+        //   ok: true,
+        //   msg: response.command,
+        // });
+      })
+      .catch((err) => {
+        client.release();
+        // res.status(400).json({
+        //   ok: false,
+        //   msg: err,
+        // });
+      });
+  });
+};
 const updateProfiles = async (req, res = response) => {
-  const { id_perfil, perfil, id_estatus } = req.body;
+  const { id_perfil, perfil, id_estatus, array } = req.body;
   const perfilUpper = perfil.toUpperCase();
   pool.connect().then((client) => {
     return client
@@ -263,6 +299,9 @@ const updateProfiles = async (req, res = response) => {
         [id_perfil, perfilUpper, id_estatus]
       )
       .then((response) => {
+        array.forEach(element => {
+          updateProfilePermissions(id_perfil,element.id_menu,element.id_submenu,element.activo)
+        })
         client.release();
         res.status(201).json({
           ok: true,
@@ -551,8 +590,33 @@ const postStatus = async (req, res = response) => {
       });
   });
 };
+const postProfilePermissions = async (id_perfil, id_menu, id_submenu, activo) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `INSERT INTO permisos_perfil( id_perfil, id_menu, id_submenu, activo)
+              VALUES($1,$2,$3,$4)`,
+        [id_perfil, id_menu, id_submenu, activo]
+      )
+      .then((response) => {
+        client.release();
+        // res.status(201).json({
+        //   ok: true,
+        //   msg: response.command,
+        // });
+      })
+      .catch((err) => {
+        client.release();
+        // res.status(400).json({
+        //   ok: false,
+        //   msg: err,
+        // });
+      });
+  });
+};
 const postProfiles = async (req, res = response) => {
-  const { perfil, id_estatus } = req.body;
+  const { perfil, id_estatus, array } = req.body;
+  console.log(array)
   const perfilUpperCase = perfil.toUpperCase();
   pool.connect().then((client) => {
     return client
@@ -565,11 +629,18 @@ const postProfiles = async (req, res = response) => {
           });
         } else {
           return client
-            .query(`INSERT INTO perfiles(perfil,id_estatus) VALUES($1,$2)`, [
+            .query(`INSERT INTO perfiles(perfil,id_estatus) VALUES($1,$2) RETURNING id_perfil`, [
               perfilUpperCase,
               id_estatus,
             ])
             .then((response) => {
+
+              if (response.rows) {
+                console.log(response.rows[0].id_perfil)
+                array.forEach(element => {
+                  postProfilePermissions(response.rows[0].id_perfil, element.id_menu, element.id_submenu, element.activo)
+                })
+              }
               client.release();
               res.status(201).json({
                 ok: true,
