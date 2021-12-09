@@ -13,9 +13,11 @@ router.post(
     "/register",
     [
       check("id_usuario", "El nombre es oligatorio").not().isEmpty(),
-      check("fecha", "El email es oligatorio").not().isEmpty(),
-      check("asunto", "El passwrod es de 6 caracteres").not().isEmpty(),
-      check("titulo", "El pais es oligatorio").not().isEmpty(),
+      check("fecha", "El campo fecha es oligatorio").not().isEmpty(),
+      check("hora", "El campo hora es oligatorio").not().isEmpty(),
+      check("asunto", "El campo asunto es obligatrio").not().isEmpty(),
+      check("titulo", "El campo titulo es obligatorio").not().isEmpty(),
+      check("id_recordatorio", "El id del recordatorio es oligatorio").not().isEmpty(),
       validarCampos
     ],
     register
