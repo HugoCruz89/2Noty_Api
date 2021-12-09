@@ -44,11 +44,51 @@
             "description": "Here you will can to get all method wich you want or all you to need about Notifications"
         },
         {
+<<<<<<< HEAD
             "name": "Menus-Submenus",
             "description": "Here you will can to get all method wich you want or all you to need about Notifications"
+=======
+            "name": "Schedule",
+            "description": "Here you will can to get all method wich you want or all you to need about Schedule"
+>>>>>>> develoment
         }
     ],
     "paths": {
+        "/api/agend/register": {
+            "post": {
+                "operationId": "insetAReminder",
+                "tags": ["Schedule"],
+                "summary": "insert a Reminder ",
+                "description": "Insert reminder",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "insert a reminder",
+                    "schema": {
+                        "$ref": "#/definitions/RegisterAgend"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "register was succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "msg": {
+                                    "type": "string",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/notifications/insertToken": {
             "post": {
                 "operationId": "insetTokenNotification",
@@ -4026,7 +4066,36 @@
                                     }
                                 }
                             }
-                        }
+                        },
+        "RegisterAgend": {
+            "type": "object",
+            "required": ["id_usuario", "fecha", "asunto", "titulo", "id_recordatorio", "hora"],
+            "properties": {
+                "id_usuario": {
+                    "type": "integer",
+                    "required": true
+                },
+                "fecha": {
+                    "type": "string",
+                    "required": true
+                },
+                "asunto": {
+                    "type": "string",
+                    "required": true
+                },
+                "titulo": {
+                    "type": "string",
+                    "required": true
+                },
+                "id_recordatorio": {
+                    "type": "integer",
+                    "required": true
+                },
+                "hora": {
+                    "type": "string",
+                    "required": true
+                }
+            }
         }
 
     },

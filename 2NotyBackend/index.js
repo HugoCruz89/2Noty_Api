@@ -32,6 +32,7 @@ app.use("/api/subscribers", require("./routes/subcribers"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/payment", require("./routes/payment"));
 app.use("/api/menus", require("./routes/menu"));
+app.use("/api/agend",require("./routes/agend"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // escuchar peticiones
 app.listen(process.env.PORT, () => {
