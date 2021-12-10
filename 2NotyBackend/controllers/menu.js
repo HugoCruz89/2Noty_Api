@@ -27,7 +27,7 @@ const getMenu = async (req, res = response) => {
 };
 
 const postMenu = async (req, res = response) => {
-    const { menu, icon } = req.body;
+    const { menu, icon, defaul } = req.body;
     const menuLowerCase = menu.toLowerCase();
     pool.connect().then((client) => {
         return client
@@ -43,9 +43,9 @@ const postMenu = async (req, res = response) => {
                 } else {
                     return client
                         .query(
-                            `INSERT INTO menus(menu,icon)
-                VALUES($1,$2)`,
-                            [menuLowerCase, icon]
+                            `INSERT INTO menus(menu,icon,"default")
+                VALUES($1,$2,$3)`,
+                            [menuLowerCase, icon, defaul]
                         )
                         .then((response) => {
                             client.release();
@@ -74,13 +74,13 @@ const postMenu = async (req, res = response) => {
 };
 
 const updateMenu = async (req, res = response) => {
-    const { id_menu, menu, icon } = req.body;
+    const { id_menu, menu, icon, defaul } = req.body;
     const menuLower = menu.toLowerCase();
     pool.connect().then((client) => {
         return client
             .query(
-                `UPDATE menus SET menu=$2, icon=$3 where id_menu=$1`,
-                [id_menu, menuLower, icon]
+                `UPDATE menus SET menu=$2, icon=$3, "default"=$4 where id_menu=$1`,
+                [id_menu, menuLower, icon, defaul]
             )
             .then((response) => {
                 client.release();
@@ -124,7 +124,7 @@ const getSubMenu = async (req, res = response) => {
 };
 
 const postSubMenu = async (req, res = response) => {
-    const { id_menu, submenu, icon } = req.body;
+    const { id_menu, submenu, icon, defaul } = req.body;
     const submenuLowerCase = submenu.toLowerCase();
     pool.connect().then((client) => {
         return client
@@ -140,9 +140,9 @@ const postSubMenu = async (req, res = response) => {
                 } else {
                     return client
                         .query(
-                            `INSERT INTO submenus(id_menu,submenu,icon)
-                VALUES($1,$2,$3)`,
-                            [id_menu, submenuLowerCase,icon]
+                            `INSERT INTO submenus(id_menu,submenu,icon,"default")
+                VALUES($1,$2,$3,$4)`,
+                            [id_menu, submenuLowerCase,icon, defaul]
                         )
                         .then((response) => {
                             client.release();
@@ -171,13 +171,13 @@ const postSubMenu = async (req, res = response) => {
 };
 
 const updateSubMenu = async (req, res = response) => {
-    const { id_submenu, id_menu, submenu, icon } = req.body;
+    const { id_submenu, id_menu, submenu, icon, defaul } = req.body;
     const submenuLower = submenu.toLowerCase();
     pool.connect().then((client) => {
         return client
             .query(
-                `UPDATE submenus SET id_menu=$2, submenu=$3, icon=$4 where id_submenu=$1`,
-                [id_submenu, id_menu, submenuLower, icon]
+                `UPDATE submenus SET id_menu=$2, submenu=$3, icon=$4, "default"=$5 where id_submenu=$1`,
+                [id_submenu, id_menu, submenuLower, icon, defaul]
             )
             .then((response) => {
                 client.release();
