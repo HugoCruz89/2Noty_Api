@@ -44,13 +44,12 @@
             "description": "Here you will can to get all method wich you want or all you to need about Notifications"
         },
         {
-<<<<<<< HEAD
             "name": "Menus-Submenus",
             "description": "Here you will can to get all method wich you want or all you to need about Notifications"
-=======
+        },
+        {
             "name": "Schedule",
             "description": "Here you will can to get all method wich you want or all you to need about Schedule"
->>>>>>> develoment
         }
     ],
     "paths": {
@@ -2294,8 +2293,8 @@
                                             "example": 2
                                         },
                                         "activo": {
-                                            "type":"boolean",
-                                            "example":false
+                                            "type": "boolean",
+                                            "example": false
                                         }
                                     }
                                 }
@@ -4031,75 +4030,76 @@
                 }
             }
         },
-        "updateProfile":{
+        "updateProfile": {
             "type": "object",
-                        "properties": {
-                            "id_perfil": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "perfil": {
-                                "type": "string",
-                                "example": "Administrador"
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "array": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id_menu": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "id_submenu": {
-                                            "type": "integer",
-                                            "example": 2
-                                        },
-                                        "activo": {
-                                            "type":"boolean",
-                                            "example":false
-                                        }
-                                    }
-                                }
-                            }
-                        },
-        "RegisterAgend": {
-            "type": "object",
-            "required": ["id_usuario", "fecha", "asunto", "titulo", "id_recordatorio", "hora"],
             "properties": {
-                "id_usuario": {
+                "id_perfil": {
                     "type": "integer",
-                    "required": true
+                    "example": 1
                 },
-                "fecha": {
+                "perfil": {
                     "type": "string",
-                    "required": true
+                    "example": "Administrador"
                 },
-                "asunto": {
-                    "type": "string",
-                    "required": true
-                },
-                "titulo": {
-                    "type": "string",
-                    "required": true
-                },
-                "id_recordatorio": {
+                "id_estatus": {
                     "type": "integer",
-                    "required": true
+                    "example": 1
                 },
-                "hora": {
-                    "type": "string",
-                    "required": true
+                "array": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id_menu": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "id_submenu": {
+                                "type": "integer",
+                                "example": 2
+                            },
+                            "activo": {
+                                "type": "boolean",
+                                "example": false
+                            }
+                        }
+                    }
+                }
+            },
+            "RegisterAgend": {
+                "type": "object",
+                "required": ["id_usuario", "fecha", "asunto", "titulo", "id_recordatorio", "hora"],
+                "properties": {
+                    "id_usuario": {
+                        "type": "integer",
+                        "required": true
+                    },
+                    "fecha": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "asunto": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "titulo": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "id_recordatorio": {
+                        "type": "integer",
+                        "required": true
+                    },
+                    "hora": {
+                        "type": "string",
+                        "required": true
+                    }
                 }
             }
-        }
 
-    },
-    "schemes": ["http", "https"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"]
+        },
+        "schemes": ["http", "https"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+    }
 }
