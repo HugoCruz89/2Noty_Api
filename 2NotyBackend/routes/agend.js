@@ -7,7 +7,7 @@ const router = require('express').Router();
 const{validarCampos}=require('../middlewares/validar-campos')
 const { check } = require("express-validator");
 const {
-    register,
+    register,getReminders
   } = require("../controllers/agend");
 router.post(
     "/register",
@@ -22,6 +22,8 @@ router.post(
     ],
     register
   );
+  
+router.get("/getReminders", getReminders);
 
 
 module.exports = router;
