@@ -845,47 +845,60 @@
                 "description": "Create a new user in system",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "nombre": {
-                                "type": "string",
-                                "example": "Irineo"
-                            },
-                            "correo": {
-                                "type": "string",
-                                "example": "irineo.lozada@tresw.mx"
-                            },
-                            "password": {
-                                "type": "string",
-                                "example": "example"
-                            },
-                            "fecha_registro": {
-                                "type": "string",
-                                "example": "2021-09-28"
-                            },
-                            "id_pais": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_estado": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_estatus": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "id_perfil": {
-                                "type": "intger",
-                                "example": 1
-                            }
-                        }
+                        "in": "formData",
+                        "name": "nombre",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "correo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "string",
+                        "name": "password",
+                        "default": "default2noty"
+                    },
+                    {
+                        "in": "formData",
+                        "type": "string",
+                        "name": "fecha_registro",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_pais",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_estado",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_estatus",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "intger",
+                        "name": "id_perfil",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "file",
+                        "name": "image",
+                        "description": ""
                     }
-                }],
+                ],
                 "responses": {
                     "201": {
                         "description": "Status Inserted succesfuly",
@@ -913,14 +926,55 @@
                 "summary": "update a user",
                 "description": "Update a user",
                 "consumes": "application/json",
-                "parameters": [{
-                    "in": "body",
-                    "name": "2Noty",
-                    "description": "object to send from client",
-                    "schema": {
-                        "$ref": "#/definitions/updateUser"
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_usuario"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "nombre",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "name": "correo",
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_pais",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_estado",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_estatus",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "intger",
+                        "name": "id_perfil",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "file",
+                        "name": "image",
+                        "description": ""
                     }
-                }],
+                ],
                 "responses": {
                     "200": {
                         "description": "Data",
@@ -3046,39 +3100,6 @@
                 }
             }
         },
-        "updateUser": {
-            "type": "object",
-            "properties": {
-                "id_usuario": {
-                    "type": "intger",
-                    "example": 1
-                },
-                "id_pais": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_estado": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "nombre": {
-                    "type": "string",
-                    "example": "Irineo"
-                },
-                "correo": {
-                    "type": "string",
-                    "example": "irineo.lozada@tresw.mx"
-                },
-                "id_estatus": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id_perfil": {
-                    "type": "intger",
-                    "example": 1
-                }
-            }
-        },
         "updateCategory": {
             "type": "object",
             "properties": {
@@ -3351,6 +3372,10 @@
                     "perfil": {
                         "type": "string",
                         "example": "Administrador"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "base64"
                     }
                 }
             }
