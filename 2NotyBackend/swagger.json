@@ -53,6 +53,33 @@
         }
     ],
     "paths": {
+        "/api/agend/getReminders": {
+            "get": {
+                "operationId": "insetAReminder",
+                "tags": ["Schedule"],
+                "summary": "get all Reminder ",
+                "description": "Get all reminder",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "register was succesfuly",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/agend/register": {
             "post": {
                 "operationId": "insetAReminder",

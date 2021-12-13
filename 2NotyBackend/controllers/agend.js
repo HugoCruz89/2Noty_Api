@@ -1,7 +1,6 @@
 const { response } = require("express");
 
 const { pool } = require("./../dbCongif");
-
 const register = async (req, res = response) => {
   const { id_usuario, fecha, asunto, titulo,hora,id_recordatorio } = req.body;
 
@@ -28,5 +27,27 @@ const register = async (req, res = response) => {
       });
   });
 };
+const getReminders = async (req, res = response) => {
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT a.fecha,(SELECT array_to_json(array_agg(b.*)) FROM agenda b WHERE b.fecha=a.fecha ) FROM agenda a group by fecha`
+      )
+      .then((response) => {
+        client.release();
+        res.status(200).json({
+          ok: true,
+          data: response.rows,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
 
-module.exports = { register };
+module.exports = { register,getReminders };
