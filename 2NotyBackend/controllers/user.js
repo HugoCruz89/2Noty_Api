@@ -1,6 +1,7 @@
 const { pool } = require("./../dbCongif");
 const bcrypt = require("bcrypt");
 const { getDateNow } = require("./../helpers/helpers");
+var fs = require('fs');
 
 const getUser = async (req, res = response) => {
   const idUsuario = req.params.id;
@@ -8,7 +9,7 @@ const getUser = async (req, res = response) => {
   pool.connect().then((client) => {
     return client
       .query(
-        `select u.id_usuario, u.nombre,u.correo,to_char(u.fecha_registro,'DD/MM/YYYY')as fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil
+        `select u.id_usuario, u.nombre,u.correo,to_char(u.fecha_registro,'DD/MM/YYYY')as fecha_registro,p.id_pais,p.pais,ep.id_estado,ep.estado_provincia,e.id_estatus,e.estatus,pr.id_perfil,pr.perfil, u.image
         from usuarios u,paises p, estados_provincias ep,estatus e,perfiles pr
         where u.id_pais=p.id_pais and u.id_estado=ep.id_estado and u.id_estatus=e.id_estatus and u.id_perfil=pr.id_perfil ${aux}
         order by 1;`
@@ -38,12 +39,16 @@ const postUser = async (req, res = response) => {
     id_estatus,
     id_estado,
     id_pais,
-    id_perfil,
+    id_perfil
   } = req.body;
 
   let hashedPassword = await bcrypt.hash(password, 10);
-
   const emailUpperCase = correo.toUpperCase();
+  let image;
+
+  if (req.files) {
+    image = `data:${req.files.image.mimetype};base64,${req.files.image.data.toString('base64')}`;
+  }
   pool.connect().then((client) => {
     return client
       .query(`SELECT * FROM usuarios WHERE upper(correo)=$1`, [emailUpperCase])
@@ -56,8 +61,8 @@ const postUser = async (req, res = response) => {
         } else {
           return client
             .query(
-              `INSERT INTO usuarios( id_pais, id_estado, nombre, correo, password, fecha_registro, id_estatus, id_perfil)
-                VALUES($1,$2,$3,$4,$5,$6,$7,$8)`,
+              `INSERT INTO usuarios( id_pais, id_estado, nombre, correo, password, fecha_registro, id_estatus, id_perfil, image)
+                VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
               [
                 id_pais,
                 id_estado,
@@ -67,6 +72,7 @@ const postUser = async (req, res = response) => {
                 getDateNow(),
                 id_estatus,
                 id_perfil,
+                image
               ]
             )
             .then((response) => {
@@ -96,6 +102,7 @@ const postUser = async (req, res = response) => {
 };
 
 const updateUser = async (req, res = response) => {
+
   const {
     id_usuario,
     id_pais,
@@ -103,13 +110,20 @@ const updateUser = async (req, res = response) => {
     nombre,
     correo,
     id_estatus,
-    id_perfil,
+    id_perfil
   } = req.body;
+  let image;
   const nombreUpper = nombre.toUpperCase();
+
+  if (req.files) {
+    image = `data:${req.files.image.mimetype};base64,${req.files.image.data.toString('base64')}`;
+  }
+
+  const auxQuery = image ? `,image='${image}'` : '';
   pool.connect().then((client) => {
     return client
       .query(
-        `UPDATE usuarios SET nombre=$2, correo=$3, id_estatus=$4, id_estado=$5, id_pais=$6, id_perfil=$7 where id_usuario=$1`,
+        `UPDATE usuarios SET nombre=$2, correo=$3, id_estatus=$4, id_estado=$5, id_pais=$6, id_perfil=$7${auxQuery} where id_usuario=$1`,
         [
           id_usuario,
           nombreUpper,
@@ -117,7 +131,7 @@ const updateUser = async (req, res = response) => {
           id_estatus,
           id_estado,
           id_pais,
-          id_perfil,
+          id_perfil
         ]
       )
       .then((response) => {
