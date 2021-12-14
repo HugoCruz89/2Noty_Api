@@ -13,7 +13,8 @@ const {
   getCategoriesSubscription,
   getSubscriptionsByIdCategory,
   updateCategorySubscription,
-  getSubscriptionsByIdCategoryandCountry
+  getSubscriptionsByIdCategoryandCountry,
+  getSubscriptionsByIdUser
 } = require("../controllers/subscriptions");
 
 router.get("/", getSubscriptions);
@@ -25,6 +26,7 @@ router.get("/getCategorySubscription", getCategoriesSubscription);
 router.put("/updateCategorySubscription", updateCategorySubscription);
 router.get("/getSubscriptionByIdCategory/:id", getSubscriptionsByIdCategory);
 router.get("/getSubscriptionsByIdCategoryandCountry/:id/:idCountry", getSubscriptionsByIdCategoryandCountry);
+router.get("/getSubscriptionByIdUser/:id", getSubscriptionsByIdUser);
 
 
 module.exports = router;

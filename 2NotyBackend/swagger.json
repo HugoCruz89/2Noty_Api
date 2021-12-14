@@ -53,13 +53,22 @@
         }
     ],
     "paths": {
-        "/api/agend/getReminders": {
+        "/api/agend/getReminders/{id}": {
             "get": {
-                "operationId": "insetAReminder",
+                "operationId": "getAReminder",
                 "tags": ["Schedule"],
                 "summary": "get all Reminder ",
                 "description": "Get all reminder",
                 "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "required": true,
+                    "description": "Id de usuario"
+                }],
                 "responses": {
                     "200": {
                         "description": "register was succesfuly",
@@ -1107,6 +1116,40 @@
                         "type": "integer"
                     },
                     "description": "Id de pais"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subscriptions/getSubscriptionByIdUser/{id}": {
+            "get": {
+                "operationId": "Subscriptions by User",
+                "tags": ["Subscriptions"],
+                "summary": "Get All Subscriptions by Category",
+                "description": "Get Subscriptions by Category",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de usuario"
                 }],
                 "responses": {
                     "200": {
