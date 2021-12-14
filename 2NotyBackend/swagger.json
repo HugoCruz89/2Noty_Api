@@ -1096,8 +1096,8 @@
             "get": {
                 "operationId": "Subscriptions by Category and Country",
                 "tags": ["Subscriptions"],
-                "summary": "Get All Subscriptions by Category",
-                "description": "Get Subscriptions by Category",
+                "summary": "Get All Subscriptions by Category and Country",
+                "description": "Get Subscriptions by Category and Country",
                 "consumes": "application/json",
                 "parameters": [{
                     "in": "path",
@@ -1140,8 +1140,8 @@
             "get": {
                 "operationId": "Subscriptions by User",
                 "tags": ["Subscriptions"],
-                "summary": "Get All Subscriptions by Category",
-                "description": "Get Subscriptions by Category",
+                "summary": "Get All Subscriptions by User",
+                "description": "Get Subscriptions by User",
                 "consumes": "application/json",
                 "parameters": [{
                     "in": "path",
