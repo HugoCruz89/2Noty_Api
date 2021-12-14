@@ -1083,6 +1083,50 @@
                 }
             }
         },
+        "/api/subscriptions/getSubscriptionsByIdCategoryandCountry/{id}/{idCountry}": {
+            "get": {
+                "operationId": "Subscriptions by Category and Country",
+                "tags": ["Subscriptions"],
+                "summary": "Get All Subscriptions by Category",
+                "description": "Get Subscriptions by Category",
+                "consumes": "application/json",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required":true,
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de categoria"
+                },
+                {
+                    "in": "path",
+                    "name": "idCountry",
+                    "required":true,
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "description": "Id de pais"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Subscriptions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/subscriptions/updateSubscription": {
             "put": {
                 "operationId": "updateSubscription",
