@@ -104,7 +104,7 @@ const login = (req, res = response) => {
   const { email, password } = req.body;
 
   pool.query(
-    `SELECT * FROM usuarios where correo= $1`,
+    `SELECT id_usuario,id_pais FROM usuarios where correo= $1`,
     [email],
     (err, results) => {
       if (err) {
@@ -163,7 +163,7 @@ const userValidate = (req, res = response) => {
       } else {
         const { email } = decoded;
         const upperCorreo = email.toUpperCase()
-        pool.query(`SELECT id_usuario,id_pais FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
+        pool.query(`SELECT * FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
           if (err) {
             throw err;
           }
