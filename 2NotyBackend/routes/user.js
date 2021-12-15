@@ -8,6 +8,7 @@ const {
   getUser,
   postUser,
   updateUser,
+  updateProfileUser,
 } = require("../controllers/user");
 router.get("/:id", getUser);
 router.post(
@@ -19,4 +20,5 @@ router.post(
   postUser
 );
 router.put("/updateUser", updateUser);
+router.put("/updateProfileUser", updateProfileUser);
 module.exports = router;

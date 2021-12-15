@@ -440,53 +440,109 @@ const getAllSubscriptionByIdCategory = async (id) => {
     return client
       .query(
         `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
-        ps.id_propiedad,ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order
-        FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es, propiedades_suscripcion ps
-        WHERE sc.id_categoria_suscripcion=$1 AND sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion = ps.id_suscripcion;`,
+        (SELECT array_to_json(array_agg(d.*)) FROM (SELECT ps.id_propiedad, ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order FROM propiedades_suscripcion ps WHERE sc.id_suscripcion = ps.id_suscripcion)as d) as propertys
+            FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es
+            WHERE sc.id_categoria_suscripcion=$1 AND sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus;`,
         [id]
       )
       .then((response) => {
         client.release();
-        let data = [];
-        if (response.rows.length > 0) {
-          // groupList(response.rows)
-          data = response.rows.reduce((acc, item) => {
-            if (!acc.find((x) => x.id_suscripcion === item.id_suscripcion)) {
-              acc.push(item);
-            }
-            return acc;
-          }, []);
+        // let data = [];
+        // if (response.rows.length > 0) {
+        //   // groupList(response.rows)
+        //   data = response.rows.reduce((acc, item) => {
+        //     if (!acc.find((x) => x.id_suscripcion === item.id_suscripcion)) {
+        //       acc.push(item);
+        //     }
+        //     return acc;
+        //   }, []);
 
-          data.forEach((Element) => {
-            const auxArray = response.rows.filter(
-              (x) => x.id_suscripcion === Element.id_suscripcion
-            );
-            let arr = [];
-            auxArray.map((item) => {
-              arr.push({
-                label: item.label,
-                type: item.type.toLowerCase(),
-                hidden: item.hidden,
-                required: item.required,
-                editable: item.editable,
-                name: item.name,
-              });
-              Element.propertys = arr;
-            });
-            delete Element.id_propiedad;
-            delete Element.label;
-            delete Element.type;
-            delete Element.regex;
-            delete Element.hidden;
-            delete Element.required;
-            delete Element.editable;
-            delete Element.name;
-          });
-        }
+        //   data.forEach((Element) => {
+        //     const auxArray = response.rows.filter(
+        //       (x) => x.id_suscripcion === Element.id_suscripcion
+        //     );
+        //     let arr = [];
+        //     auxArray.map((item) => {
+        //       arr.push({
+        //         label: item.label,
+        //         type: item.type.toLowerCase(),
+        //         hidden: item.hidden,
+        //         required: item.required,
+        //         editable: item.editable,
+        //         name: item.name,
+        //       });
+        //       Element.propertys = arr;
+        //     });
+        //     delete Element.id_propiedad;
+        //     delete Element.label;
+        //     delete Element.type;
+        //     delete Element.regex;
+        //     delete Element.hidden;
+        //     delete Element.required;
+        //     delete Element.editable;
+        //     delete Element.name;
+        //   });
+        // }
 
         return {
           ok: true,
-          data,
+          data:response.rows,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: "error: " + err,
+        };
+      });
+  });
+  return dataBaseResponse;
+};
+
+const getAllSubscriptionByIdCategoryandCountry = async (id,id_pais) => {
+  const dataBaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
+        (SELECT array_to_json(array_agg(d.*)) FROM (SELECT ps.id_propiedad, ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order FROM propiedades_suscripcion ps WHERE sc.id_suscripcion = ps.id_suscripcion)as d) as propertys
+            FROM suscripciones sc, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es
+            WHERE sc.id_categoria_suscripcion=$1 AND sc.id_pais=$2 AND sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus;`,
+        [id,id_pais]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          data:response.rows,
+        };
+      })
+      .catch((err) => {
+        client.release();
+        return {
+          ok: false,
+          msg: "error: " + err,
+        };
+      });
+  });
+  return dataBaseResponse;
+};
+
+const getAllSubscriptionByIdUser = async (id) => {
+  const dataBaseResponse = await pool.connect().then((client) => {
+    return client
+      .query(
+        `SELECT sc.id_suscripcion,sc.id_pais,p.pais,sc.id_empresa,em.empresa,sc.id_marca,m.marca,sc.id_categoria_suscripcion,cs.categoria,sc.suscripcion,sc.descripcion,sc.id_estatus,es.estatus,sc.url_imagen,sc.url_icono,
+        (SELECT array_to_json(array_agg(d.*)) FROM (SELECT ps.id_propiedad, ps.label,ps.hidden,ps.required,ps.editable,ps.name,(SELECT tipo_dato FROM cat_tipo_dato tp where tp.id_tipo_dato=ps.type) AS type,ps.order FROM propiedades_suscripcion ps WHERE sc.id_suscripcion = ps.id_suscripcion)as d) as propertys
+            FROM suscripciones sc, suscriptores st, paises p, empresas em, marcas m, categoria_suscripcion cs,estatus es
+            WHERE st.id_usuario=$1 AND sc.id_pais=p.id_pais AND sc.id_empresa=em.id_empresa AND sc.id_marca=m.id_marca AND sc.id_categoria_suscripcion=cs.id_categoria_suscripcion AND sc.id_estatus=es.id_estatus AND sc.id_suscripcion=st.id_suscripcion;`,
+        [id]
+      )
+      .then((response) => {
+        client.release();
+        return {
+          ok: true,
+          data:response.rows,
         };
       })
       .catch((err) => {
@@ -598,5 +654,7 @@ module.exports = {
   getAllSubscriptionByIdCategory,
   getAllTokensSubscribers,
   insertUserPublication,
-  updateStatusPublication
+  updateStatusPublication,
+  getAllSubscriptionByIdCategoryandCountry,
+  getAllSubscriptionByIdUser
 };

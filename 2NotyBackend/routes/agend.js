@@ -23,7 +23,7 @@ router.post(
     register
   );
   
-router.get("/getReminders", getReminders);
+router.get("/getReminders/:id", getReminders);
 
 
 module.exports = router;

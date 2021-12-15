@@ -12,7 +12,9 @@ const {
   getAllSubscription,
   updateSubscription,
   updatePropiedadesSuscripcion,
-  getAllSubscriptionByIdCategory
+  getAllSubscriptionByIdCategory,
+  getAllSubscriptionByIdCategoryandCountry,
+  getAllSubscriptionByIdUser
 } = require("./../DataBase/querys");
 const { response } = require("express");
 // const { report } = require("../routes/subscritions");
@@ -31,6 +33,26 @@ const getSubscriptions = async (req, res = response) => {
 const getSubscriptionsByIdCategory = async (req, res = response) => {
   const id_Category = req.params.id;
   const getResponse = await getAllSubscriptionByIdCategory(id_Category);
+  if (getResponse.ok) {
+    return res.status(201).json(getResponse);
+  } else {
+    return res.status(400).json(getResponse);
+  }
+};
+
+const getSubscriptionsByIdCategoryandCountry = async (req, res = response) => {
+  const {id,idCountry} = req.params;
+  const getResponse = await getAllSubscriptionByIdCategoryandCountry(id,idCountry);
+  if (getResponse.ok) {
+    return res.status(201).json(getResponse);
+  } else {
+    return res.status(400).json(getResponse);
+  }
+};
+
+const getSubscriptionsByIdUser = async (req, res = response) => {
+  const idUser = req.params.id;
+  const getResponse = await getAllSubscriptionByIdUser(idUser);
   if (getResponse.ok) {
     return res.status(201).json(getResponse);
   } else {
@@ -299,5 +321,7 @@ module.exports = {
   postCategorySubscription,
   getCategoriesSubscription,
   getSubscriptionsByIdCategory,
-  updateCategorySubscription
+  updateCategorySubscription,
+  getSubscriptionsByIdCategoryandCountry,
+  getSubscriptionsByIdUser
 };
