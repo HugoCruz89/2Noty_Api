@@ -8,7 +8,7 @@ const getMenu = async (req, res = response) => {
     const aux = (idMenu === 'undefined' || idMenu === '{id}') ? '' : `WHERE id_menu=${idMenu}`;
     pool.connect().then((client) => {
         return client
-            .query(`SELECT * FROM menus  ${aux}`)
+            .query(`SELECT * FROM menus  ${aux} ORDER BY id_menu`)
             .then((response) => {
                 client.release();
                 res.status(200).json({
@@ -105,7 +105,7 @@ const getSubMenu = async (req, res = response) => {
     pool.connect().then((client) => {
         return client
             .query(`SELECT sb.*,m.menu FROM submenus sb, menus m 
-            WHERE sb.id_menu=m.id_menu  ${aux}`)
+            WHERE sb.id_menu=m.id_menu  ${aux} ORDER BY m.id_menu,sb.id_submenu`)
             .then((response) => {
                 client.release();
                 res.status(200).json({
