@@ -104,7 +104,7 @@ const login = (req, res = response) => {
   const { email, password } = req.body;
 
   pool.query(
-    `SELECT id_usuario,id_pais FROM usuarios where correo= $1`,
+    `SELECT * FROM usuarios where correo= $1`,
     [email],
     (err, results) => {
       if (err) {
