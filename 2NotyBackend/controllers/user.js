@@ -151,8 +151,41 @@ const updateUser = async (req, res = response) => {
   });
 };
 
+const updateProfileUser = async (req, res = response) => {
+
+  const {
+    idUser,
+    stringBase64
+  } = req.body;
+  pool.connect().then((client) => {
+    return client
+      .query(
+        `UPDATE usuarios SET image=$2 where id_usuario=$1`,
+        [
+          idUser,
+          stringBase64
+        ]
+      )
+      .then((response) => {
+        client.release();
+        res.status(201).json({
+          ok: true,
+          data: response.command,
+        });
+      })
+      .catch((err) => {
+        client.release();
+        res.status(400).json({
+          ok: false,
+          msg: err,
+        });
+      });
+  });
+};
+
 module.exports = {
   getUser,
   postUser,
   updateUser,
+  updateProfileUser
 };

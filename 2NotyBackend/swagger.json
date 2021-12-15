@@ -1031,6 +1031,46 @@
                 }
             }
         },
+        "/api/user/updateProfileUser": {
+            "put": {
+                "operationId": "updateProfileUser",
+                "tags": ["User"],
+                "summary": "update a profile user",
+                "description": "Update a prifile user",
+                "consumes": "application/json",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "idUser"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "stringBase64",
+                        "type": "string",
+                        "description": ""
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "string",
+                                    "example": "ok"
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "example": "update"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
 
         "/api/subscriptions": {
             "get": {
