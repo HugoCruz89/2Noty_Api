@@ -562,7 +562,7 @@ const getAllTokensSubscribers = async (id) => {
       .query(
         `SELECT array_to_json(array_agg(tn.token)) as jsontokens ,array_to_json(array_agg(sc.id_usuario)) as jsonusers
         FROM suscripciones s, suscriptores sc, token_notificaciones tn
-        WHERE s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND sc.id_suscripcion=s.id_suscripcion AND s.id_suscripcion=${id} AND s.id_estatus=1;`
+        WHERE s.id_suscripcion=sc.id_suscripcion AND sc.id_usuario=tn.id_usuario AND sc.id_suscripcion=s.id_suscripcion AND s.id_suscripcion=${id};`
       )
       .then((response) => {
         client.release();
