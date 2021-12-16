@@ -159,7 +159,7 @@
                 }
             }
         },
-        "/api/notifications/sendNotificationsAllSubscribers/{id}": {
+        "/api/notifications/sendNotificationsAllSubscribers": {
             "post": {
                 "operationId": "sendNotification",
                 "tags": ["Notifications"],
@@ -167,10 +167,32 @@
                 "description": "Send Notification",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "path",
-                    "name": "id",
+                    "in": "body",
+                    "name": "2Noty",
                     "schema": {
-                        "type": "integer"
+                        "type": "object",
+                        "properties": {
+                            "idSubscription": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "title": {
+                                "type": "string",
+                                "example": "Titulo"
+                            },
+                            "body": {
+                                "type": "string",
+                                "example": "Cuerpo de publicación"
+                            },
+                            "idPublicacion": {
+                                "type": "intger",
+                                "example": 1
+                            },
+                            "urlImagen":{
+                                "type":"string",
+                                "example":"http://example"
+                            }
+                        }
                     },
                     "required": true,
                     "description": "Id de publicación"
@@ -962,8 +984,7 @@
                 "summary": "update a user",
                 "description": "Update a user",
                 "consumes": "application/json",
-                "parameters": [
-                    {
+                "parameters": [{
                         "in": "formData",
                         "type": "integer",
                         "name": "id_usuario"
@@ -1038,8 +1059,7 @@
                 "summary": "update a profile user",
                 "description": "Update a prifile user",
                 "consumes": "application/json",
-                "parameters": [
-                    {
+                "parameters": [{
                         "in": "formData",
                         "type": "integer",
                         "name": "idUser"
@@ -1140,23 +1160,24 @@
                 "description": "Get Subscriptions by Category and Country",
                 "consumes": "application/json",
                 "parameters": [{
-                    "in": "path",
-                    "name": "id",
-                    "required":true,
-                    "schema": {
-                        "type": "integer"
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Id de categoria"
                     },
-                    "description": "Id de categoria"
-                },
-                {
-                    "in": "path",
-                    "name": "idCountry",
-                    "required":true,
-                    "schema": {
-                        "type": "integer"
-                    },
-                    "description": "Id de pais"
-                }],
+                    {
+                        "in": "path",
+                        "name": "idCountry",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Id de pais"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Data",
