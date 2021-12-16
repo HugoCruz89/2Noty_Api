@@ -327,7 +327,7 @@ const sendNotificationsAllSubscribers = async (req, res = response) => {
   else {
     return res.status(400).json({
       ok: false,
-      msg: 'No hay suscriptores'
+      msg: 'No hay suscriptores o la suscripción esta inactiva'
     });
   }
 };
