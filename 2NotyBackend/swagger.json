@@ -13,7 +13,7 @@
             "url": ""
         }
     },
-    "host": "3.136.19.219:4000",
+    "host": "localhost:4000",
     "basePath": "/",
     "tags": [{
             "name": "Auth",
@@ -955,6 +955,12 @@
                         "type": "file",
                         "name": "image",
                         "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_empresa",
+                        "description": ""
                     }
                 ],
                 "responses": {
@@ -1029,6 +1035,12 @@
                         "in": "formData",
                         "type": "file",
                         "name": "image",
+                        "description": ""
+                    },
+                    {
+                        "in": "formData",
+                        "type": "integer",
+                        "name": "id_empresa",
                         "description": ""
                     }
                 ],
@@ -3551,6 +3563,10 @@
                     "image": {
                         "type": "string",
                         "example": "base64"
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 6
                     }
                 }
             }
