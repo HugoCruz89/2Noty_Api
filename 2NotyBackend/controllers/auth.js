@@ -76,9 +76,9 @@ const register = async (req, res = response) => {
     pool.connect().then((client) => {
       return client
         .query(
-          `INSERT INTO usuarios(id_Pais, id_Estado,nombre,correo,password,fecha_registro,id_estatus,id_perfil)
+          `INSERT INTO usuarios(id_Pais, id_Estado,nombre,correo,password,fecha_registro,id_estatus,id_perfil,id_empresa)
                      VALUES($1,$2,$3,$4,$5,$6,$7)`,
-          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 3,2]
+          [idPais, idEstado, name, email, hashedPassword, getDateNow(), 3,2,0]
         )
         .then((response) => {
           client.release();
@@ -104,7 +104,7 @@ const login = (req, res = response) => {
   const { email, password } = req.body;
 
   pool.query(
-    `SELECT u.id_usuario,u.id_pais ,u.password, u.correo  FROM usuarios u where correo= $1`,
+    `SELECT u.id_usuario,u.id_pais ,u.password, u.correo, u.nombre  FROM usuarios u where correo= $1`,
     [email],
     (err, results) => {
       if (err) {
