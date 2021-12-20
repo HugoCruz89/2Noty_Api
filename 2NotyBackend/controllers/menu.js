@@ -202,7 +202,7 @@ const getRelationMenuSubmenuProfile = async (req, res = response) => {
     pool.connect().then((client) => {
         return client
             .query(`SELECT *,COALESCE((SELECT activo FROM permisos_perfil WHERE id_perfil=${aux} AND id_menu=m.id_menu AND id_submenu is null),false) as activo
-            ,( SELECT array_to_json(array_agg(t.*)) FROM (SELECT *,COALESCE((SELECT activo FROM permisos_perfil WHERE id_perfil=${aux} AND id_menu=m.id_menu AND id_submenu=s.id_submenu),false) as activo FROM submenus s WHERE s.id_menu=m.id_menu) as t) as submenu
+            ,( SELECT array_to_json(array_agg(t.*)) FROM (SELECT *,COALESCE((SELECT activo FROM permisos_perfil WHERE id_perfil=${aux} AND id_menu=m.id_menu AND id_submenu=s.id_submenu),false) as activo FROM submenus s WHERE s.id_menu=m.id_menu ORDER BY s.id_submenu) as t) as submenu
             FROM menus m ORDER BY m.id_menu`)
             .then((response) => {
                 client.release();
