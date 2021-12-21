@@ -273,10 +273,10 @@ const insertPropiedadesSuscripcion = async (data, idSubscription) => {
   return databaseResponse;
 };
 const updatePropiedadesSuscripcion = async (data, idSubscription) => {
-  const { id, label, hidden, required, editable, type, name, order } = data;
+  const { id_propiedad, label, hidden, required, editable, type, name, order } = data;
   const databaseResponse = await pool.connect().then((client) => {
 
-    if (id <= 0)
+    if (id_propiedad <= 0)
       return client.query(
         `INSERT INTO public.propiedades_suscripcion(
           label, type, regex, hidden, id_suscripcion,required,editable,name,"order")
@@ -302,7 +302,7 @@ const updatePropiedadesSuscripcion = async (data, idSubscription) => {
         `UPDATE propiedades_suscripcion SET
             label=$2, type=$3, hidden=$4, required=$5,editable=$6,name=$7,"order"=$8
             WHERE id_propiedad=$1`,
-        [id, label, type, hidden, required, editable, name, order]
+        [id_propiedad, label, type, hidden, required, editable, name, order]
       )
         .then((response) => {
           client.release();
