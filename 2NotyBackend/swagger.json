@@ -1072,16 +1072,23 @@
                 "description": "Update a prifile user",
                 "consumes": "application/json",
                 "parameters": [{
-                        "in": "formData",
-                        "type": "integer",
-                        "name": "idUser"
-                    },
-                    {
-                        "in": "formData",
-                        "name": "stringBase64",
-                        "type": "string",
-                        "description": ""
+                    "in": "body",
+                    "name": "2Noty",
+                    "description": "object to send from client",
+                    "schema":{
+                        "type":"object",
+                        "properties":{
+                            "idUser":{
+                                "type":"intger",
+                                "example":1
+                            },
+                            "stringBase64":{
+                                "type":"string",
+                                "example":"stringBase64"
+                            }
+                        }
                     }
+                }
                 ],
                 "responses": {
                     "200": {
