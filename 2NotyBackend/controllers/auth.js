@@ -104,7 +104,7 @@ const login = (req, res = response) => {
   const { email, password } = req.body;
 
   pool.query(
-    `SELECT u.id_usuario,u.id_pais ,u.password, u.correo, u.nombre  FROM usuarios u where correo= $1`,
+    `SELECT u.id_usuario,u.id_pais ,u.password, u.correo, u.nombre, u.id_estatus  FROM usuarios u where correo= $1`,
     [email],
     (err, results) => {
       if (err) {
@@ -117,7 +117,14 @@ const login = (req, res = response) => {
           if (err) {
             throw err;
           }
-          if (isMatch) {
+          if(user.id_estatus != '1'){
+            res.status(400).json({
+              ok: false,
+              msg: "Cuenta inactiva",
+              _token: null,
+            });
+          }
+          else if (isMatch) {
             const token = jwt.sign(user, config.llave, {
               // expiresIn: 1440,
             });
