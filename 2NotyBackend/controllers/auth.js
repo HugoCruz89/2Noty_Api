@@ -179,7 +179,7 @@ const userValidate = (req, res = response) => {
             if (err) {
               throw err;
             }
-            const body = `<p>Estimado Usuario su cuenta fue activada</p>`
+            const body = `<p>Estimado Usuario su cuenta fue activada <br/> Beinvenido a 2Noty</p>`
             SendEmail(body, email, 'Activación correcta', 'Activación correcta');
             res.status(200).json({
               ok: true,
