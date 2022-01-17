@@ -179,6 +179,8 @@ const userValidate = (req, res = response) => {
             if (err) {
               throw err;
             }
+            const body = `<p>Estimado Usuario su cuenta fue activada</p>`
+            SendEmail(body, email, 'Activación correcta', 'Activación correcta');
             res.status(200).json({
               ok: true,
               msg: "Usuario validado!"
