@@ -168,7 +168,7 @@ const userValidate = (req, res = response) => {
           msg: "El link ya expiro favor de generar uno nuevo",
         });
       } else {
-        const { email } = decoded;
+        const { email,name } = decoded;
         const upperCorreo = email.toUpperCase()
         pool.query(`SELECT * FROM usuarios WHERE UPPER(correo)='${upperCorreo}'`, (err, results) => {
           if (err) {
@@ -179,7 +179,7 @@ const userValidate = (req, res = response) => {
             if (err) {
               throw err;
             }
-            const body = `<p>Estimado Usuario su cuenta fue activada <br/> Bienvenido a 2Noty</p>`
+            const body = `<p>Estimado ${name} su cuenta fue activada <br/> Bienvenido a 2Noty</p>`
             SendEmail(body, email, 'Activación correcta', 'Activación correcta');
             res.status(200).json({
               ok: true,
